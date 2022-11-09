@@ -1,49 +1,34 @@
 {
   "project_info": {
-    "project_number": "932204445351",
-    "project_id": "waterlo-28c3a",
-    "storage_bucket": "waterlo-28c3a.appspot.com"
+    "project_number": "225286740730",
+    "project_id": "waterup-3685d",
+    "storage_bucket": "waterup-3685d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:932204445351:android:d755750b1084a046932582",
+        "mobilesdk_app_id": "1:225286740730:android:78dea591cd1605c9018743",
         "android_client_info": {
           "package_name": "waterlo.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "932204445351-jg4hl0fitsnibenup1s2fhe6og5e3m5h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "waterlo.app",
-            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
-          }
-        },
-        {
-          "client_id": "932204445351-qiaqjepaernft1ful6vmia636av9rneb.apps.googleusercontent.com",
+          "client_id": "225286740730-r9c3uhp6ce30k35sjo3c2ppamfkjls56.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCuhM20WQ5RPQd3yRtVLjzFiY5EbGl70B8"
+          "current_key": "AIzaSyCpBPRgMmGJr25uB6ylgHwPFm_Wxry1l-U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "932204445351-qiaqjepaernft1ful6vmia636av9rneb.apps.googleusercontent.com",
+              "client_id": "225286740730-r9c3uhp6ce30k35sjo3c2ppamfkjls56.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "932204445351-2erou5u6ai5ifps16dvp9j7t4kh3if9l.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "waterlo.app"
-              }
             }
           ]
         }
