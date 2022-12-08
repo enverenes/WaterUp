@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:watetlo/firebase_options.dart';
+import 'package:watetlo/main_fixed/main_fixed_widget.dart';
 import 'auth/firebase_user_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
@@ -9,25 +11,67 @@ import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'index.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
+import 'package:watetlo/history.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 
 Future<void> setPremium() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setInt('premium', 1);
 }
+@pragma('vm:entry-point') 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+  });
+
+  print('User granted permission: ${settings.authorizationStatus}');
+
   await FlutterFlowTheme.initialize();
 
   FFAppState(); // Initialize FFAppState
+SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); 
 
+
+MobileAds.instance.initialize();
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
+
+   
   State<MyApp> createState() => _MyAppState();
 
   static _MyAppState of(BuildContext context) =>
@@ -51,14 +95,10 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
- 
-
   @override
   void initState() {
-   
-
-    setPremium();
     super.initState();
+    setPremium();
 
     getInitialPage();
     userStream = watetloFirebaseUserStream()
@@ -79,6 +119,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
+      routes: {
+    // When navigating to the "/" route, build the FirstScreen widget.
+    '/history': (context) => const MyHomePage(),
+    '/mainfixed': (context) => const MainFixedWidget(),
+ 
+  },
       debugShowCheckedModeBanner: false,
       title: 'watetlo',
       localizationsDelegates: [

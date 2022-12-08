@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart'
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:watetlo/notifications.dart';
 
 class TutorialWidget extends StatefulWidget {
   const TutorialWidget({Key? key}) : super(key: key);
@@ -19,9 +20,34 @@ class _TutorialWidgetState extends State<TutorialWidget> {
   PageController? pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  
+
+  void initialDay() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(
+        'resetday',
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+            .toString());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initialDay();
+    
+  }
+
   void setInitialPage() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setInt('initialpage', 1);
+  }
+
+  void setStartDate() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(
+        'reset',
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+            .toString());
   }
 
   @override
@@ -130,9 +156,9 @@ class _TutorialWidgetState extends State<TutorialWidget> {
                       alignment: AlignmentDirectional(0.8, 0.93),
                       child: FFButtonWidget(
                         onPressed: () async {
-                          
-                            setInitialPage();
-                       
+                          setInitialPage();
+
+                          setStartDate();
                           await Navigator.pushAndRemoveUntil(
                             context,
                             PageTransition(

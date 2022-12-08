@@ -1,3 +1,4 @@
+
 import '../components/slider_widget.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -5,7 +6,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../main_fixed/main_fixed_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 
 class DrinkselectCopyWidget extends StatefulWidget {
   const DrinkselectCopyWidget({Key? key}) : super(key: key);
@@ -16,6 +17,8 @@ class DrinkselectCopyWidget extends StatefulWidget {
 
 class _DrinkselectCopyWidgetState extends State<DrinkselectCopyWidget> {
   String? choiceChipsValue;
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +85,7 @@ class _DrinkselectCopyWidgetState extends State<DrinkselectCopyWidget> {
                                     child: SliderWidget(),
                                   );
                                 },
-                              ).then((value) => setState(() {}));
+                              );
                             }
                           },
                           selectedChipStyle: ChipStyle(
@@ -130,6 +133,8 @@ class _DrinkselectCopyWidgetState extends State<DrinkselectCopyWidget> {
               alignment: AlignmentDirectional(0, 0),
               child: FFButtonWidget(
                 onPressed: () async {
+                await  MainFixedWidgetState()
+                      .drinkWater(FFAppState().cup, context, true, 'C');
                   await Navigator.push(
                     context,
                     PageTransition(
@@ -139,6 +144,10 @@ class _DrinkselectCopyWidgetState extends State<DrinkselectCopyWidget> {
                       child: MainFixedWidget(),
                     ),
                   );
+                  setState(() {
+                    FFAppState().drinktype = 1.0;
+                    FFAppState().drinkname = 'Water';
+                  });
                 },
                 text: 'OK',
                 options: FFButtonOptions(

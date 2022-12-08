@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:watetlo/main_fixed/main_fixed_widget.dart';
 import 'dart:convert';
 import 'calendar.dart';
 import 'dayhistory.dart' as hist;
@@ -11,21 +12,11 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:watetlo/premiumpage.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MyHomePage(title: 'Flutter Demo Home Page');
-  }
-}
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => MyHomePageState();
@@ -84,7 +75,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return lastItem;
   }
 
-  void addWaterToHist(int wateramount, String drinktype) {
+  addWaterToHist(int wateramount, String drinktype) {
     saveWater = [
       wateramount,
       drinktype,
@@ -104,13 +95,36 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         children: [
           Image.asset(
             'assets/images/bardak_light.png',
-            width: 30,
+            width: 50,
           ),
           Text('${saveWater[0]}ml'),
           Text(DateFormat.Hm().format(DateTime.now()).toString())
         ],
       ),
-    ); //ITS WATER RN
+    );
+  }
+
+  double? _percentagetoday;
+  String? _percentagetodayashund;
+  void getPercentage(String day) async {
+    final prefs = await SharedPreferences.getInstance();
+    String today =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+            .toString();
+
+    if (day == today) {
+      _percentagetoday =
+          (FFAppState().dranksofar / FFAppState().initialtotalwater);
+          if (_percentagetoday! > 1.0) {
+        _percentagetoday = 1.0;
+      }
+    } else {
+      _percentagetoday = prefs.getDouble(day + 'percentage');
+
+     
+    }
+
+    _percentagetodayashund = ((_percentagetoday ?? 0) * 100).toStringAsFixed(1);
   }
 
   void SetSpecificDay(String day) async {
@@ -218,18 +232,6 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     });
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    SetSpecificDay(
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
-                .toString() +
-            'Z');
-    FetchDayToList(today);
-    water_int_list = [];
-    super.initState();
-  }
-
   String today =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
               .toString() +
@@ -243,6 +245,35 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   void decDay() {
     tody = tody.subtract(Duration(days: 1));
+    print(tody);
+  }
+
+  void setTody(DateTime sendTody) {
+    tody = sendTody;
+
+    tody = DateTime(tody.year, tody.month, tody.day, 0, 0, 0, 0, 0);
+    print(tody.toString() + 'Z');
+  }
+
+  final BannerAd bannerAdHist = BannerAd(
+    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    size: AdSize.banner,
+    request: AdRequest(),
+    listener: BannerAdListener(),
+  );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    setTody(selectedDay1 ?? DateTime.now());
+    SetSpecificDay(tody.toString() + 'Z');
+    FetchDayToList(tody.toString() + 'Z');
+    water_int_list = [];
+    getPercentage(tody.toString());
+
+    bannerAdHist.load();
+    super.initState();
   }
 
   @override
@@ -269,7 +300,17 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             size: 30,
           ),
           onPressed: () async {
-            Navigator.pop(context);
+            setState(() {
+              tody = DateTime.now();
+              selectedDay1 = DateTime.now();
+            });
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainFixedWidget(),
+              ),
+            );
           },
         ),
         actions: [],
@@ -291,99 +332,254 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              waterList.clear();
-                              decDay();
-                            });
+                      Container(
+                        width: 40,
+                        decoration: BoxDecoration(
+                            color: Color(0xFF003366), shape: BoxShape.circle),
+                        child: IconButton(
+                            onPressed: () async {
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              int? premium1 = prefs.getInt('premium');
+                              if (premium1 == 1) {
+                                setState(() {
+                                  waterList.clear();
+                                  decDay();
+                                });
 
-                            SetSpecificDay(
-                                DateTime(tody.year, tody.month, tody.day)
-                                        .toString() +
-                                    'Z');
+                                SetSpecificDay(
+                                    DateTime(tody.year, tody.month, tody.day)
+                                            .toString() +
+                                        'Z');
 
-                            FetchDayToList(
-                                DateTime(tody.year, tody.month, tody.day)
-                                        .toString() +
-                                    'Z');
-                          },
-                          icon: Icon(Icons.arrow_back_rounded)),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          int? premium1 = prefs.getInt('premium');
-                          if (premium1 == 1) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Calendar()),
-                            );
-                          } else {
-                            showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                      title: const Text(
-                                          'This is a premium feature'),
-                                      content: const Text(
-                                          'Buy Premium To Unlock This Feature'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'Cancel'),
-                                          child: const Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => Navigator.push(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType.fade,
-                                              duration:
-                                                  Duration(milliseconds: 300),
-                                              reverseDuration:
-                                                  Duration(milliseconds: 300),
-                                              child: premium(),
+                                FetchDayToList(
+                                    DateTime(tody.year, tody.month, tody.day)
+                                            .toString() +
+                                        'Z');
+                                getPercentage(
+                                    DateTime(tody.year, tody.month, tody.day)
+                                        .toString());
+                              } else {
+                                showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                          title: const Text(
+                                              'This is a premium feature'),
+                                          content: const Text(
+                                              'Buy Premium To Unlock This Feature'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  context, 'Cancel'),
+                                              child: const Text('Cancel'),
                                             ),
+                                            TextButton(
+                                              onPressed: () => Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                  type: PageTransitionType.fade,
+                                                  duration: Duration(
+                                                      milliseconds: 300),
+                                                  reverseDuration: Duration(
+                                                      milliseconds: 300),
+                                                  child: premium(),
+                                                ),
+                                              ),
+                                              child:
+                                                  const Text('Buy Premium Now'),
+                                            ),
+                                          ],
+                                        ));
+                              }
+                            },
+                            icon: Icon(
+                              Icons.arrow_back_rounded,
+                              color: Colors.white,
+                            )),
+                      ),
+                      ButtonTheme(
+                        child: MaterialButton(
+                          height: 40.0,
+                          minWidth: 170.0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide()),
+                          color: Color(0xFF003366),
+                          onPressed: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            int? premium1 = prefs.getInt('premium');
+                            if (premium1 == 1) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Calendar()),
+                              );
+                            } else {
+                              showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        title: const Text(
+                                            'This is a premium feature'),
+                                        content: const Text(
+                                            'Buy Premium To Unlock This Feature'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                context, 'Cancel'),
+                                            child: const Text('Cancel'),
                                           ),
-                                          child: const Text('Buy Premium Now'),
-                                        ),
-                                      ],
-                                    ));
-                          }
-                        },
-                        child: Text(
-                          DateFormat.MMMEd().format(tody).toString(),
-                          style: TextStyle(color: Colors.black),
+                                          TextButton(
+                                            onPressed: () => Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                type: PageTransitionType.fade,
+                                                duration:
+                                                    Duration(milliseconds: 300),
+                                                reverseDuration:
+                                                    Duration(milliseconds: 300),
+                                                child: premium(),
+                                              ),
+                                            ),
+                                            child:
+                                                const Text('Buy Premium Now'),
+                                          ),
+                                        ],
+                                      ));
+                            }
+                          },
+                          child: Text(
+                            DateFormat.MMMEd().format(tody).toString(),
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              waterList.clear();
-                              addDay();
-                            });
+                      Container(
+                        width: 40,
+                        decoration: BoxDecoration(
+                            color: Color(0xFF003366), shape: BoxShape.circle),
+                        child: IconButton(
+                            onPressed: () async {
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              int? premium1 = prefs.getInt('premium');
 
-                            SetSpecificDay(
-                                DateTime(tody.year, tody.month, tody.day)
-                                        .toString() +
-                                    'Z');
-                            FetchDayToList(
-                                DateTime(tody.year, tody.month, tody.day)
-                                        .toString() +
-                                    'Z');
-                          },
-                          icon: Icon(Icons.arrow_forward_rounded)),
+                              if (premium1 == 1) {
+                                setState(() {
+                                  waterList.clear();
+                                  addDay();
+                                });
+
+                                SetSpecificDay(
+                                    DateTime(tody.year, tody.month, tody.day)
+                                            .toString() +
+                                        'Z');
+                                FetchDayToList(
+                                    DateTime(tody.year, tody.month, tody.day)
+                                            .toString() +
+                                        'Z');
+                                getPercentage(
+                                    DateTime(tody.year, tody.month, tody.day)
+                                        .toString());
+                              } else {
+                                showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                          title: const Text(
+                                              'This is a premium feature'),
+                                          content: const Text(
+                                              'Buy Premium To Unlock This Feature'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  context, 'Cancel'),
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () => Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                  type: PageTransitionType.fade,
+                                                  duration: Duration(
+                                                      milliseconds: 300),
+                                                  reverseDuration: Duration(
+                                                      milliseconds: 300),
+                                                  child: premium(),
+                                                ),
+                                              ),
+                                              child:
+                                                  const Text('Buy Premium Now'),
+                                            ),
+                                          ],
+                                        ));
+                              }
+                            },
+                            icon: Icon(
+                              Icons.arrow_forward_rounded,
+                              color: Colors.white,
+                            )),
+                      ),
                     ],
                   ))),
           SizedBox(
             height: 25,
           ),
+          Container(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CircularPercentIndicator(
+                    center: Text(
+                      (_percentagetodayashund ?? '0') + ' %',
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Outfit',
+                            color: FlutterFlowTheme.of(context).primaryColor,
+                            fontSize: 25,
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
+                    animation: true,
+                    animationDuration: 1000,
+                    radius: 80,
+                    lineWidth: 20,
+                    percent: _percentagetoday ?? 0.0,
+                    progressColor: Color(0xFF003366),
+                    circularStrokeCap: CircularStrokeCap.round,
+                  ),
+                ]),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: Divider(
+              color: Colors.black,
+              thickness: 2,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: AddRow(),
           ),
+          
         ],
       ),
+      bottomNavigationBar: BottomAppBar(
+    color: Colors.transparent,
+    child: Container(
+            width: bannerAdHist.size.width.toDouble(),
+            height: bannerAdHist.size.height.toDouble(),
+            alignment: AlignmentDirectional.bottomCenter,
+            child: AdWidget(ad: bannerAdHist),
+          ),
+    elevation: 0,
+  ),
     );
   }
 
@@ -395,19 +591,23 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     int coltoCreate = waterList.length;
     int something = 0;
     return List.generate(
-        coltoCreate,
-        (index1) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(4, (index) {
-                if (waterList.length > something) {
-                  something++;
-                  return waterList[something - 1];
-                } else {
-                  return SizedBox(
-                    width: 40,
-                  );
-                }
-              }),
-            ));
+      coltoCreate,
+      (index1) => Container(
+        padding: EdgeInsets.only(bottom: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(4, (index) {
+            if (waterList.length > something) {
+              something++;
+              return waterList[something - 1];
+            } else {
+              return SizedBox(
+                width: 50,
+              );
+            }
+          }),
+        ),
+      ),
+    );
   }
 }

@@ -35,15 +35,18 @@ int waterleft(
 }
 
 int waterundo(
+  int dranksofar,
   int water,
   int cup,
   int initial,
-  double drinktype,
+  String drinktype,
 ) {
-  if ((water + cup * drinktype) > initial) {
-    return (initial);
+  if (initial - dranksofar > 0) {
+   
+
+    return (initial - dranksofar);
   } else {
-    return (water + cup * drinktype).round();
+    return 0;
   }
   // Add your function code here!
 }
@@ -56,8 +59,8 @@ int try1(
   double b = 600 / a;
   if (a == 0) {
     return 0;
-  }else{
-  return (b).toInt();
+  } else {
+    return (b).toInt();
   }
 
   // Add your function code here!
@@ -125,12 +128,20 @@ int everydayreset(DateTime? finishtime) {
 int dranksofarundo(
   int cup,
   int dranksofar,
-  double drinktype,
+  String drinktype,
 ) {
-  if ((dranksofar - cup * drinktype) < 0) {
+  double multiplier =1.0;
+  if ((dranksofar - cup) < 0) {
     return (0);
   } else {
-    return (dranksofar - cup * drinktype).round();
+    if (drinktype == 'C') {
+      multiplier=  (0.94);
+    } else if (drinktype == 'J') {
+      multiplier=  (0.97);
+    } else if (drinktype == 'M') {
+      multiplier=  (0.87);
+    } else {}
+    return (dranksofar - (cup*multiplier)).round();
   }
   // Add your function code here!
 }

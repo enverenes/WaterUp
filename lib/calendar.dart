@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watetlo/dayhistory.dart';
 import 'dart:convert';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:watetlo/history.dart';
 
 class Calendar extends StatefulWidget {
   Calendar({Key? key}) : super(key: key);
@@ -10,11 +11,11 @@ class Calendar extends StatefulWidget {
   @override
   State<Calendar> createState() => _CalendarState();
 }
- var selectedDay1;
-  var focusedDay1;
+DateTime? selectedDay1;
+
+var focusedDay1;
 
 class _CalendarState extends State<Calendar> {
- 
   Future ShowHistory(String Date) async {
     final prefs = await SharedPreferences.getInstance();
     var listfrom_repo_w = await prefs.getString(Date);
@@ -23,7 +24,6 @@ class _CalendarState extends State<Calendar> {
       print('nodata');
       return 'no data';
     } else {
-    
       return jsonDecode(listfrom_repo_w);
     }
   }
@@ -33,11 +33,13 @@ class _CalendarState extends State<Calendar> {
     await prefs.setString('specday', day);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Calendar'),
+        backgroundColor: Color(0xFF003366),
       ),
       body: Column(
         children: [
@@ -51,22 +53,24 @@ class _CalendarState extends State<Calendar> {
             },
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                 SetSpecificDay(selectedDay.toString());
-                             
+                SetSpecificDay(selectedDay.toString());
+
                 selectedDay1 = selectedDay;
+              
                 focusedDay1 = focusedDay; // update `_focusedDay` here as well
               });
             },
           ),
-          FloatingActionButton(onPressed: () {
+          FloatingActionButton(
+            backgroundColor: Color(0xFF003366),
+            onPressed: () {
+             Navigator.of(context)
+    .pushNamedAndRemoveUntil('/history', (Route<dynamic> route) => false);
+              
 
-           
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SpecificDay()),
-            );
-          },
-          child: Text('Go'),)
+            },
+            child: Text('Go'),
+          )
         ],
       ),
     );

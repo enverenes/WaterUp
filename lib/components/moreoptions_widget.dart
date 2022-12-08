@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:watetlo/history.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watetlo/premiumpage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class MoreoptionsWidget extends StatefulWidget {
   const MoreoptionsWidget({Key? key}) : super(key: key);
@@ -20,6 +21,29 @@ class MoreoptionsWidget extends StatefulWidget {
 
 class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
   double _currentSliderValue = FFAppState().cup.toDouble();
+
+  RewardedAd? rewardedAdTest;
+
+  int adCounter = 0;
+
+  adActionsSet(int action) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt('adactioncount', action);
+  }
+
+  adActionsGet() async {
+    final prefs = await SharedPreferences.getInstance();
+    adCounter = prefs.getInt('adactioncount') ?? 0;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    adActionsGet();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +56,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Expanded(
+          Container(
             child: Align(
               alignment: AlignmentDirectional(0, -0.65),
               child: FlutterFlowIconButton(
@@ -47,6 +71,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                 ),
                 onPressed: () async {
                   await showModalBottomSheet(
+                    isScrollControlled: true,
                     backgroundColor:
                         FlutterFlowTheme.of(context).primaryBackground,
                     context: context,
@@ -62,11 +87,15 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                               return Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('$sliderval ml',
-                                      style: TextStyle(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor)),
+                                  Text(
+                                    '$sliderval' + ' ml',
+                                    style: TextStyle(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                   Slider(
+                                    activeColor: Color(0xFF003366),
                                     value: _currentSliderValue,
                                     max: 1500,
                                     divisions: 150,
@@ -86,7 +115,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                                         Navigator.pop(context);
                                       },
                                       style: TextButton.styleFrom(
-                                        backgroundColor: Colors.blue,
+                                        backgroundColor: Color(0xFF003366),
                                         padding: const EdgeInsets.all(8.0),
                                         textStyle:
                                             const TextStyle(fontSize: 14),
@@ -94,7 +123,8 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                                       child: Text(
                                         'Save',
                                         style: TextStyle(
-                                            color: Colors.black),
+                                          color: Colors.white,
+                                        ),
                                       ))
                                 ],
                               );
@@ -108,7 +138,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
               ),
             ),
           ),
-          Expanded(
+          Container(
             child: Align(
               alignment: AlignmentDirectional(0, -0.65),
               child: FlutterFlowIconButton(
@@ -138,13 +168,14 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                           ),
                         );
                       },
-                    ).then((value) => setState(() {}));
+                    );
                   } else {
                     showDialog<String>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
                               title: const Text('This is a premium feature'),
-                              content: const Text('Buy Premium To Unlock This Feature'),
+                              content: const Text(
+                                  'Buy Premium To Unlock This Feature'),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () =>
@@ -152,16 +183,16 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                                   child: const Text('Cancel'),
                                 ),
                                 TextButton(
-                                  onPressed: () =>  Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.fade,
-                                    duration: Duration(milliseconds: 300),
-                                    reverseDuration:
-                                        Duration(milliseconds: 300),
-                                    child: premium(),
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.fade,
+                                      duration: Duration(milliseconds: 300),
+                                      reverseDuration:
+                                          Duration(milliseconds: 300),
+                                      child: premium(),
+                                    ),
                                   ),
-                                ),
                                   child: const Text('Buy Premium Now'),
                                 ),
                               ],
@@ -171,7 +202,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
               ),
             ),
           ),
-          Expanded(
+          Container(
             child: Align(
               alignment: AlignmentDirectional(0, -0.65),
               child: FlutterFlowIconButton(
@@ -185,16 +216,60 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                   size: 30,
                 ),
                 onPressed: () {
-                  Navigator.push(
+
+                     Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => MyHomePage(title: 'History')),
+                    MaterialPageRoute(builder: (context) => MyHomePage()),
                   );
+
+                  adCounter++;
+                  adActionsSet(adCounter);
+
+                  if (adCounter % 3 == 0) {
+                    RewardedAd.load(
+                        adUnitId: 'ca-app-pub-3940256099942544/5224354917',
+                        request: AdRequest(),
+                        rewardedAdLoadCallback: RewardedAdLoadCallback(
+                          onAdLoaded: (RewardedAd ad) {
+                            print('$ad loaded.');
+                            // Keep a reference to the ad so you can show it later.
+                            rewardedAdTest = ad;
+
+                            rewardedAdTest!.fullScreenContentCallback =
+                                FullScreenContentCallback(
+                              onAdFailedToShowFullScreenContent: (ad, error) {
+                                debugPrint(error.message);
+                                ad.dispose();
+                                rewardedAdTest!.dispose();
+                              },
+                              onAdDismissedFullScreenContent: (ad) {
+                                ad.dispose();
+                                rewardedAdTest!.dispose();
+                              },
+                            );
+
+                            rewardedAdTest!.show(
+                                onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) {
+  // Reward the user for watching an ad.
+});
+                          },
+                          onAdFailedToLoad: (LoadAdError error) {
+                            print('RewardedAd failed to load: $error');
+                          },
+                        ));
+
+                    rewardedAdTest!.show(onUserEarnedReward:
+                        (AdWithoutView ad, RewardItem rewardItem) {
+                      // Reward the user for watching an ad.
+                    });
+                  }
+
+                 
                 },
               ),
             ),
           ),
-          Expanded(
+          Container(
             child: Align(
               alignment: AlignmentDirectional(0, -0.65),
               child: FlutterFlowIconButton(

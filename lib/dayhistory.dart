@@ -71,7 +71,7 @@ class _SpecificDayState extends State<SpecificDay> {
                   width: 50,
                 ),
                 Text(w[index][0].toString() + ' ml'),
-                Text('Date: ' + w[index][2].toString())
+                Text( w[index][2].toString())
               ],
             ),
           );
@@ -86,7 +86,7 @@ class _SpecificDayState extends State<SpecificDay> {
                   width: 50,
                 ),
                 Text(w[index][0].toString() + ' ml'),
-                Text('Date: ' + w[index][2].toString())
+                Text( w[index][2].toString())
               ],
             ),
           );
@@ -101,7 +101,7 @@ class _SpecificDayState extends State<SpecificDay> {
                   width: 50,
                 ),
                 Text(w[index][0].toString() + ' ml'),
-                Text('Date: ' + w[index][2].toString())
+                Text( w[index][2].toString())
               ],
             ),
           );
@@ -116,7 +116,7 @@ class _SpecificDayState extends State<SpecificDay> {
                   width: 50,
                 ),
                 Text(w[index][0].toString() + ' ml'),
-                Text('Date: ' + w[index][2].toString())
+                Text( w[index][2].toString())
               ],
             ),
           );
@@ -152,7 +152,7 @@ class _SpecificDayState extends State<SpecificDay> {
           },
         ),
            title: Text(
-          DateFormat.MMMEd().format(selectedDay1),
+          's',
           style: FlutterFlowTheme.of(context).title1.override(
                 fontFamily: 'Outfit',
                 color: FlutterFlowTheme.of(context).primaryColor,

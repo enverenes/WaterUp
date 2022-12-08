@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../components/moreoptions_widget.dart';
 import '../components/slider_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
@@ -16,39 +16,28 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watetlo/history.dart' as hist;
 import 'package:rive/rive.dart';
-import 'package:watetlo/notifications.dart';
-import 'package:cron/cron.dart';
 import 'package:home_widget/home_widget.dart';
+import '../flutter_flow/flutter_flow_widgets.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class MainFixedWidget extends StatefulWidget {
   const MainFixedWidget({Key? key}) : super(key: key);
 
   @override
-  _MainFixedWidgetState createState() => _MainFixedWidgetState();
+  MainFixedWidgetState createState() => MainFixedWidgetState();
 }
 
-class _MainFixedWidgetState extends State<MainFixedWidget>
+class MainFixedWidgetState extends State<MainFixedWidget>
     with TickerProviderStateMixin {
-
-
-
-
- Future<void> backgroundCallback(Uri uri) async {
+  Future<void> backgroundCallback(Uri uri) async {
     if (uri.host == 'updatecounter') {
       print('water drink');
-      await HomeWidget.updateWidget(name: 'AppWidgetProvider', iOSName: 'AppWidgetProvider');
+      await HomeWidget.updateWidget(
+          name: 'AppWidgetProvider', iOSName: 'AppWidgetProvider');
     }
   }
 
-
-
-
-
-
-
-
-
-
+  String? choiceChipsValue;
 
   final hist.MyHomePageState myHomePageState = hist.MyHomePageState();
 
@@ -75,55 +64,75 @@ class _MainFixedWidgetState extends State<MainFixedWidget>
     ),
   };
 
-  final cron = Cron();
+  Widget returnCup() {
+    return Image.asset(
+      'assets/images/button_bardak.png',
+      width: 80,
+      fit: BoxFit.cover,
+    );
+  }
 
-  Future<void> showNotification(int hours, bool notificationsOn) async {
-    if (notificationsOn) {
-      NotificationsState().intialize();
-
-      await NotificationsState().showScheduledNotification(
-          id: 0,
-          title: "Don't forget to drink your water",
-          body: 'Tap to see your progress',
-          hours: hours,
-          payload: 'payload navigation');
+  Widget Adam() {
+    if (Theme.of(context).brightness == Brightness.light) {
+      return Container(
+        child: Image.asset(
+          'assets/images/adamuzun.png',
+        ),
+      );
+    } else {
+      return Container(
+        child: Image.asset(
+          'assets/images/adamuzun_gece.png',
+        ),
+      );
     }
   }
 
-  Widget Adam(){
-
-if (Theme.of(context).brightness == Brightness.light){
- return Image.asset(
-                              'assets/images/adamuzun.png',
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              height: MediaQuery.of(context).size.height * 0.74,
-                              fit: BoxFit.fill,
-                            );
-}else{
-  return Image.asset(
-                              'assets/images/adamuzun_gece.png',
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              height: MediaQuery.of(context).size.height * 0.74,
-                              fit: BoxFit.fill,
-                            );
-
-}
-
-   
+  Widget backgroundAdam() {
+    if (Theme.of(context).brightness == Brightness.light) {
+      return Container(
+        color: Color.fromARGB(255, 227, 227, 227),
+        width: double.infinity,
+      );
+    } else {
+      return Container(
+        color: Colors.white,
+        width: double.infinity,
+      );
+    }
   }
 
-  
-  
-  
+  void resetDay() async {
+    final prefs = await SharedPreferences.getInstance();
+    String today =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+            .toString();
+    String day = prefs.getString('resetday') ?? '';
+    if (day == today) {
+      return;
+    } else {
+      await prefs.setDouble(day + 'percentage',
+          (FFAppState().dranksofar / FFAppState().initialtotalwater));
+      setState(() {
+        FFAppState().dranksofar = 0;
+        FFAppState().totalwater = FFAppState().initialtotalwater;
+        prefs.setString('resetday', today);
+        initialPos();
+      });
+    }
+  }
+
+  BannerAd? bannerAdTest;
 
   @override
   void initState() {
+    //INITSTATE
     super.initState();
 
- WidgetsFlutterBinding.ensureInitialized();
-
-    showNotification(5, true); //Notification settings
-
+    WidgetsFlutterBinding.ensureInitialized();
+    setToWater();
+    //Notification settings
+    resetDay();
     completed = false;
     initialPos();
     // On page load action.
@@ -138,6 +147,8 @@ if (Theme.of(context).brightness == Brightness.light){
           !anim.applyInitialState),
       this,
     );
+
+    adActionsGet();
   }
 
   @override
@@ -145,41 +156,58 @@ if (Theme.of(context).brightness == Brightness.light){
     super.dispose();
   }
 
+  setToWater() {
+    setState(() => FFAppState().drinktype = 1.0);
+    setState(() => FFAppState().drinkname = 'Water');
+  }
+
   double pos = 0.0;
   bool completed = false;
   void initialPos() async {
     final prefs = await SharedPreferences.getInstance();
     int totalwater = prefs.getInt('watertodrink') ?? 0;
-    var inc = (FFAppState().dranksofar / totalwater) * 510;
+    double percentage_filled = (FFAppState().dranksofar / totalwater);
+    if (percentage_filled > 1) {
+      percentage_filled = 1.0;
+    }
+    var inc = percentage_filled *
+        (MediaQuery.of(context).size.height * (0.35 * 2.043478260869565));
+    print(inc);
 
-    if ((-inc) < -510) {
-      pos = -510;
+    if ((-inc) <
+        -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565))) {
+      pos = -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565));
     } else {
       pos = -(inc);
     }
   }
 
-  void changePos(double cupsize) async {
+  void changePos(double cupsize, BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
 
     int totalwater = prefs.getInt('watertodrink') ?? 0;
-    setState(() {
-      var inc = (cupsize / totalwater) * 510;
 
-      if (pos - inc >= -510) {
-        pos -= inc;
-      } else if (pos - inc < -510) {
-        pos = -510;
-      }
-    });
+    var inc = (cupsize / totalwater) *
+        MediaQuery.of(context).size.height *
+        (0.35 * 2.043478260869565);
+
+    if (pos - inc >=
+        -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565))) {
+      pos -= inc;
+    } else if (pos - inc <
+        -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565))) {
+      pos = -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565));
+    }
   }
 
   void changePosUndo(double cupsize) async {
     final prefs = await SharedPreferences.getInstance();
 
     int totalwater = prefs.getInt('watertodrink') ?? 0;
+
     setState(() {
-      var inc = (cupsize / totalwater) * 510;
+      var inc = (cupsize / totalwater) *
+          ((MediaQuery.of(context).size.height * (0.35 * 2.043478260869565)));
 
       if (pos < 0) {
         pos += inc;
@@ -195,8 +223,97 @@ if (Theme.of(context).brightness == Brightness.light){
 
   double tweenvar = 30.0;
 
+  drinkWater(int cup, BuildContext context, bool onetime, String type) {
+    if (!onetime) {
+      myHomePageState.addWaterToHist(cup, currentdrinktype);
+    } else {
+      myHomePageState.addWaterToHist(cup, type);
+    }
+
+    changePos(cup.toDouble(), context);
+
+    setState(() => FFAppState().totalwater = functions.waterleft(
+        cup, FFAppState().totalwater, FFAppState().drinktype));
+
+    setState(() => FFAppState().dranksofar = FFAppState().dranksofar +
+        functions.drinktypecupsize(cup, FFAppState().drinktype));
+    HapticFeedback.lightImpact();
+    if (functions.everydayreset(FFAppState().time) == 1) {
+      if (FFAppState().totalwater <= 0) {
+        setState(() {
+          //pos = -510;
+        });
+        completed = true;
+        Navigator.push(
+          context,
+          PageTransition(
+            type: PageTransitionType.fade,
+            duration: Duration(milliseconds: 300),
+            reverseDuration: Duration(milliseconds: 300),
+            child: SardiWidget(),
+          ),
+        );
+        setState(() => FFAppState().time = getCurrentTimestamp);
+        setState(() => FFAppState().totalwater = 0);
+      } else {
+        return;
+      }
+    } else {
+      return;
+    }
+  }
+
+  drinkWaterFetch(int cup, BuildContext context, bool onetime, String type) {
+    if (!onetime) {
+      myHomePageState.addWaterToHist(cup, currentdrinktype);
+    } else {
+      myHomePageState.addWaterToHist(cup, type);
+
+      changePos(cup.toDouble(), context);
+      FFAppState().totalwater = functions.waterleft(
+          cup, FFAppState().totalwater, FFAppState().drinktype);
+      FFAppState().dranksofar = FFAppState().dranksofar +
+          functions.drinktypecupsize(cup, FFAppState().drinktype);
+      HapticFeedback.lightImpact();
+      if (functions.everydayreset(FFAppState().time) == 1) {
+        if (FFAppState().totalwater <= 0) {
+          completed = true;
+          Navigator.push(
+            context,
+            PageTransition(
+              type: PageTransitionType.fade,
+              duration: Duration(milliseconds: 300),
+              reverseDuration: Duration(milliseconds: 300),
+              child: SardiWidget(),
+            ),
+          );
+          FFAppState().time = getCurrentTimestamp;
+          FFAppState().totalwater = 0;
+        } else {
+          return;
+        }
+      } else {
+        return;
+      }
+    }
+  }
+
+  int adCounter = 0;
+  InterstitialAd? interstitialAdTest;
+
+  adActionsSet(int action) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt('adactioncount', action);
+  }
+
+  adActionsGet() async {
+    final prefs = await SharedPreferences.getInstance();
+    adCounter = prefs.getInt('adactioncount') ?? 0;
+  }
+
   @override
   Widget build(BuildContext context) {
+    resetDay();
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -220,7 +337,8 @@ if (Theme.of(context).brightness == Brightness.light){
                           'Today\'s total',
                           style: FlutterFlowTheme.of(context).title1.override(
                                 fontFamily: 'Outfit',
-                                color: FlutterFlowTheme.of(context).primaryColor,
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
                                 fontSize: 30,
                               ),
                         ),
@@ -243,16 +361,18 @@ if (Theme.of(context).brightness == Brightness.light){
                   child: Align(
                     alignment: AlignmentDirectional(0, 1),
                     child: Container(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.height * 0.74,
+                      width: MediaQuery.of(context).size.height * 0.35,
+                      height: MediaQuery.of(context).size.height *
+                          (0.35 * 2.043478260869565),
                       decoration: BoxDecoration(),
                       child: Stack(
                         fit: StackFit.expand,
                         clipBehavior: Clip.antiAlias,
                         children: [
+                          backgroundAdam(),
                           TweenAnimationBuilder(
                             tween: Tween<double>(begin: pos, end: pos - 40),
-                            duration: const Duration(milliseconds: 1500),
+                            duration: const Duration(milliseconds: 1000),
                             builder: (context, double value, child) {
                               return Positioned(
                                 top: value,
@@ -260,15 +380,22 @@ if (Theme.of(context).brightness == Brightness.light){
                                 left: 0.0,
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Container(
                                       width: 300,
-                                      height: 510,
+                                      height:
+                                          ((MediaQuery.of(context).size.height *
+                                                  0.8) -
+                                              15),
                                     ),
                                     Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.6,
-                                      height: 550,
+                                      width:
+                                          MediaQuery.of(context).size.height *
+                                              0.35,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              (0.35 * 2.043478260869565),
                                       child: RiveAnimation.asset(
                                           'assets/rive_animations/wave.riv'),
                                     ),
@@ -277,9 +404,11 @@ if (Theme.of(context).brightness == Brightness.light){
                               );
                             },
                           ),
-                          Align(
-                            alignment: AlignmentDirectional(0, 0),
-                            child: Adam()
+                          Container(
+                            width: double.infinity,
+                            child: Align(
+                                alignment: AlignmentDirectional(0, 0),
+                                child: Adam()),
                           ),
                           Align(
                             alignment: AlignmentDirectional(0, 0.15),
@@ -288,8 +417,8 @@ if (Theme.of(context).brightness == Brightness.light){
                               style:
                                   FlutterFlowTheme.of(context).title1.override(
                                         fontFamily: 'Outfit',
-                                        color: FlutterFlowTheme.of(context).primaryColor,
-                                        fontSize: 20,
+                                        color: Colors.black54,
+                                        fontSize: 25,
                                       ),
                             ),
                           ),
@@ -302,7 +431,7 @@ if (Theme.of(context).brightness == Brightness.light){
                   alignment: AlignmentDirectional(0, 1),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 93,
+                    height: MediaQuery.of(context).size.height * 0.1,
                     decoration: BoxDecoration(
                       color: Color(0xFF003366),
                     ),
@@ -332,73 +461,80 @@ if (Theme.of(context).brightness == Brightness.light){
                                               MainAxisAlignment.center,
                                           children: [
                                             InkWell(
+                                              onLongPress: () async {
+                                                final prefs =
+                                                    await SharedPreferences
+                                                        .getInstance();
+                                                int? premium1 =
+                                                    prefs.getInt('premium');
+                                                if (premium1 == 1) {
+                                                  await showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Padding(
+                                                        padding: MediaQuery.of(
+                                                                context)
+                                                            .viewInsets,
+                                                        child: Container(
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.15,
+                                                          child:
+                                                              DrinkSelectWidget(),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                              },
                                               onTap: () async {
                                                 tweenvar = 40.0;
-                                                myHomePageState.addWaterToHist(
-                                                    FFAppState().cup,
-                                                    currentdrinktype);
+                                                adCounter++;
+                                                adActionsSet(adCounter);
+                                                if (adCounter % 3 == 0) {
+                                                  InterstitialAd.load(
+                                                      adUnitId:
+                                                          'ca-app-pub-3940256099942544/1033173712',
+                                                      request:
+                                                          const AdRequest(),
+                                                      adLoadCallback:
+                                                          InterstitialAdLoadCallback(
+                                                              onAdLoaded: (ad) {
+                                                        interstitialAdTest = ad;
+                                                        interstitialAdTest!
+                                                            .show();
 
-                                                changePos(FFAppState()
-                                                    .cup
-                                                    .toDouble());
-
-                                                setState(() => FFAppState()
-                                                        .totalwater =
-                                                    functions.waterleft(
-                                                        FFAppState().cup,
-                                                        FFAppState().totalwater,
-                                                        FFAppState()
-                                                            .drinktype));
-                                                setState(() => FFAppState()
-                                                    .progressbarinc = FFAppState()
-                                                        .progressbarinc +
-                                                    functions.progressinc(
-                                                        FFAppState()
-                                                            .progressbar,
-                                                        FFAppState()
-                                                            .progressbarinc));
-                                                setState(() => FFAppState()
-                                                    .dranksofar = FFAppState()
-                                                        .dranksofar +
-                                                    functions.drinktypecupsize(
-                                                        FFAppState().cup,
-                                                        FFAppState()
-                                                            .drinktype));
-                                                HapticFeedback.lightImpact();
-                                                if (functions.everydayreset(
-                                                        FFAppState().time) ==
-                                                    1) {
-                                                  if (FFAppState().totalwater <=
-                                                      0) {
-                                                    setState(() {
-                                                      pos = -510;
-                                                    });
-                                                    completed = true;
-                                                    await Navigator.push(
-                                                      context,
-                                                      PageTransition(
-                                                        type: PageTransitionType
-                                                            .fade,
-                                                        duration: Duration(
-                                                            milliseconds: 300),
-                                                        reverseDuration:
-                                                            Duration(
-                                                                milliseconds:
-                                                                    300),
-                                                        child: SardiWidget(),
-                                                      ),
-                                                    );
-                                                    setState(() => FFAppState()
-                                                            .time =
-                                                        getCurrentTimestamp);
-                                                    setState(() => FFAppState()
-                                                        .totalwater = 0);
-                                                  } else {
-                                                    return;
-                                                  }
-                                                } else {
-                                                  return;
+                                                        interstitialAdTest!
+                                                                .fullScreenContentCallback =
+                                                            FullScreenContentCallback(
+                                                          onAdFailedToShowFullScreenContent:
+                                                              (ad, error) {
+                                                            debugPrint(
+                                                                error.message);
+                                                            ad.dispose();
+                                                            interstitialAdTest!
+                                                                .dispose();
+                                                          },
+                                                          onAdDismissedFullScreenContent:
+                                                              (ad) {
+                                                            ad.dispose();
+                                                            interstitialAdTest!
+                                                                .dispose();
+                                                          },
+                                                        );
+                                                      }, onAdFailedToLoad:
+                                                                  (err) {
+                                                        debugPrint(err.message);
+                                                      }));
                                                 }
+
+                                                drinkWater(FFAppState().cup,
+                                                    context, false, 'W');
                                               },
                                               child: Container(
                                                 width: 80,
@@ -407,33 +543,10 @@ if (Theme.of(context).brightness == Brightness.light){
                                                 child: Stack(
                                                   children: [
                                                     Align(
-                                                      alignment:
-                                                          AlignmentDirectional(
-                                                              0, 0.9),
-                                                      child: Image.asset(
-                                                        'assets/images/button_bardak.png',
-                                                        width: 80,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                    Align(
-                                                      alignment:
-                                                          AlignmentDirectional(
-                                                              0, 0.2),
-                                                      child: Text(
-                                                        FFAppState().drinkname,
-                                                        style: FlutterFlowTheme
-                                                                .of(context)
-                                                            .bodyText1
-                                                            .override(
-                                                              fontFamily:
-                                                                  'Outfit',
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 10,
-                                                            ),
-                                                      ),
-                                                    ),
+                                                        alignment:
+                                                            AlignmentDirectional(
+                                                                0, 0.9),
+                                                        child: returnCup()),
                                                   ],
                                                 ),
                                               ),
@@ -472,13 +585,17 @@ if (Theme.of(context).brightness == Brightness.light){
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      '$sliderval',
+                                                      '$sliderval' + ' ml',
                                                       style: TextStyle(
                                                           color: FlutterFlowTheme
                                                                   .of(context)
-                                                              .primaryColor),
+                                                              .primaryColor,
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
                                                     Slider(
+                                                      activeColor:
+                                                          Color(0xFF003366),
                                                       value:
                                                           _currentSliderValue,
                                                       max: 1500,
@@ -488,7 +605,6 @@ if (Theme.of(context).brightness == Brightness.light){
                                                           .toString(),
                                                       onChanged:
                                                           (double value) {
-                                                        state() {}
                                                         setState(() {
                                                           _currentSliderValue =
                                                               value;
@@ -506,7 +622,7 @@ if (Theme.of(context).brightness == Brightness.light){
                                                         style: TextButton
                                                             .styleFrom(
                                                           backgroundColor:
-                                                              Colors.blue,
+                                                              Color(0xFF003366),
                                                           padding:
                                                               const EdgeInsets
                                                                   .all(8.0),
@@ -517,7 +633,7 @@ if (Theme.of(context).brightness == Brightness.light){
                                                         child: Text(
                                                           'Save',
                                                           style: TextStyle(
-                                                            color: Colors.black,
+                                                            color: Colors.white,
                                                           ),
                                                         ))
                                                   ],
@@ -554,45 +670,93 @@ if (Theme.of(context).brightness == Brightness.light){
                                     alignment: AlignmentDirectional(0, 0),
                                     child: InkWell(
                                       onDoubleTap: () async {
+
+                                        adCounter++;
+                                        adActionsSet(adCounter);
+
+                                        if (adCounter % 3 == 0) {
+                                                  InterstitialAd.load(
+                                                      adUnitId:
+                                                          'ca-app-pub-3940256099942544/1033173712',
+                                                      request:
+                                                          const AdRequest(),
+                                                      adLoadCallback:
+                                                          InterstitialAdLoadCallback(
+                                                              onAdLoaded: (ad) {
+                                                        interstitialAdTest = ad;
+                                                        interstitialAdTest!
+                                                            .show();
+
+                                                        interstitialAdTest!
+                                                                .fullScreenContentCallback =
+                                                            FullScreenContentCallback(
+                                                          onAdFailedToShowFullScreenContent:
+                                                              (ad, error) {
+                                                            debugPrint(
+                                                                error.message);
+                                                            ad.dispose();
+                                                            interstitialAdTest!
+                                                                .dispose();
+                                                          },
+                                                          onAdDismissedFullScreenContent:
+                                                              (ad) {
+                                                            ad.dispose();
+                                                            interstitialAdTest!
+                                                                .dispose();
+                                                          },
+                                                        );
+                                                      }, onAdFailedToLoad:
+                                                                  (err) {
+                                                        debugPrint(err.message);
+                                                      }));
+                                                }
+
                                         if (FFAppState().dranksofar <=
                                             FFAppState().initialtotalwater) {
-
-                                           
-                                                 List lastBev = await myHomePageState
+                                          List lastBev = await myHomePageState
                                               .removeLastBeverage();
                                           print(lastBev);
-                                        
-                                         
+
                                           changePosUndo(
-                                              lastBev[0].toDouble());
-                                          setState(() =>
-                                              FFAppState().totalwater =
-                                                  functions.waterundo(
-                                                      FFAppState().totalwater,
-                                                      lastBev[0],
-                                                      FFAppState()
-                                                          .initialtotalwater,
-                                                      FFAppState().drinktype));
-                                          setState(() =>
-                                              FFAppState().dranksofar =
-                                                  functions.dranksofarundo(
-                                                      lastBev[0],
-                                                      FFAppState().dranksofar,
-                                                      FFAppState().drinktype));
-                                          setState(() => FFAppState()
-                                                  .progressbarinc =
-                                              FFAppState().progressbarinc +
-                                                  functions.progressdec(
-                                                      FFAppState().progressbar,
-                                                      FFAppState()
-                                                          .progressbarinc)!);
+                                              lastBev[0].toDouble() ?? 0);
+
+                                          setState(() {
+                                            FFAppState().dranksofar =
+                                                functions.dranksofarundo(
+                                                    lastBev[0],
+                                                    FFAppState().dranksofar,
+                                                    lastBev[1]);
+                                            FFAppState().totalwater =
+                                                functions.waterundo(
+                                                    FFAppState().dranksofar,
+                                                    FFAppState().totalwater,
+                                                    lastBev[0],
+                                                    FFAppState()
+                                                        .initialtotalwater,
+                                                    lastBev[1]);
+                                          });
                                         } else {
-                                          setState(() =>
-                                              FFAppState().dranksofar =
-                                                  functions.dranksofarundo(
-                                                      FFAppState().cup,
-                                                      FFAppState().dranksofar,
-                                                      FFAppState().drinktype));
+                                          List lastBev = await myHomePageState
+                                              .removeLastBeverage();
+                                          setState(() {
+                                            FFAppState().dranksofar =
+                                                functions.dranksofarundo(
+                                                    lastBev[0],
+                                                    FFAppState().dranksofar,
+                                                    lastBev[1]);
+
+                                            if (FFAppState().initialtotalwater -
+                                                    FFAppState().dranksofar >
+                                                0) {
+                                              FFAppState().totalwater =
+                                                  FFAppState()
+                                                          .initialtotalwater -
+                                                      FFAppState().dranksofar;
+                                              changePosUndo(FFAppState()
+                                                  .totalwater
+                                                  .toDouble());
+                                            }
+                                          });
                                         }
 
                                         HapticFeedback.mediumImpact();
@@ -666,6 +830,775 @@ if (Theme.of(context).brightness == Brightness.light){
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget DrinkSelectWidget() {
+    int send_coffeval = 0;
+
+    double _currentSliderValue = FFAppState().cup.toDouble();
+
+    double tweenvar = 5.0;
+    double tweenvar1 = 5.0;
+    double tweenvar2 = 5.0;
+    double tweenvar3 = 5.0;
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: FlutterFlowTheme.of(context).primaryBackground,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          Align(
+            alignment: AlignmentDirectional(0, 0.1),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 80,
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).primaryBackground,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TweenAnimationBuilder(
+                    duration: Duration(milliseconds: 100),
+                    tween: Tween<double>(begin: 5, end: tweenvar),
+                    onEnd: () async {
+                      setState(() {
+                        tweenvar = 5.0;
+                      });
+                    },
+                    builder: (context, double value, child) => InkWell(
+                      onTap: () {
+                        tweenvar = 10;
+                        setState(() => FFAppState().drinktype = 1.0);
+                        setState(() => FFAppState().drinkname = 'Water');
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 300),
+                            reverseDuration: Duration(milliseconds: 300),
+                            child: MainFixedWidget(),
+                          ),
+                        );
+                      },
+                      child: IgnorePointer(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Image.asset(
+                              'assets/images/bardak_light.png',
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.contain,
+                            ),
+                            Text(
+                              'Water',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                      fontFamily: 'Outfit',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryColor,
+                                      fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      TweenAnimationBuilder(
+                        duration: Duration(milliseconds: 100),
+                        tween: Tween<double>(begin: 5, end: tweenvar3),
+                        onEnd: () async {
+                          setState(() {
+                            tweenvar3 = 5.0;
+                          });
+                        },
+                        builder: (context, double value, child) => InkWell(
+                          onTap: () async {
+                            tweenvar3 = 10.0;
+                            setState(() => FFAppState().drinkname = 'Coffee');
+
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.15,
+                                    child: Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryBackground,
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Expanded(
+                                            child: Align(
+                                              alignment:
+                                                  AlignmentDirectional(0, 0.05),
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: 100,
+                                                decoration: BoxDecoration(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryBackground,
+                                                ),
+                                                child: Align(
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                          0, 0),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Expanded(
+                                                        child:
+                                                            FlutterFlowChoiceChips(
+                                                          initiallySelected: [
+                                                            'Nothing'
+                                                          ],
+                                                          options: [
+                                                            ChipData('Tall'),
+                                                            ChipData('Grande'),
+                                                            ChipData('Venti'),
+                                                            ChipData('Custom')
+                                                          ],
+                                                          onChanged:
+                                                              (val) async {
+                                                            setState(() =>
+                                                                choiceChipsValue =
+                                                                    val?.first);
+                                                            if (choiceChipsValue ==
+                                                                'Tall') {
+                                                              send_coffeval =
+                                                                  354;
+                                                            }
+                                                            if (choiceChipsValue ==
+                                                                'Grande') {
+                                                              send_coffeval =
+                                                                  473;
+                                                            }
+                                                            if (choiceChipsValue ==
+                                                                'Venti') {
+                                                              send_coffeval =
+                                                                  591;
+                                                            }
+                                                            if (choiceChipsValue ==
+                                                                'Custom') {
+                                                              setState(() =>
+                                                                  FFAppState()
+                                                                          .drinktype =
+                                                                      0.94);
+                                                              setState(() =>
+                                                                  FFAppState()
+                                                                          .drinkname =
+                                                                      'Coffee');
+                                                              await showModalBottomSheet(
+                                                                isScrollControlled:
+                                                                    true,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return Padding(
+                                                                    padding: MediaQuery.of(
+                                                                            context)
+                                                                        .viewInsets,
+                                                                    child:
+                                                                        Container(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryBackground,
+                                                                      height: MediaQuery.of(context)
+                                                                              .copyWith()
+                                                                              .size
+                                                                              .height *
+                                                                          0.2,
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            MediaQuery.of(context).viewInsets,
+                                                                        child:
+                                                                            StatefulBuilder(
+                                                                          builder:
+                                                                              (BuildContext context, setState) {
+                                                                            var sliderval =
+                                                                                _currentSliderValue.toInt();
+                                                                            return Column(
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                                              children: [
+                                                                                Text(
+                                                                                  'Cup Size: ' + '$sliderval' + ' ml',
+                                                                                  style: TextStyle(color: FlutterFlowTheme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                                                                                ),
+                                                                                Slider(
+                                                                                  activeColor: Color(0xFF003366),
+                                                                                  value: _currentSliderValue,
+                                                                                  max: 1500,
+                                                                                  divisions: 150,
+                                                                                  label: _currentSliderValue.round().toString(),
+                                                                                  onChanged: (double value) {
+                                                                                    state() {}
+                                                                                    setState(() {
+                                                                                      _currentSliderValue = value;
+                                                                                    });
+                                                                                  },
+                                                                                ),
+                                                                                TextButton(
+                                                                                    onPressed: () async {
+                                                                                      send_coffeval = _currentSliderValue.toInt();
+                                                                                      await drinkWater(send_coffeval, context, true, 'C');
+
+                                                                                      setState(() {
+                                                                                        FFAppState().drinktype = 1.0;
+                                                                                        FFAppState().drinkname = 'Water';
+                                                                                      });
+
+                                                                                      Navigator.push(
+                                                                                        context,
+                                                                                        PageTransition(
+                                                                                          type: PageTransitionType.fade,
+                                                                                          duration: Duration(milliseconds: 300),
+                                                                                          reverseDuration: Duration(milliseconds: 300),
+                                                                                          child: MainFixedWidget(),
+                                                                                        ),
+                                                                                      );
+                                                                                    },
+                                                                                    style: TextButton.styleFrom(
+                                                                                      backgroundColor: Color(0xFF003366),
+                                                                                      padding: const EdgeInsets.all(8.0),
+                                                                                      textStyle: const TextStyle(fontSize: 14),
+                                                                                    ),
+                                                                                    child: Text(
+                                                                                      'Drink',
+                                                                                      style: TextStyle(
+                                                                                        color: Colors.white,
+                                                                                      ),
+                                                                                    ))
+                                                                              ],
+                                                                            );
+                                                                          },
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
+                                                            }
+                                                          },
+                                                          selectedChipStyle:
+                                                              ChipStyle(
+                                                            backgroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                            textStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText1
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryBackground,
+                                                                      fontSize:
+                                                                          14,
+                                                                    ),
+                                                            iconColor: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryBackground,
+                                                            iconSize: 18,
+                                                            elevation: 4,
+                                                          ),
+                                                          unselectedChipStyle:
+                                                              ChipStyle(
+                                                            backgroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryBackground,
+                                                            textStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText2
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Outfit',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryColor,
+                                                                    ),
+                                                            iconColor: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .secondaryColor,
+                                                            iconSize: 18,
+                                                            elevation: 5,
+                                                          ),
+                                                          chipSpacing: 25,
+                                                          multiselect: false,
+                                                          initialized:
+                                                              choiceChipsValue !=
+                                                                  null,
+                                                          alignment:
+                                                              WrapAlignment
+                                                                  .center,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Align(
+                                              alignment:
+                                                  AlignmentDirectional(0, 0),
+                                              child: FFButtonWidget(
+                                                onPressed: () async {
+                                                  await drinkWater(
+                                                      send_coffeval,
+                                                      context,
+                                                      true,
+                                                      'C');
+                                                  setState(() {
+                                                    FFAppState().drinktype =
+                                                        1.0;
+                                                    FFAppState().drinkname =
+                                                        'Water';
+                                                  });
+                                                  Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                      type: PageTransitionType
+                                                          .fade,
+                                                      duration: Duration(
+                                                          milliseconds: 300),
+                                                      reverseDuration: Duration(
+                                                          milliseconds: 300),
+                                                      child: MainFixedWidget(),
+                                                    ),
+                                                  );
+                                                },
+                                                text: 'OK',
+                                                options: FFButtonOptions(
+                                                  width: 70,
+                                                  height: 30,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText,
+                                                  textStyle: FlutterFlowTheme
+                                                          .of(context)
+                                                      .subtitle2
+                                                      .override(
+                                                        fontFamily: 'Outfit',
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .primaryBackground,
+                                                      ),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 1,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: IgnorePointer(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Image.asset(
+                                  'assets/images/coffeelogo_flutter.png',
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.contain,
+                                ),
+                                Text(
+                                  'Coffee',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                          fontFamily: 'Outfit',
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      TweenAnimationBuilder(
+                        duration: Duration(milliseconds: 100),
+                        tween: Tween<double>(begin: 5, end: tweenvar1),
+                        onEnd: () async {
+                          setState(() {
+                            tweenvar1 = 5.0;
+                          });
+                        },
+                        builder: (context, double value, child) => InkWell(
+                          onTap: () async {
+                            tweenvar1 = 10;
+                            setState(() => FFAppState().drinktype = 0.97);
+                            setState(() => FFAppState().drinkname = 'Juice');
+
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  child: Container(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.15,
+                                    child: Container(
+                                      height: MediaQuery.of(context)
+                                              .copyWith()
+                                              .size
+                                              .height *
+                                          0.2,
+                                      child: Padding(
+                                        padding:
+                                            MediaQuery.of(context).viewInsets,
+                                        child: StatefulBuilder(
+                                          builder:
+                                              (BuildContext context, setState) {
+                                            var sliderval =
+                                                _currentSliderValue.toInt();
+                                            return Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Cup Size: ' +
+                                                      '$sliderval' +
+                                                      ' ml',
+                                                  style: TextStyle(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Slider(
+                                                  activeColor:
+                                                      Color(0xFF003366),
+                                                  value: _currentSliderValue,
+                                                  max: 1500,
+                                                  divisions: 150,
+                                                  label: _currentSliderValue
+                                                      .round()
+                                                      .toString(),
+                                                  onChanged: (double value) {
+                                                    state() {}
+                                                    setState(() {
+                                                      _currentSliderValue =
+                                                          value;
+                                                    });
+                                                  },
+                                                ),
+                                                TextButton(
+                                                    onPressed: () async {
+                                                      await drinkWater(
+                                                          _currentSliderValue
+                                                              .toInt(),
+                                                          context,
+                                                          true,
+                                                          'J');
+
+                                                      setState(() {
+                                                        FFAppState().drinktype =
+                                                            1.0;
+                                                        FFAppState().drinkname =
+                                                            'Water';
+                                                      });
+
+                                                      Navigator.push(
+                                                        context,
+                                                        PageTransition(
+                                                          type:
+                                                              PageTransitionType
+                                                                  .fade,
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  300),
+                                                          reverseDuration:
+                                                              Duration(
+                                                                  milliseconds:
+                                                                      300),
+                                                          child:
+                                                              MainFixedWidget(),
+                                                        ),
+                                                      );
+                                                    },
+                                                    style: TextButton.styleFrom(
+                                                      backgroundColor:
+                                                          Color(0xFF003366),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      textStyle:
+                                                          const TextStyle(
+                                                              fontSize: 14),
+                                                    ),
+                                                    child: Text(
+                                                      'Drink',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ))
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: IgnorePointer(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Image.asset(
+                                  'assets/images/oj_flutter.png',
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.contain,
+                                ),
+                                Text(
+                                  'Juice',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                          fontFamily: 'Outfit',
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      TweenAnimationBuilder(
+                        duration: Duration(milliseconds: 100),
+                        tween: Tween<double>(begin: 5, end: tweenvar2),
+                        onEnd: () async {
+                          setState(() {
+                            tweenvar2 = 5.0;
+                          });
+                        },
+                        builder: (context, double value, child) => InkWell(
+                          onTap: () async {
+                            tweenvar2 = 10;
+                            setState(() => FFAppState().drinktype = 0.87);
+                            setState(() => FFAppState().drinkname = 'Milk');
+
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  child: Container(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.15,
+                                    child: Container(
+                                      height: MediaQuery.of(context)
+                                              .copyWith()
+                                              .size
+                                              .height *
+                                          0.2,
+                                      child: Padding(
+                                        padding:
+                                            MediaQuery.of(context).viewInsets,
+                                        child: StatefulBuilder(
+                                          builder:
+                                              (BuildContext context, setState) {
+                                            var sliderval =
+                                                _currentSliderValue.toInt();
+                                            return Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Cup Size: ' +
+                                                      '$sliderval' +
+                                                      ' ml',
+                                                  style: TextStyle(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Slider(
+                                                  activeColor:
+                                                      Color(0xFF003366),
+                                                  value: _currentSliderValue,
+                                                  max: 1500,
+                                                  divisions: 150,
+                                                  label: _currentSliderValue
+                                                      .round()
+                                                      .toString(),
+                                                  onChanged: (double value) {
+                                                    state() {}
+                                                    setState(() {
+                                                      _currentSliderValue =
+                                                          value;
+                                                    });
+                                                  },
+                                                ),
+                                                TextButton(
+                                                    onPressed: () async {
+                                                      await drinkWater(
+                                                          _currentSliderValue
+                                                              .toInt(),
+                                                          context,
+                                                          true,
+                                                          'M');
+
+                                                      setState(() {
+                                                        FFAppState().drinktype =
+                                                            1.0;
+                                                        FFAppState().drinkname =
+                                                            'Water';
+                                                      });
+
+                                                      Navigator.push(
+                                                        context,
+                                                        PageTransition(
+                                                          type:
+                                                              PageTransitionType
+                                                                  .fade,
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  300),
+                                                          reverseDuration:
+                                                              Duration(
+                                                                  milliseconds:
+                                                                      300),
+                                                          child:
+                                                              MainFixedWidget(),
+                                                        ),
+                                                      );
+                                                    },
+                                                    style: TextButton.styleFrom(
+                                                      backgroundColor:
+                                                          Color(0xFF003366),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      textStyle:
+                                                          const TextStyle(
+                                                              fontSize: 14),
+                                                    ),
+                                                    child: Text(
+                                                      'Drink',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ))
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: IgnorePointer(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Image.asset(
+                                  'assets/images/glassmilk.png',
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.contain,
+                                ),
+                                Text(
+                                  'Milk',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                          fontFamily: 'Outfit',
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

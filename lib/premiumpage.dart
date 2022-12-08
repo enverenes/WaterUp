@@ -24,12 +24,12 @@ class _premiumState extends State<premium> {
           Container(
               width: 150,
               height: 150,
-              decoration:
-                  BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                  color: Color(0xFF003366), shape: BoxShape.circle),
               child: Center(
                 child: Icon(
                   Icons.ad_units,
-                  color: Colors.black,
+                  color: Colors.white,
                   size: 70,
                 ),
               )),
@@ -50,12 +50,12 @@ class _premiumState extends State<premium> {
           Container(
               width: 150,
               height: 150,
-              decoration:
-                  BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                  color: Color(0xFF003366), shape: BoxShape.circle),
               child: Center(
                 child: Icon(
                   Icons.notifications_active,
-                  color: Colors.black,
+                  color: Colors.white,
                   size: 70,
                 ),
               )),
@@ -77,12 +77,12 @@ class _premiumState extends State<premium> {
             child: Container(
                 width: 150,
                 height: 150,
-                decoration:
-                    BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                    color: Color(0xFF003366), shape: BoxShape.circle),
                 child: Center(
                   child: Icon(
                     Icons.history,
-                    color: Colors.black,
+                    color: Colors.white,
                     size: 70,
                   ),
                 )),
@@ -101,12 +101,12 @@ class _premiumState extends State<premium> {
           Container(
               width: 150,
               height: 150,
-              decoration:
-                  BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                  color: Color(0xFF003366), shape: BoxShape.circle),
               child: Center(
                 child: Icon(
-                  Icons.local_drink,
-                  color: Colors.black,
+                  Icons.coffee,
+                  color: Colors.white,
                   size: 70,
                 ),
               )),
@@ -190,10 +190,12 @@ class _premiumState extends State<premium> {
           ),
           ElevatedButton(
               style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStatePropertyAll<Color>(Color(0xFF003366)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.blue)))),
+                          side: BorderSide(color: Color(0xFF003366))))),
               onPressed: () {
                 if (Platform.isAndroid) {
                   dialogBuilder(context);
