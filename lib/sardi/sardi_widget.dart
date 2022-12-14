@@ -21,17 +21,12 @@ class _SardiWidgetState extends State<SardiWidget>
       effects: [
         FadeEffect(
           curve: Curves.easeInOut,
-          delay: 1000.ms,
-          duration: 1000.ms,
-          begin: 1,
+          delay: 0.ms,
+          duration: 500.ms,
+          begin: 0,
           end: 1,
         ),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 1000.ms,
-          duration: 1000.ms,
-        
-        ),
+       
       ],
     ),
     'columnOnPageLoadAnimation': AnimationInfo(
@@ -57,7 +52,7 @@ class _SardiWidgetState extends State<SardiWidget>
       effects: [
         MoveEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
+          delay: 800.ms,
           duration: 900.ms,
           begin: Offset(0, 80),
           end: Offset(0, 0),
@@ -67,36 +62,26 @@ class _SardiWidgetState extends State<SardiWidget>
     'textOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 1100.ms,
-          duration: 600.ms,
-          begin: 1,
-          end: 1,
-        ),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 1100.ms,
-          duration: 600.ms,
        
+         MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 200.ms,
+          duration: 1100.ms,
+          begin: Offset(0, 500),
+          end: Offset(0, 0),
         ),
       ],
     ),
     'textOnPageLoadAnimation2': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
-        FadeEffect(
+       
+       MoveEffect(
           curve: Curves.easeInOut,
-          delay: 1100.ms,
-          duration: 600.ms,
-          begin: 1,
-          end: 1,
-        ),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 1100.ms,
-          duration: 600.ms,
-      
+          delay: 200.ms,
+          duration: 1100.ms,
+          begin: Offset(0, 500),
+          end: Offset(0, 0),
         ),
       ],
     ),

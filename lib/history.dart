@@ -115,13 +115,11 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     if (day == today) {
       _percentagetoday =
           (FFAppState().dranksofar / FFAppState().initialtotalwater);
-          if (_percentagetoday! > 1.0) {
+      if (_percentagetoday! > 1.0) {
         _percentagetoday = 1.0;
       }
     } else {
       _percentagetoday = prefs.getDouble(day + 'percentage');
-
-     
     }
 
     _percentagetodayashund = ((_percentagetoday ?? 0) * 100).toStringAsFixed(1);
@@ -274,6 +272,18 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
     bannerAdHist.load();
     super.initState();
+    adActionsGet();
+  }
+
+  bool adsonline = true;
+  adActionsGet() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    int? premiumi = prefs.getInt('premium');
+
+    if (premiumi == 1) {
+      adsonline = false;
+    }
   }
 
   @override
@@ -554,10 +564,10 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             height: 25,
           ),
           Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
+            padding: EdgeInsets.only(left: 40, right: 40),
             child: Divider(
-              color: Colors.black,
-              thickness: 2,
+              color: Color.fromARGB(73, 102, 100, 100),
+              thickness: 1,
             ),
           ),
           SizedBox(
@@ -567,20 +577,27 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: AddRow(),
           ),
-          
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-    color: Colors.transparent,
-    child: Container(
-            width: bannerAdHist.size.width.toDouble(),
-            height: bannerAdHist.size.height.toDouble(),
-            alignment: AlignmentDirectional.bottomCenter,
-            child: AdWidget(ad: bannerAdHist),
-          ),
-    elevation: 0,
-  ),
+        color: Colors.transparent,
+        child: Container(
+          width: bannerAdHist.size.width.toDouble(),
+          height: bannerAdHist.size.height.toDouble(),
+          alignment: AlignmentDirectional.bottomCenter,
+          child: bottomAd(),
+        ),
+        elevation: 0,
+      ),
     );
+  }
+
+  Widget bottomAd() {
+    if (adsonline) {
+      return AdWidget(ad: bannerAdHist);
+    } else {
+      return Container(height: 10,);
+    }
   }
 
   void addToWaterList(Widget widget) {

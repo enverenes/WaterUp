@@ -31,9 +31,15 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
     prefs.setInt('adactioncount', action);
   }
 
+  bool adsonline = true;
   adActionsGet() async {
     final prefs = await SharedPreferences.getInstance();
     adCounter = prefs.getInt('adactioncount') ?? 0;
+    int? prem = prefs.getInt('premium');
+
+    if (prem == 1) {
+      adsonline = false;
+    }
   }
 
   @override
@@ -216,8 +222,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                   size: 30,
                 ),
                 onPressed: () {
-
-                     Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => MyHomePage()),
                   );
@@ -225,7 +230,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                   adCounter++;
                   adActionsSet(adCounter);
 
-                  if (adCounter % 3 == 0) {
+                  if ((adCounter % 5 == 0) & adsonline) {
                     RewardedAd.load(
                         adUnitId: 'ca-app-pub-3940256099942544/5224354917',
                         request: AdRequest(),
@@ -248,10 +253,10 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                               },
                             );
 
-                            rewardedAdTest!.show(
-                                onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) {
-  // Reward the user for watching an ad.
-});
+                            rewardedAdTest!.show(onUserEarnedReward:
+                                (AdWithoutView ad, RewardItem rewardItem) {
+                              // Reward the user for watching an ad.
+                            });
                           },
                           onAdFailedToLoad: (LoadAdError error) {
                             print('RewardedAd failed to load: $error');
@@ -263,8 +268,6 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                       // Reward the user for watching an ad.
                     });
                   }
-
-                 
                 },
               ),
             ),

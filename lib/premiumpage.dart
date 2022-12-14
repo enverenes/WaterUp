@@ -6,15 +6,16 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class premium extends StatefulWidget {
   premium({Key? key}) : super(key: key);
 
   @override
-  State<premium> createState() => _premiumState();
+  State<premium> createState() => premiumState();
 }
 
-class _premiumState extends State<premium> {
+class premiumState extends State<premium> {
   final slidingColumns = [
     Container(
       height: 300,
@@ -25,7 +26,7 @@ class _premiumState extends State<premium> {
               width: 150,
               height: 150,
               decoration: BoxDecoration(
-                  color: Color(0xFF003366), shape: BoxShape.circle),
+                  color: Color(0xFF57636C), shape: BoxShape.circle),
               child: Center(
                 child: Icon(
                   Icons.ad_units,
@@ -37,7 +38,10 @@ class _premiumState extends State<premium> {
               margin: EdgeInsets.only(top: 30),
               child: Text(
                 'Remove all ads',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'Outfit',
+                ),
               ))
         ],
       ),
@@ -51,7 +55,7 @@ class _premiumState extends State<premium> {
               width: 150,
               height: 150,
               decoration: BoxDecoration(
-                  color: Color(0xFF003366), shape: BoxShape.circle),
+                  color: Color(0xFF57636C), shape: BoxShape.circle),
               child: Center(
                 child: Icon(
                   Icons.notifications_active,
@@ -78,7 +82,7 @@ class _premiumState extends State<premium> {
                 width: 150,
                 height: 150,
                 decoration: BoxDecoration(
-                    color: Color(0xFF003366), shape: BoxShape.circle),
+                    color: Color(0xFF57636C), shape: BoxShape.circle),
                 child: Center(
                   child: Icon(
                     Icons.history,
@@ -102,7 +106,7 @@ class _premiumState extends State<premium> {
               width: 150,
               height: 150,
               decoration: BoxDecoration(
-                  color: Color(0xFF003366), shape: BoxShape.circle),
+                  color: Color(0xFF57636C), shape: BoxShape.circle),
               child: Center(
                 child: Icon(
                   Icons.coffee,
@@ -130,44 +134,45 @@ class _premiumState extends State<premium> {
   final _paymentItems = [
     PaymentItem(
       label: 'Total',
-      amount: '9.99',
+      amount: '9.99', // revenuecat goog_glFmBwXeSyCIWyfPTrewGJjhVuM
       status: PaymentItemStatus.final_price,
     )
   ];
+
+  PurchasesConfiguration configuration =
+      PurchasesConfiguration("goog_glFmBwXeSyCIWyfPTrewGJjhVuM");
+  Future<void> initPlatformState() async {
+    await Purchases.setDebugLogsEnabled(true);
+
+    if (Platform.isAndroid) {
+      configuration =
+          PurchasesConfiguration("goog_glFmBwXeSyCIWyfPTrewGJjhVuM");
+    } else if (Platform.isIOS) {
+      configuration = PurchasesConfiguration("public_ios_sdk_key");
+    }
+    await Purchases.configure(configuration);
+  }
+
+  @override
+  void initState() {
+    initPlatformState();
+
+    super.initState();
+  }
 
   int activeIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      appBar: AppBar(
-        title: Text(
-          'Premium Package',
-          style: FlutterFlowTheme.of(context).title1.override(
-                fontFamily: 'Outfit',
-                color: FlutterFlowTheme.of(context).primaryColor,
-              ),
-        ),
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        leading: FlutterFlowIconButton(
-          borderColor: Colors.transparent,
-          borderRadius: 30,
-          borderWidth: 1,
-          buttonSize: 60,
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: FlutterFlowTheme.of(context).primaryColor,
-            size: 30,
-          ),
-          onPressed: () async {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Column(
+    return Container(
+      color: Colors.white,
+      height: 700,
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 10,
+          ),
           CarouselSlider.builder(
               itemCount: slidingColumns.length,
               itemBuilder: ((context, index, realIndex) {
@@ -175,18 +180,18 @@ class _premiumState extends State<premium> {
                 return buildColumn(slidingColumn, index);
               }),
               options: CarouselOptions(
-                height: 300,
+                height: 250,
                 autoPlay: true,
                 enlargeCenterPage: true,
                 onPageChanged: (index, reason) =>
                     setState(() => activeIndex = index),
               )),
           SizedBox(
-            height: 30,
+            height: 10,
           ),
           buildIndicator(),
           SizedBox(
-            height: 30,
+            height: 60,
           ),
           ElevatedButton(
               style: ButtonStyle(
@@ -196,18 +201,40 @@ class _premiumState extends State<premium> {
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                           side: BorderSide(color: Color(0xFF003366))))),
-              onPressed: () {
+              onPressed: () async {
                 if (Platform.isAndroid) {
-                  dialogBuilder(context);
+                  try {
+                    Offerings offerings = await Purchases.getOfferings();
+                    if (offerings.current != null &&
+                        offerings.current!.availablePackages.isNotEmpty) {
+                      try {
+                        CustomerInfo customerInfo =
+                            await Purchases.purchasePackage(
+                                offerings.current!.availablePackages.first);
+
+                  
+                        var isPro =
+                            customerInfo.entitlements.all['premium']!.isActive;
+                        if (isPro) {
+                          //go premium
+                          print('NOW PREMIUM');
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+                    }
+                  } catch (e) {
+                    // optional error handling
+                  }
                 }
               },
               child: Container(
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Text('Buy Premium One Year Package',
+                    Text('Premium One Year Package',
                         style: TextStyle(fontSize: 20)),
-                    Text('Only 9.99 USD'),
+                    Text('Only 0.99 USD/mo'),
                   ],
                 ),
               ))
@@ -226,73 +253,6 @@ class _premiumState extends State<premium> {
       margin: EdgeInsets.symmetric(horizontal: 12),
       color: FlutterFlowTheme.of(context).primaryBackground,
       child: column,
-    );
-  }
-
-  Future<void> dialogBuilder(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Payment'),
-          content: GooglePayButton(
-            paymentConfigurationAsset: 'payment/gpay.json',
-            paymentItems: _paymentItems,
-            type: GooglePayButtonType.pay,
-            margin: const EdgeInsets.only(top: 15.0),
-            onPaymentResult: onGooglePayResult,
-            loadingIndicator: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Go Back'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> dialogBuilderIOS(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Premium Package Payment'),
-          content: Container(
-            child: ApplePayButton(
-              paymentConfigurationAsset: 'payment/apple_pay.json',
-              paymentItems: _paymentItems,
-              style: ApplePayButtonStyle.black,
-              type: ApplePayButtonType.buy,
-              margin: const EdgeInsets.only(top: 15.0),
-              onPaymentResult: onApplePayResult,
-              loadingIndicator: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Go Back'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

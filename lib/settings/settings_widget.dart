@@ -35,9 +35,34 @@ class _SettingsWidgetState extends State<SettingsWidget>
   @override
   void initState() {
     // TODO: implement initState
+
+    adActionsGet();
+
     super.initState();
 
     bannerAdSettings.load();
+  }
+
+  bool adsonline = true;
+
+  adActionsGet() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    int? premiu = prefs.getInt('premium');
+
+    if (premiu == 1) {
+      adsonline = false;
+    } else {}
+  }
+
+  Widget bottomAd() {
+    if (adsonline) {
+      return AdWidget(ad: bannerAdSettings);
+    } else {
+      return Container(
+        height: 10,
+      );
+    }
   }
 
   @override
@@ -342,7 +367,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 5,
-                          color: Color(0x3416202A),
+                          color: Color(0x33000000),
                           offset: Offset(0, 2),
                         )
                       ],
@@ -380,17 +405,11 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                           child: const Text('Cancel'),
                                         ),
                                         TextButton(
-                                          onPressed: () => Navigator.push(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType.fade,
-                                              duration:
-                                                  Duration(milliseconds: 300),
-                                              reverseDuration:
-                                                  Duration(milliseconds: 300),
-                                              child: premium.premium(),
-                                            ),
-                                          ),
+                                          onPressed: () => showModalBottomSheet(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return premium.premium();
+                                              }),
                                           child: const Text('Buy Premium Now'),
                                         ),
                                       ],
@@ -468,7 +487,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 5,
-                            color: Color(0x3416202A),
+                            color: Color(0x33000000),
                             offset: Offset(0, 2),
                           )
                         ],
@@ -532,7 +551,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 5,
-                          color: Color(0x3416202A),
+                          color: Color(0x33000000),
                           offset: Offset(0, 2),
                         )
                       ],
@@ -543,15 +562,11 @@ class _SettingsWidgetState extends State<SettingsWidget>
                       padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
-                              child: premium.premium(),
-                            ),
-                          );
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return premium.premium();
+                              });
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -600,20 +615,19 @@ class _SettingsWidgetState extends State<SettingsWidget>
                 ),
               ],
             ),
-            
           ],
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-    color: Colors.transparent,
-    child: Container(
-              alignment: AlignmentDirectional.bottomCenter,
-               width: bannerAdSettings.size.width.toDouble(),
-            height: bannerAdSettings.size.height.toDouble(),
-              child: AdWidget(ad: bannerAdSettings),
-            ),
-    elevation: 0,
-  ),
+        color: Colors.transparent,
+        child: Container(
+          alignment: AlignmentDirectional.bottomCenter,
+          width: bannerAdSettings.size.width.toDouble(),
+          height: bannerAdSettings.size.height.toDouble(),
+          child: bottomAd(),
+        ),
+        elevation: 0,
+      ),
     );
   }
 }

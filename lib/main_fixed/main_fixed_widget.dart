@@ -93,11 +93,19 @@ class MainFixedWidgetState extends State<MainFixedWidget>
       return Container(
         color: Color.fromARGB(255, 227, 227, 227),
         width: double.infinity,
+        height: MediaQuery.of(context).size.height *
+                          (0.35 * 2.043478260869565) -2
+       
+  
       );
     } else {
       return Container(
+        alignment: AlignmentDirectional.bottomCenter,
         color: Colors.white,
-        width: double.infinity,
+         width: double.infinity,
+         height: MediaQuery.of(context).size.height *
+                          (0.35 * 2.043478260869565) -2
+        
       );
     }
   }
@@ -298,6 +306,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
     }
   }
 
+  bool adsOnline = true;
   int adCounter = 0;
   InterstitialAd? interstitialAdTest;
 
@@ -309,6 +318,14 @@ class MainFixedWidgetState extends State<MainFixedWidget>
   adActionsGet() async {
     final prefs = await SharedPreferences.getInstance();
     adCounter = prefs.getInt('adactioncount') ?? 0;
+
+    int? premiumi = prefs.getInt('premium');
+
+    if (premiumi == 1) {
+      adsOnline = false;
+    }
+
+     
   }
 
   @override
@@ -347,7 +364,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                     Align(
                       alignment: AlignmentDirectional(0, -0.8),
                       child: Text(
-                        FFAppState().dranksofar.toString(),
+                        FFAppState().dranksofar.toString()+ ' ml',
                         style: FlutterFlowTheme.of(context).title1.override(
                               fontFamily: 'Outfit',
                               color: FlutterFlowTheme.of(context).primaryColor,
@@ -369,7 +386,11 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                         fit: StackFit.expand,
                         clipBehavior: Clip.antiAlias,
                         children: [
-                          backgroundAdam(),
+                           Align(
+                  alignment: AlignmentDirectional(0, 1),
+                  child:  backgroundAdam(),
+                  )
+                         ,
                           TweenAnimationBuilder(
                             tween: Tween<double>(begin: pos, end: pos - 40),
                             duration: const Duration(milliseconds: 1000),
@@ -387,7 +408,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                       height:
                                           ((MediaQuery.of(context).size.height *
                                                   0.8) -
-                                              15),
+                                              25),
                                     ),
                                     Container(
                                       width:
@@ -411,15 +432,32 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                 child: Adam()),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(0, 0.15),
-                            child: Text(
-                              FFAppState().totalwater.toString() + ' ml left',
-                              style:
-                                  FlutterFlowTheme.of(context).title1.override(
+                            alignment: AlignmentDirectional.bottomCenter,
+                            child: Column(
+
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  FFAppState().totalwater.toString(),
+                                  style: FlutterFlowTheme.of(context)
+                                      .title1
+                                      .override(
+                                        fontFamily: 'Outfit',
+                                        color: Colors.black54,
+                                        fontSize: 45,
+                                      ),
+                                ),
+                                Text(
+                                  'ml left',
+                                  style: FlutterFlowTheme.of(context)
+                                      .title1
+                                      .override(
                                         fontFamily: 'Outfit',
                                         color: Colors.black54,
                                         fontSize: 25,
                                       ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -496,7 +534,8 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                 tweenvar = 40.0;
                                                 adCounter++;
                                                 adActionsSet(adCounter);
-                                                if (adCounter % 3 == 0) {
+                                                if ((adCounter % 5 == 0) &
+                                                    adsOnline) {
                                                   InterstitialAd.load(
                                                       adUnitId:
                                                           'ca-app-pub-3940256099942544/1033173712',
@@ -670,46 +709,41 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                     alignment: AlignmentDirectional(0, 0),
                                     child: InkWell(
                                       onDoubleTap: () async {
-
                                         adCounter++;
                                         adActionsSet(adCounter);
 
-                                        if (adCounter % 3 == 0) {
-                                                  InterstitialAd.load(
-                                                      adUnitId:
-                                                          'ca-app-pub-3940256099942544/1033173712',
-                                                      request:
-                                                          const AdRequest(),
-                                                      adLoadCallback:
-                                                          InterstitialAdLoadCallback(
-                                                              onAdLoaded: (ad) {
-                                                        interstitialAdTest = ad;
-                                                        interstitialAdTest!
-                                                            .show();
+                                        if ((adCounter % 5 == 0) & adsOnline) {
+                                          InterstitialAd.load(
+                                              adUnitId:
+                                                  'ca-app-pub-3940256099942544/1033173712',
+                                              request: const AdRequest(),
+                                              adLoadCallback:
+                                                  InterstitialAdLoadCallback(
+                                                      onAdLoaded: (ad) {
+                                                interstitialAdTest = ad;
+                                                interstitialAdTest!.show();
 
-                                                        interstitialAdTest!
-                                                                .fullScreenContentCallback =
-                                                            FullScreenContentCallback(
-                                                          onAdFailedToShowFullScreenContent:
-                                                              (ad, error) {
-                                                            debugPrint(
-                                                                error.message);
-                                                            ad.dispose();
-                                                            interstitialAdTest!
-                                                                .dispose();
-                                                          },
-                                                          onAdDismissedFullScreenContent:
-                                                              (ad) {
-                                                            ad.dispose();
-                                                            interstitialAdTest!
-                                                                .dispose();
-                                                          },
-                                                        );
-                                                      }, onAdFailedToLoad:
-                                                                  (err) {
-                                                        debugPrint(err.message);
-                                                      }));
-                                                }
+                                                interstitialAdTest!
+                                                        .fullScreenContentCallback =
+                                                    FullScreenContentCallback(
+                                                  onAdFailedToShowFullScreenContent:
+                                                      (ad, error) {
+                                                    debugPrint(error.message);
+                                                    ad.dispose();
+                                                    interstitialAdTest!
+                                                        .dispose();
+                                                  },
+                                                  onAdDismissedFullScreenContent:
+                                                      (ad) {
+                                                    ad.dispose();
+                                                    interstitialAdTest!
+                                                        .dispose();
+                                                  },
+                                                );
+                                              }, onAdFailedToLoad: (err) {
+                                                debugPrint(err.message);
+                                              }));
+                                        }
 
                                         if (FFAppState().dranksofar <=
                                             FFAppState().initialtotalwater) {
