@@ -51,7 +51,9 @@ class _SettingsWidgetState extends State<SettingsWidget>
     int? premiu = prefs.getInt('premium');
 
     if (premiu == 1) {
-      adsonline = false;
+      setState(() {
+        adsonline = false;
+      });
     } else {}
   }
 

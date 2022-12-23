@@ -41,6 +41,7 @@ class premiumState extends State<premium> {
                 style: TextStyle(
                   fontSize: 20,
                   fontFamily: 'Outfit',
+                  color: Colors.black
                 ),
               ))
         ],
@@ -67,7 +68,8 @@ class premiumState extends State<premium> {
               margin: EdgeInsets.only(top: 30),
               child: Text(
                 'Get daily reminders',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20,
+                color: Colors.black),
               ))
         ],
       ),
@@ -93,7 +95,8 @@ class premiumState extends State<premium> {
           ),
           Container(
               margin: EdgeInsets.only(top: 30),
-              child: Text('Acces to History', style: TextStyle(fontSize: 20)))
+              child: Text('Acces to History', style: TextStyle(fontSize: 20,
+              color: Colors.black)))
         ],
       ),
     ),
@@ -117,7 +120,8 @@ class premiumState extends State<premium> {
           Container(
               margin: EdgeInsets.only(top: 30),
               child: Text('Select Different Drinks',
-                  style: TextStyle(fontSize: 20)))
+                  style: TextStyle(fontSize: 20,
+                  color: Colors.black)))
         ],
       ),
     )
@@ -139,23 +143,11 @@ class premiumState extends State<premium> {
     )
   ];
 
-  PurchasesConfiguration configuration =
-      PurchasesConfiguration("goog_glFmBwXeSyCIWyfPTrewGJjhVuM");
-  Future<void> initPlatformState() async {
-    await Purchases.setDebugLogsEnabled(true);
-
-    if (Platform.isAndroid) {
-      configuration =
-          PurchasesConfiguration("goog_glFmBwXeSyCIWyfPTrewGJjhVuM");
-    } else if (Platform.isIOS) {
-      configuration = PurchasesConfiguration("public_ios_sdk_key");
-    }
-    await Purchases.configure(configuration);
-  }
+  
 
   @override
   void initState() {
-    initPlatformState();
+
 
     super.initState();
   }
@@ -202,31 +194,7 @@ class premiumState extends State<premium> {
                           borderRadius: BorderRadius.circular(18.0),
                           side: BorderSide(color: Color(0xFF003366))))),
               onPressed: () async {
-                if (Platform.isAndroid) {
-                  try {
-                    Offerings offerings = await Purchases.getOfferings();
-                    if (offerings.current != null &&
-                        offerings.current!.availablePackages.isNotEmpty) {
-                      try {
-                        CustomerInfo customerInfo =
-                            await Purchases.purchasePackage(
-                                offerings.current!.availablePackages.first);
-
-                  
-                        var isPro =
-                            customerInfo.entitlements.all['premium']!.isActive;
-                        if (isPro) {
-                          //go premium
-                          print('NOW PREMIUM');
-                        }
-                      } catch (e) {
-                        print(e);
-                      }
-                    }
-                  } catch (e) {
-                    // optional error handling
-                  }
-                }
+                
               },
               child: Container(
                 padding: EdgeInsets.all(10),
@@ -251,7 +219,7 @@ class premiumState extends State<premium> {
   Widget buildColumn(Widget column, int index) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 12),
-      color: FlutterFlowTheme.of(context).primaryBackground,
+      color: Colors.white,
       child: column,
     );
   }

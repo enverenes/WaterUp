@@ -282,7 +282,10 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     int? premiumi = prefs.getInt('premium');
 
     if (premiumi == 1) {
-      adsonline = false;
+      setState(() {
+        adsonline = false;
+      });
+      
     }
   }
 
