@@ -254,7 +254,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   final BannerAd bannerAdHist = BannerAd(
-    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    adUnitId: 'ca-app-pub-5585667908104814/3093630293',
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),
@@ -285,7 +285,6 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       setState(() {
         adsonline = false;
       });
-      
     }
   }
 
@@ -388,17 +387,14 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                               child: const Text('Cancel'),
                                             ),
                                             TextButton(
-                                              onPressed: () => Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  type: PageTransitionType.fade,
-                                                  duration: Duration(
-                                                      milliseconds: 300),
-                                                  reverseDuration: Duration(
-                                                      milliseconds: 300),
-                                                  child: premium(),
-                                                ),
-                                              ),
+                                              onPressed: () {
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return premium();
+                                                    });
+                                              },
                                               child:
                                                   const Text('Buy Premium Now'),
                                             ),
@@ -444,17 +440,13 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                             child: const Text('Cancel'),
                                           ),
                                           TextButton(
-                                            onPressed: () => Navigator.push(
-                                              context,
-                                              PageTransition(
-                                                type: PageTransitionType.fade,
-                                                duration:
-                                                    Duration(milliseconds: 300),
-                                                reverseDuration:
-                                                    Duration(milliseconds: 300),
-                                                child: premium(),
-                                              ),
-                                            ),
+                                            onPressed: () =>
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return premium();
+                                                    }),
                                             child:
                                                 const Text('Buy Premium Now'),
                                           ),
@@ -511,17 +503,13 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                               child: const Text('Cancel'),
                                             ),
                                             TextButton(
-                                              onPressed: () => Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  type: PageTransitionType.fade,
-                                                  duration: Duration(
-                                                      milliseconds: 300),
-                                                  reverseDuration: Duration(
-                                                      milliseconds: 300),
-                                                  child: premium(),
-                                                ),
-                                              ),
+                                              onPressed: () =>
+                                                  showModalBottomSheet(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return premium();
+                                                      }),
                                               child:
                                                   const Text('Buy Premium Now'),
                                             ),
@@ -599,7 +587,9 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     if (adsonline) {
       return AdWidget(ad: bannerAdHist);
     } else {
-      return Container(height: 10,);
+      return Container(
+        height: 10,
+      );
     }
   }
 

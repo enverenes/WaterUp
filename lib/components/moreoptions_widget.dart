@@ -189,16 +189,11 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                                   child: const Text('Cancel'),
                                 ),
                                 TextButton(
-                                  onPressed: () => Navigator.push(
-                                    context,
-                                    PageTransition(
-                                      type: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 300),
-                                      reverseDuration:
-                                          Duration(milliseconds: 300),
-                                      child: premium(),
-                                    ),
-                                  ),
+                                  onPressed: () => showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return premium();
+                                      }),
                                   child: const Text('Buy Premium Now'),
                                 ),
                               ],
@@ -232,7 +227,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
 
                   if ((adCounter % 5 == 0) & adsonline) {
                     RewardedAd.load(
-                        adUnitId: 'ca-app-pub-3940256099942544/5224354917',
+                        adUnitId: 'ca-app-pub-5585667908104814/5719793632',
                         request: AdRequest(),
                         rewardedAdLoadCallback: RewardedAdLoadCallback(
                           onAdLoaded: (RewardedAd ad) {

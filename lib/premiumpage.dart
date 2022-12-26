@@ -6,7 +6,9 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../flutter_flow/flutter_flow_util.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class premium extends StatefulWidget {
   premium({Key? key}) : super(key: key);
@@ -39,10 +41,7 @@ class premiumState extends State<premium> {
               child: Text(
                 'Remove all ads',
                 style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'Outfit',
-                  color: Colors.black
-                ),
+                    fontSize: 20, fontFamily: 'Outfit', color: Colors.black),
               ))
         ],
       ),
@@ -68,8 +67,7 @@ class premiumState extends State<premium> {
               margin: EdgeInsets.only(top: 30),
               child: Text(
                 'Get daily reminders',
-                style: TextStyle(fontSize: 20,
-                color: Colors.black),
+                style: TextStyle(fontSize: 20, color: Colors.black),
               ))
         ],
       ),
@@ -95,8 +93,8 @@ class premiumState extends State<premium> {
           ),
           Container(
               margin: EdgeInsets.only(top: 30),
-              child: Text('Acces to History', style: TextStyle(fontSize: 20,
-              color: Colors.black)))
+              child: Text('Acces to History',
+                  style: TextStyle(fontSize: 20, color: Colors.black)))
         ],
       ),
     ),
@@ -120,39 +118,61 @@ class premiumState extends State<premium> {
           Container(
               margin: EdgeInsets.only(top: 30),
               child: Text('Select Different Drinks',
-                  style: TextStyle(fontSize: 20,
-                  color: Colors.black)))
+                  style: TextStyle(fontSize: 20, color: Colors.black)))
         ],
       ),
     )
   ];
 
-  void onApplePayResult(paymentResult) {
-    // Send the resulting Apple Pay token to your server / PSP
+  Future<void> initPlatformState() async {
+    await Purchases.setDebugLogsEnabled(true);
+
+    PurchasesConfiguration configuration;
+    if (Platform.isAndroid) {
+      configuration =
+          PurchasesConfiguration("goog_lerxVMViMarxCepdPPuKGxuLRmH");
+    } else {
+      configuration = PurchasesConfiguration("public_ios_sdk_key");
+    }
+    await Purchases.configure(configuration);
   }
-
-  void onGooglePayResult(paymentResult) {
-    // Send the resulting Google Pay token to your server / PSP
-  }
-
-  final _paymentItems = [
-    PaymentItem(
-      label: 'Total',
-      amount: '9.99', // revenuecat goog_glFmBwXeSyCIWyfPTrewGJjhVuM
-      status: PaymentItemStatus.final_price,
-    )
-  ];
-
-  
 
   @override
   void initState() {
-
-
+    initPlatformState();
     super.initState();
   }
 
   int activeIndex = 0;
+
+  void makePurchase() async {
+    Offerings? offerings;
+    try {
+      offerings = await Purchases.getOfferings();
+      if (offerings.current != null) {
+        print(offerings.current!.availablePackages.first);
+      }
+    } catch (e) {
+      // optional error handling
+    }
+
+    try {
+      CustomerInfo customerInfo = await Purchases.purchasePackage(
+          offerings!.current!.availablePackages.first);
+      var isPro = customerInfo.entitlements.all["premium"]!.isActive;
+      if (isPro) {
+        print('NOW PREMUM');
+        unlockPremium();
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  unlockPremium() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt('premium', 1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,8 +213,8 @@ class premiumState extends State<premium> {
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                           side: BorderSide(color: Color(0xFF003366))))),
-              onPressed: () async {
-                
+              onPressed: () {
+                makePurchase();
               },
               child: Container(
                 padding: EdgeInsets.all(10),

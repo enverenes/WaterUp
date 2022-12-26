@@ -19,6 +19,7 @@ import 'package:rive/rive.dart';
 import 'package:home_widget/home_widget.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:watetlo/premiumpage.dart';
 
 class MainFixedWidget extends StatefulWidget {
   const MainFixedWidget({Key? key}) : super(key: key);
@@ -91,22 +92,19 @@ class MainFixedWidgetState extends State<MainFixedWidget>
   Widget backgroundAdam() {
     if (Theme.of(context).brightness == Brightness.light) {
       return Container(
-        color: Color.fromARGB(255, 227, 227, 227),
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height *
-                          (0.35 * 2.043478260869565) -2
-       
-  
-      );
+          color: Color.fromARGB(255, 227, 227, 227),
+          width: double.infinity,
+          height:
+              MediaQuery.of(context).size.height * (0.35 * 2.043478260869565) -
+                  2);
     } else {
       return Container(
-        alignment: AlignmentDirectional.bottomCenter,
-        color: Colors.white,
-         width: double.infinity,
-         height: MediaQuery.of(context).size.height *
-                          (0.35 * 2.043478260869565) -2
-        
-      );
+          alignment: AlignmentDirectional.bottomCenter,
+          color: Colors.white,
+          width: double.infinity,
+          height:
+              MediaQuery.of(context).size.height * (0.35 * 2.043478260869565) -
+                  2);
     }
   }
 
@@ -324,8 +322,6 @@ class MainFixedWidgetState extends State<MainFixedWidget>
     if (premiumi == 1) {
       adsOnline = false;
     }
-
-     
   }
 
   @override
@@ -364,7 +360,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                     Align(
                       alignment: AlignmentDirectional(0, -0.8),
                       child: Text(
-                        FFAppState().dranksofar.toString()+ ' ml',
+                        FFAppState().dranksofar.toString() + ' ml',
                         style: FlutterFlowTheme.of(context).title1.override(
                               fontFamily: 'Outfit',
                               color: FlutterFlowTheme.of(context).primaryColor,
@@ -386,11 +382,10 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                         fit: StackFit.expand,
                         clipBehavior: Clip.antiAlias,
                         children: [
-                           Align(
-                  alignment: AlignmentDirectional(0, 1),
-                  child:  backgroundAdam(),
-                  )
-                         ,
+                          Align(
+                            alignment: AlignmentDirectional(0, 1),
+                            child: backgroundAdam(),
+                          ),
                           TweenAnimationBuilder(
                             tween: Tween<double>(begin: pos, end: pos - 40),
                             duration: const Duration(milliseconds: 1000),
@@ -434,7 +429,6 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                           Align(
                             alignment: AlignmentDirectional.bottomCenter,
                             child: Column(
-
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
@@ -528,6 +522,40 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                       );
                                                     },
                                                   );
+                                                } else {
+                                                  showDialog<String>(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          AlertDialog(
+                                                            title: const Text(
+                                                                'This is a premium feature'),
+                                                            content: const Text(
+                                                                'Buy Premium To Unlock This Feature'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context,
+                                                                        'Cancel'),
+                                                                child: const Text(
+                                                                    'Cancel'),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    showModalBottomSheet(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return premium();
+                                                                        }),
+                                                                child: const Text(
+                                                                    'Buy Premium Now'),
+                                                              ),
+                                                            ],
+                                                          ));
                                                 }
                                               },
                                               onTap: () async {
@@ -538,7 +566,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                     adsOnline) {
                                                   InterstitialAd.load(
                                                       adUnitId:
-                                                          'ca-app-pub-3940256099942544/1033173712',
+                                                          'ca-app-pub-5585667908104814/8599455459',
                                                       request:
                                                           const AdRequest(),
                                                       adLoadCallback:
@@ -715,7 +743,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                         if ((adCounter % 5 == 0) & adsOnline) {
                                           InterstitialAd.load(
                                               adUnitId:
-                                                  'ca-app-pub-3940256099942544/1033173712',
+                                                  'ca-app-pub-5585667908104814/8599455459',
                                               request: const AdRequest(),
                                               adLoadCallback:
                                                   InterstitialAdLoadCallback(

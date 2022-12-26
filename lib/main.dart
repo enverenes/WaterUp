@@ -16,12 +16,12 @@ import 'package:flutter/services.dart';
 import 'package:watetlo/history.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-
 Future<void> setPremium() async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setInt('premium', 1);
+  await prefs.setInt('premium', 0);
 }
-@pragma('vm:entry-point') 
+
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
@@ -60,18 +60,15 @@ void main() async {
   await FlutterFlowTheme.initialize();
 
   FFAppState(); // Initialize FFAppState
-SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); 
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-
-MobileAds.instance.initialize();
+  MobileAds.instance.initialize();
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
-
-   
   State<MyApp> createState() => _MyAppState();
 
   static _MyAppState of(BuildContext context) =>
@@ -119,13 +116,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       routes: {
-    // When navigating to the "/" route, build the FirstScreen widget.
-    '/history': (context) => const MyHomePage(),
-    '/mainfixed': (context) => const MainFixedWidget(),
- 
-  },
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/history': (context) => const MyHomePage(),
+        '/mainfixed': (context) => const MainFixedWidget(),
+      },
       debugShowCheckedModeBanner: false,
       title: 'watetlo',
       localizationsDelegates: [

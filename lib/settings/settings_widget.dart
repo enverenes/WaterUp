@@ -26,7 +26,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   final BannerAd bannerAdSettings = BannerAd(
-    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    adUnitId: 'ca-app-pub-5585667908104814/4406711964',
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),
