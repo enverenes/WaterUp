@@ -69,7 +69,8 @@ class _CalendarState extends State<Calendar> {
               
 
             },
-            child: Text('Go'),
+            child: Text('Go',
+            style: TextStyle(color: Colors.white),),
           )
         ],
       ),

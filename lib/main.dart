@@ -15,11 +15,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:watetlo/history.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-
-Future<void> setPremium() async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setInt('premium', 0);
-}
+import 'package:purchases_flutter/purchases_flutter.dart';
+import 'dart:io' show Platform;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -63,6 +60,7 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   MobileAds.instance.initialize();
+
   runApp(MyApp());
 }
 
@@ -92,10 +90,24 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> initPlatformState() async {
+    await Purchases.setDebugLogsEnabled(true);
+
+    PurchasesConfiguration configuration;
+    if (Platform.isAndroid) {
+      configuration =
+          PurchasesConfiguration("goog_lerxVMViMarxCepdPPuKGxuLRmH");
+    } else {
+      configuration = PurchasesConfiguration("public_ios_sdk_key");
+    }
+    await Purchases.configure(configuration);
+
+   
+       }
+
   @override
   void initState() {
     super.initState();
-    setPremium();
 
     getInitialPage();
     userStream = watetloFirebaseUserStream()
@@ -104,6 +116,8 @@ class _MyAppState extends State<MyApp> {
       Duration(seconds: 1),
       () => setState(() => displaySplashImage = false),
     );
+
+    initPlatformState();
   }
 
   void setLocale(String language) =>

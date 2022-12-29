@@ -53,11 +53,11 @@ class NotificationsState extends State<Notifications> {
       if (notificationsOn) {
         blurval = 0.0;
       }
-      light0 = prefs.getBool('light0') ?? true;
-      light = prefs.getBool('light1') ?? true;
-      light1 = prefs.getBool('light2') ?? true;
-      light2 = prefs.getBool('light3') ?? true;
-      light3 = prefs.getBool('light4') ?? true;
+      light0 = prefs.getBool('light0') ?? false;
+      light = prefs.getBool('light1') ?? false;
+      light1 = prefs.getBool('light2') ?? false;
+      light2 = prefs.getBool('light3') ?? false;
+      light3 = prefs.getBool('light4') ?? false;
     });
   }
 
@@ -197,12 +197,14 @@ class NotificationsState extends State<Notifications> {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             boxShadow: [
-                                             BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1.2), // changes position of shadow
-                  )
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.2),
+                                                spreadRadius: 1,
+                                                blurRadius: 1,
+                                                offset: Offset(0,
+                                                    1.2), // changes position of shadow
+                                              )
                                             ],
                                             borderRadius:
                                                 BorderRadius.circular(30),
@@ -286,12 +288,14 @@ class NotificationsState extends State<Notifications> {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             boxShadow: [
-                                             BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1.2), // changes position of shadow
-                  )
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.2),
+                                                spreadRadius: 1,
+                                                blurRadius: 1,
+                                                offset: Offset(0,
+                                                    1.2), // changes position of shadow
+                                              )
                                             ],
                                             borderRadius:
                                                 BorderRadius.circular(30),
@@ -327,12 +331,13 @@ class NotificationsState extends State<Notifications> {
                       margin: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           boxShadow: [
-                           BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1.2), // changes position of shadow
-                  ),
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 1,
+                              blurRadius: 1,
+                              offset:
+                                  Offset(0, 1.2), // changes position of shadow
+                            ),
                           ],
                           borderRadius: BorderRadius.all(Radius.circular(15.0)),
                           color: FlutterFlowTheme.of(context).primaryBackground,
@@ -358,11 +363,11 @@ class NotificationsState extends State<Notifications> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       boxShadow: [
                         BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1.2), // changes position of shadow
-                  ),
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, 1.2), // changes position of shadow
+                        ),
                       ],
                     ),
                     child: Padding(
@@ -373,14 +378,13 @@ class NotificationsState extends State<Notifications> {
                           if (light0)
                             InkWell(
                               onTap: () async {
-                                 setState(() {
+                                setState(() {
                                   light0 = false;
                                   saveNotification(light0, 0);
                                 });
-                               await FirebaseMessaging.instance
+                                await FirebaseMessaging.instance
                                     .unsubscribeFromTopic('9am');
                                 print('unsubbed');
-                               
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
@@ -456,15 +460,12 @@ class NotificationsState extends State<Notifications> {
                           if (!light0)
                             InkWell(
                               onTap: () async {
-
-                                 setState(() {
+                                setState(() {
                                   light0 = true;
                                   saveNotification(light0, 0);
                                 });
-                               await FirebaseMessaging.instance
+                                await FirebaseMessaging.instance
                                     .subscribeToTopic('9am');
-
-                               
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
@@ -551,11 +552,11 @@ class NotificationsState extends State<Notifications> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       boxShadow: [
                         BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1.2), // changes position of shadow
-                  ),
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, 1.2), // changes position of shadow
+                        ),
                       ],
                     ),
                     child: Padding(
@@ -566,13 +567,12 @@ class NotificationsState extends State<Notifications> {
                           if (light)
                             InkWell(
                               onTap: () async {
-                                 setState(() {
+                                setState(() {
                                   light = false;
                                   saveNotification(light, 1);
                                 });
-                               await FirebaseMessaging.instance
+                                await FirebaseMessaging.instance
                                     .unsubscribeFromTopic('12pm');
-                               
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
@@ -626,11 +626,13 @@ class NotificationsState extends State<Notifications> {
                                                   color: Colors.white,
                                                   boxShadow: [
                                                     BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1.2), // changes position of shadow
-                  )
+                                                      color: Colors.black
+                                                          .withOpacity(0.2),
+                                                      spreadRadius: 1,
+                                                      blurRadius: 1,
+                                                      offset: Offset(0,
+                                                          1.2), // changes position of shadow
+                                                    )
                                                   ],
                                                   borderRadius:
                                                       BorderRadius.circular(30),
@@ -655,7 +657,6 @@ class NotificationsState extends State<Notifications> {
                                 });
                                 await FirebaseMessaging.instance
                                     .subscribeToTopic('12pm');
-                                
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
@@ -709,11 +710,13 @@ class NotificationsState extends State<Notifications> {
                                                   color: Colors.white,
                                                   boxShadow: [
                                                     BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1.2), // changes position of shadow
-                  )
+                                                      color: Colors.black
+                                                          .withOpacity(0.2),
+                                                      spreadRadius: 1,
+                                                      blurRadius: 1,
+                                                      offset: Offset(0,
+                                                          1.2), // changes position of shadow
+                                                    )
                                                   ],
                                                   borderRadius:
                                                       BorderRadius.circular(30),
@@ -743,11 +746,11 @@ class NotificationsState extends State<Notifications> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       boxShadow: [
                         BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1.2), // changes position of shadow
-                  ),
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, 1.2), // changes position of shadow
+                        ),
                       ],
                     ),
                     child: Padding(
@@ -758,13 +761,12 @@ class NotificationsState extends State<Notifications> {
                           if (light1)
                             InkWell(
                               onTap: () async {
-                                 setState(() {
+                                setState(() {
                                   light1 = false;
                                   saveNotification(light1, 2);
                                 });
-                               await FirebaseMessaging.instance
+                                await FirebaseMessaging.instance
                                     .unsubscribeFromTopic('3pm');
-                               
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
@@ -840,13 +842,12 @@ class NotificationsState extends State<Notifications> {
                           if (!light1)
                             InkWell(
                               onTap: () async {
-                                 setState(() {
+                                setState(() {
                                   light1 = true;
                                   saveNotification(light1, 2);
                                 });
-                              await  FirebaseMessaging.instance
+                                await FirebaseMessaging.instance
                                     .subscribeToTopic('3pm');
-                               
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
@@ -933,11 +934,11 @@ class NotificationsState extends State<Notifications> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       boxShadow: [
                         BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1.2), // changes position of shadow
-                  ),
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, 1.2), // changes position of shadow
+                        ),
                       ],
                     ),
                     child: Padding(
@@ -948,7 +949,7 @@ class NotificationsState extends State<Notifications> {
                           if (light2)
                             InkWell(
                               onTap: () async {
-                               await FirebaseMessaging.instance
+                                await FirebaseMessaging.instance
                                     .unsubscribeFromTopic('6pm');
                                 setState(() {
                                   light2 = false;
@@ -1029,13 +1030,12 @@ class NotificationsState extends State<Notifications> {
                           if (!light2)
                             InkWell(
                               onTap: () async {
-                                 setState(() {
+                                setState(() {
                                   light2 = true;
                                   saveNotification(light2, 3);
                                 });
-                               await FirebaseMessaging.instance
+                                await FirebaseMessaging.instance
                                     .subscribeToTopic('6pm');
-                               
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
@@ -1122,11 +1122,11 @@ class NotificationsState extends State<Notifications> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       boxShadow: [
                         BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: Offset(0, 1.2), // changes position of shadow
-                  ),
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, 1.2), // changes position of shadow
+                        ),
                       ],
                     ),
                     child: Padding(
@@ -1137,13 +1137,12 @@ class NotificationsState extends State<Notifications> {
                           if (light3)
                             InkWell(
                               onTap: () async {
-                                  setState(() {
+                                setState(() {
                                   light3 = false;
                                   saveNotification(light3, 4);
                                 });
-                               await FirebaseMessaging.instance
+                                await FirebaseMessaging.instance
                                     .unsubscribeFromTopic('9pm');
-                              
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
@@ -1219,13 +1218,12 @@ class NotificationsState extends State<Notifications> {
                           if (!light3)
                             InkWell(
                               onTap: () async {
-                                 setState(() {
+                                setState(() {
                                   light3 = true;
                                   saveNotification(light3, 4);
                                 });
-                               await FirebaseMessaging.instance
+                                await FirebaseMessaging.instance
                                     .subscribeToTopic('9pm');
-                               
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,

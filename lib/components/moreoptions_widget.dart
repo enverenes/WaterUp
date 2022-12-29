@@ -22,7 +22,7 @@ class MoreoptionsWidget extends StatefulWidget {
 class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
   double _currentSliderValue = FFAppState().cup.toDouble();
 
-  RewardedAd? rewardedAdTest;
+  InterstitialAd? interstitialAdHist;
 
   int adCounter = 0;
 
@@ -38,7 +38,9 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
     int? prem = prefs.getInt('premium');
 
     if (prem == 1) {
-      adsonline = false;
+      setState(() {
+        adsonline = false;
+      });
     }
   }
 
@@ -177,27 +179,44 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                     );
                   } else {
                     showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              title: const Text('This is a premium feature'),
-                              content: const Text(
-                                  'Buy Premium To Unlock This Feature'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'Cancel'),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () => showModalBottomSheet(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return premium();
-                                      }),
-                                  child: const Text('Buy Premium Now'),
-                                ),
-                              ],
-                            ));
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          AlertDialog(
+                                                            title: Row(
+                                                              children: [
+                                                                const Text(
+                                                                    'Drink Type Selection '),
+                                                               
+                                                              ],
+                                                            ),
+                                                            content: const Text(
+                                                                'Buy Premium to unlock this feature'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    showModalBottomSheet(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return premium();
+                                                                        }),
+                                                                child: Center(
+                                                                  child: const Text(
+                                                                      'Buy Premium Now',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontFamily:
+                                                                              'Roboto',
+                                                                          fontWeight:
+                                                                              FontWeight.w500)),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ));
                   }
                 },
               ),
@@ -226,42 +245,29 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                   adActionsSet(adCounter);
 
                   if ((adCounter % 5 == 0) & adsonline) {
-                    RewardedAd.load(
-                        adUnitId: 'ca-app-pub-5585667908104814/5719793632',
-                        request: AdRequest(),
-                        rewardedAdLoadCallback: RewardedAdLoadCallback(
-                          onAdLoaded: (RewardedAd ad) {
-                            print('$ad loaded.');
-                            // Keep a reference to the ad so you can show it later.
-                            rewardedAdTest = ad;
+                    InterstitialAd.load(
+                        adUnitId: 'ca-app-pub-5585667908104814/3919550824',
+                        request: const AdRequest(),
+                        adLoadCallback:
+                            InterstitialAdLoadCallback(onAdLoaded: (ad) {
+                          interstitialAdHist = ad;
+                          interstitialAdHist!.show();
 
-                            rewardedAdTest!.fullScreenContentCallback =
-                                FullScreenContentCallback(
-                              onAdFailedToShowFullScreenContent: (ad, error) {
-                                debugPrint(error.message);
-                                ad.dispose();
-                                rewardedAdTest!.dispose();
-                              },
-                              onAdDismissedFullScreenContent: (ad) {
-                                ad.dispose();
-                                rewardedAdTest!.dispose();
-                              },
-                            );
-
-                            rewardedAdTest!.show(onUserEarnedReward:
-                                (AdWithoutView ad, RewardItem rewardItem) {
-                              // Reward the user for watching an ad.
-                            });
-                          },
-                          onAdFailedToLoad: (LoadAdError error) {
-                            print('RewardedAd failed to load: $error');
-                          },
-                        ));
-
-                    rewardedAdTest!.show(onUserEarnedReward:
-                        (AdWithoutView ad, RewardItem rewardItem) {
-                      // Reward the user for watching an ad.
-                    });
+                          interstitialAdHist!.fullScreenContentCallback =
+                              FullScreenContentCallback(
+                            onAdFailedToShowFullScreenContent: (ad, error) {
+                              debugPrint(error.message);
+                              ad.dispose();
+                              interstitialAdHist!.dispose();
+                            },
+                            onAdDismissedFullScreenContent: (ad) {
+                              ad.dispose();
+                              interstitialAdHist!.dispose();
+                            },
+                          );
+                        }, onAdFailedToLoad: (err) {
+                          debugPrint(err.message);
+                        }));
                   }
                 },
               ),

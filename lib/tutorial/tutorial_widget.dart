@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watetlo/notifications.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class TutorialWidget extends StatefulWidget {
   const TutorialWidget({Key? key}) : super(key: key);
@@ -20,7 +21,17 @@ class _TutorialWidgetState extends State<TutorialWidget> {
   PageController? pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  
+  Future<void> setPremium() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    CustomerInfo purchaserInfo = await Purchases.restorePurchases();
+
+    if (purchaserInfo.entitlements.all["premium"]!.isActive) {
+      await prefs.setInt('premium', 1);
+    } else {
+      await prefs.setInt('premium', 0);
+    }
+  }
 
   void initialDay() async {
     final prefs = await SharedPreferences.getInstance();
@@ -34,7 +45,7 @@ class _TutorialWidgetState extends State<TutorialWidget> {
   void initState() {
     super.initState();
     initialDay();
-    
+    setPremium();
   }
 
   void setInitialPage() async {

@@ -104,7 +104,7 @@ class _DrinkselectCopyWidgetState extends State<DrinkselectCopyWidget> {
                           ),
                           unselectedChipStyle: ChipStyle(
                             backgroundColor:
-                                FlutterFlowTheme.of(context).primaryBackground,
+                                 FlutterFlowTheme.of(context).primaryBackgroundCoffee,
                             textStyle:
                                 FlutterFlowTheme.of(context).bodyText2.override(
                                       fontFamily: 'Outfit',

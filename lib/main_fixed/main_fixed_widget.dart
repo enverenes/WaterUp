@@ -20,6 +20,7 @@ import 'package:home_widget/home_widget.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:watetlo/premiumpage.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class MainFixedWidget extends StatefulWidget {
   const MainFixedWidget({Key? key}) : super(key: key);
@@ -319,9 +320,18 @@ class MainFixedWidgetState extends State<MainFixedWidget>
 
     int? premiumi = prefs.getInt('premium');
 
+   
     if (premiumi == 1) {
-      adsOnline = false;
+      setState(() {
+        adsOnline = false;
+      });
     }
+
+     CustomerInfo purchaserInfo = await Purchases.restorePurchases();
+
+    
+      await prefs.setInt('premium', 1);
+    
   }
 
   @override
@@ -528,19 +538,16 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                       builder: (BuildContext
                                                               context) =>
                                                           AlertDialog(
-                                                            title: const Text(
-                                                                'This is a premium feature'),
+                                                            title: Row(
+                                                              children: [
+                                                                const Text(
+                                                                    'Drink Type Selection '),
+                                                               
+                                                              ],
+                                                            ),
                                                             content: const Text(
-                                                                'Buy Premium To Unlock This Feature'),
+                                                                'Buy Premium to unlock this feature'),
                                                             actions: <Widget>[
-                                                              TextButton(
-                                                                onPressed: () =>
-                                                                    Navigator.pop(
-                                                                        context,
-                                                                        'Cancel'),
-                                                                child: const Text(
-                                                                    'Cancel'),
-                                                              ),
                                                               TextButton(
                                                                 onPressed: () =>
                                                                     showModalBottomSheet(
@@ -551,8 +558,17 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                                                 context) {
                                                                           return premium();
                                                                         }),
-                                                                child: const Text(
-                                                                    'Buy Premium Now'),
+                                                                child: Center(
+                                                                  child: const Text(
+                                                                      'Buy Premium Now',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontFamily:
+                                                                              'Roboto',
+                                                                          fontWeight:
+                                                                              FontWeight.w500)),
+                                                                ),
                                                               ),
                                                             ],
                                                           ));
@@ -838,14 +854,35 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                             context: context,
                                             builder: (alertDialogContext) {
                                               return AlertDialog(
-                                                content:
-                                                    Text('Double tap to undo'),
+                                                content: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      'Double tap to undo ',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontFamily: 'Roboto',
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    Icon(Icons
+                                                        .ads_click_rounded),
+                                                  ],
+                                                ),
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () =>
                                                         Navigator.pop(
                                                             alertDialogContext),
-                                                    child: Text('Ok'),
+                                                    child: Text('OK',
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontFamily:
+                                                                'Roboto',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500)),
                                                   ),
                                                 ],
                                               );

@@ -135,6 +135,9 @@ class premiumState extends State<premium> {
       configuration = PurchasesConfiguration("public_ios_sdk_key");
     }
     await Purchases.configure(configuration);
+
+
+       
   }
 
   @override
@@ -147,31 +150,27 @@ class premiumState extends State<premium> {
 
   void makePurchase() async {
     Offerings? offerings;
-    try {
+  
       offerings = await Purchases.getOfferings();
       if (offerings.current != null) {
         print(offerings.current!.availablePackages.first);
       }
-    } catch (e) {
-      // optional error handling
-    }
 
-    try {
       CustomerInfo customerInfo = await Purchases.purchasePackage(
-          offerings!.current!.availablePackages.first);
-      var isPro = customerInfo.entitlements.all["premium"]!.isActive;
-      if (isPro) {
-        print('NOW PREMUM');
-        unlockPremium();
+          offerings.current!.availablePackages.first);
+      if (customerInfo.entitlements.all['premium']!.isActive) {
+        print('NOW PREMiUM');
+       await unlockPremium();
       }
-    } catch (e) {
-      print(e);
-    }
+
   }
 
   unlockPremium() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setInt('premium', 1);
+    setState(() {
+      
+    });
   }
 
   @override
