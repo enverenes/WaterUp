@@ -10,7 +10,7 @@ import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'index.dart';
-import 'package:home_widget/home_widget.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:watetlo/history.dart';
@@ -29,7 +29,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+      name: 'waterup-3685d', options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -98,12 +99,11 @@ class _MyAppState extends State<MyApp> {
       configuration =
           PurchasesConfiguration("goog_lerxVMViMarxCepdPPuKGxuLRmH");
     } else {
-      configuration = PurchasesConfiguration("public_ios_sdk_key");
+      configuration =
+          PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");
     }
     await Purchases.configure(configuration);
-
-   
-       }
+  }
 
   @override
   void initState() {

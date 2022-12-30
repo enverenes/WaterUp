@@ -14,6 +14,7 @@ import 'package:watetlo/premiumpage.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'dart:io' show Platform;
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -254,7 +255,9 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   final BannerAd bannerAdHist = BannerAd(
-    adUnitId: 'ca-app-pub-5585667908104814/3093630293',
+    adUnitId: (Platform.isAndroid)
+        ? 'ca-app-pub-5585667908104814/3093630293'
+        : 'ca-app-pub-5585667908104814/4734843001',
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),
@@ -353,7 +356,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               final prefs =
                                   await SharedPreferences.getInstance();
                               int? premium1 = prefs.getInt('premium');
-                              if (premium1 == 1 ) {
+                              if (premium1 == 1) {
                                 setState(() {
                                   waterList.clear();
                                   decDay();
@@ -372,45 +375,38 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     DateTime(tody.year, tody.month, tody.day)
                                         .toString());
                               } else {
-                               showDialog<String>(
+                                showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                          title: Row(
+                                            children: [
+                                              const Text('Previous Days '),
+                                            ],
+                                          ),
+                                          content: const Text(
+                                              'Buy Premium to unlock this feature'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  showModalBottomSheet(
                                                       context: context,
                                                       builder: (BuildContext
-                                                              context) =>
-                                                          AlertDialog(
-                                                            title: Row(
-                                                              children: [
-                                                                const Text(
-                                                                    'Previous Days '),
-                                                               
-                                                              ],
-                                                            ),
-                                                            content: const Text(
-                                                                'Buy Premium to unlock this feature'),
-                                                            actions: <Widget>[
-                                                              TextButton(
-                                                                onPressed: () =>
-                                                                    showModalBottomSheet(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return premium();
-                                                                        }),
-                                                                child: Center(
-                                                                  child: const Text(
-                                                                      'Buy Premium Now',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontFamily:
-                                                                              'Roboto',
-                                                                          fontWeight:
-                                                                              FontWeight.w500)),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ));
+                                                          context) {
+                                                        return premium();
+                                                      }),
+                                              child: Center(
+                                                child: const Text(
+                                                    'Buy Premium Now',
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontFamily: 'Roboto',
+                                                        fontWeight:
+                                                            FontWeight.w500)),
+                                              ),
+                                            ),
+                                          ],
+                                        ));
                               }
                             },
                             icon: Icon(
@@ -436,45 +432,38 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     builder: (context) => Calendar()),
                               );
                             } else {
-                               showDialog<String>(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          AlertDialog(
-                                                            title: Row(
-                                                              children: [
-                                                                const Text(
-                                                                    'Calendar '),
-                                                               
-                                                              ],
-                                                            ),
-                                                            content: const Text(
-                                                                'Buy Premium to unlock this feature'),
-                                                            actions: <Widget>[
-                                                              TextButton(
-                                                                onPressed: () =>
-                                                                    showModalBottomSheet(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return premium();
-                                                                        }),
-                                                                child: Center(
-                                                                  child: const Text(
-                                                                      'Buy Premium Now',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontFamily:
-                                                                              'Roboto',
-                                                                          fontWeight:
-                                                                              FontWeight.w500)),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ));
+                              showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        title: Row(
+                                          children: [
+                                            const Text('Calendar '),
+                                          ],
+                                        ),
+                                        content: const Text(
+                                            'Buy Premium to unlock this feature'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return premium();
+                                                    }),
+                                            child: Center(
+                                              child: const Text(
+                                                  'Buy Premium Now',
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontFamily: 'Roboto',
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                            ),
+                                          ),
+                                        ],
+                                      ));
                             }
                           },
                           child: Text(
@@ -512,44 +501,38 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                         .toString());
                               } else {
                                 showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                          title: Row(
+                                            children: [
+                                              const Text(
+                                                  'This is a premium feature '),
+                                            ],
+                                          ),
+                                          content: const Text(
+                                              'Buy Premium to unlock this feature'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  showModalBottomSheet(
                                                       context: context,
                                                       builder: (BuildContext
-                                                              context) =>
-                                                          AlertDialog(
-                                                            title: Row(
-                                                              children: [
-                                                                const Text(
-                                                                    'This is a premium feature '),
-                                                               
-                                                              ],
-                                                            ),
-                                                            content: const Text(
-                                                                'Buy Premium to unlock this feature'),
-                                                            actions: <Widget>[
-                                                              TextButton(
-                                                                onPressed: () =>
-                                                                    showModalBottomSheet(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return premium();
-                                                                        }),
-                                                                child: Center(
-                                                                  child: const Text(
-                                                                      'Buy Premium Now',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontFamily:
-                                                                              'Roboto',
-                                                                          fontWeight:
-                                                                              FontWeight.w500)),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ));
+                                                          context) {
+                                                        return premium();
+                                                      }),
+                                              child: Center(
+                                                child: const Text(
+                                                    'Buy Premium Now',
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontFamily: 'Roboto',
+                                                        fontWeight:
+                                                            FontWeight.w500)),
+                                              ),
+                                            ),
+                                          ],
+                                        ));
                               }
                             },
                             icon: Icon(
