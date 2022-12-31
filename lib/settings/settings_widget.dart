@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 
 import '../components/nfo3_widget.dart';
-import 'dart:io' show Platform;
+
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -26,9 +26,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   final BannerAd bannerAdSettings = BannerAd(
-    adUnitId: (Platform.isAndroid)
-        ? 'ca-app-pub-5585667908104814/4406711964'
-        : 'ca-app-pub-5585667908104814/7288305414',
+    adUnitId: 'ca-app-pub-5585667908104814/4406711964',
     size: AdSize.banner,
     request: AdRequest(),
     listener: BannerAdListener(),
@@ -396,34 +394,44 @@ class _SettingsWidgetState extends State<SettingsWidget>
                             );
                           } else {
                             showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                      title: Row(
-                                        children: [
-                                          const Text(
-                                              'This is a premium feature '),
-                                        ],
-                                      ),
-                                      content: const Text(
-                                          'Buy Premium to unlock this feature'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () => showModalBottomSheet(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return premium.premium();
-                                              }),
-                                          child: Center(
-                                            child: const Text('Buy Premium Now',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontFamily: 'Roboto',
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                          ),
-                                        ),
-                                      ],
-                                    ));
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          AlertDialog(
+                                                            title: Row(
+                                                              children: [
+                                                                const Text(
+                                                                    'This is a premium feature '),
+                                                               
+                                                              ],
+                                                            ),
+                                                            content: const Text(
+                                                                'Buy Premium to unlock this feature'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    showModalBottomSheet(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return premium.premium();
+                                                                        }),
+                                                                child: Center(
+                                                                  child: const Text(
+                                                                      'Buy Premium Now',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontFamily:
+                                                                              'Roboto',
+                                                                          fontWeight:
+                                                                              FontWeight.w500)),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ));
                           }
                         },
                         child: Row(

@@ -11,7 +11,6 @@ import 'package:watetlo/history.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watetlo/premiumpage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'dart:io' show Platform;
 
 class MoreoptionsWidget extends StatefulWidget {
   const MoreoptionsWidget({Key? key}) : super(key: key);
@@ -180,32 +179,44 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                     );
                   } else {
                     showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              title: Row(
-                                children: [
-                                  const Text('Drink Type Selection '),
-                                ],
-                              ),
-                              content: const Text(
-                                  'Buy Premium to unlock this feature'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => showModalBottomSheet(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return premium();
-                                      }),
-                                  child: Center(
-                                    child: const Text('Buy Premium Now',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontFamily: 'Roboto',
-                                            fontWeight: FontWeight.w500)),
-                                  ),
-                                ),
-                              ],
-                            ));
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          AlertDialog(
+                                                            title: Row(
+                                                              children: [
+                                                                const Text(
+                                                                    'Drink Type Selection '),
+                                                               
+                                                              ],
+                                                            ),
+                                                            content: const Text(
+                                                                'Buy Premium to unlock this feature'),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    showModalBottomSheet(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return premium();
+                                                                        }),
+                                                                child: Center(
+                                                                  child: const Text(
+                                                                      'Buy Premium Now',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontFamily:
+                                                                              'Roboto',
+                                                                          fontWeight:
+                                                                              FontWeight.w500)),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ));
                   }
                 },
               ),
@@ -235,9 +246,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
 
                   if ((adCounter % 5 == 0) & adsonline) {
                     InterstitialAd.load(
-                        adUnitId: (Platform.isAndroid)
-                            ? 'ca-app-pub-5585667908104814/3919550824'
-                            : 'ca-app-pub-5585667908104814/9698808348',
+                        adUnitId: 'ca-app-pub-5585667908104814/3919550824',
                         request: const AdRequest(),
                         adLoadCallback:
                             InterstitialAdLoadCallback(onAdLoaded: (ad) {
