@@ -29,7 +29,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+      name: 'waterup-3685d', options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -101,9 +102,7 @@ class _MyAppState extends State<MyApp> {
       configuration = PurchasesConfiguration("public_ios_sdk_key");
     }
     await Purchases.configure(configuration);
-
-   
-       }
+  }
 
   @override
   void initState() {

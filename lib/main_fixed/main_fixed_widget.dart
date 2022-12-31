@@ -320,18 +320,17 @@ class MainFixedWidgetState extends State<MainFixedWidget>
 
     int? premiumi = prefs.getInt('premium');
 
-   
     if (premiumi == 1) {
       setState(() {
         adsOnline = false;
       });
     }
 
-     CustomerInfo purchaserInfo = await Purchases.restorePurchases();
+    CustomerInfo purchaserInfo = await Purchases.restorePurchases();
 
-    
+    if (purchaserInfo.entitlements.all['premium']!.isActive) {
       await prefs.setInt('premium', 1);
-    
+    }
   }
 
   @override
@@ -535,43 +534,41 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                 } else {
                                                   showDialog<String>(
                                                       context: context,
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          AlertDialog(
-                                                            title: Row(
-                                                              children: [
-                                                                const Text(
-                                                                    'Drink Type Selection '),
-                                                               
-                                                              ],
-                                                            ),
-                                                            content: const Text(
-                                                                'Buy Premium to unlock this feature'),
-                                                            actions: <Widget>[
-                                                              TextButton(
-                                                                onPressed: () =>
-                                                                    showModalBottomSheet(
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return premium();
-                                                                        }),
-                                                                child: Center(
-                                                                  child: const Text(
-                                                                      'Buy Premium Now',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontFamily:
-                                                                              'Roboto',
-                                                                          fontWeight:
-                                                                              FontWeight.w500)),
+                                                      builder:
+                                                          (BuildContext
+                                                                  context) =>
+                                                              AlertDialog(
+                                                                title: Row(
+                                                                  children: [
+                                                                    const Text(
+                                                                        'Drink Type Selection '),
+                                                                  ],
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ));
+                                                                content: const Text(
+                                                                    'Buy Premium to unlock this feature'),
+                                                                actions: <
+                                                                    Widget>[
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        showModalBottomSheet(
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (BuildContext context) {
+                                                                              return premium();
+                                                                            }),
+                                                                    child:
+                                                                        Center(
+                                                                      child: const Text(
+                                                                          'Buy Premium Now',
+                                                                          style: TextStyle(
+                                                                              fontSize: 16,
+                                                                              fontFamily: 'Roboto',
+                                                                              fontWeight: FontWeight.w500)),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ));
                                                 }
                                               },
                                               onTap: () async {
