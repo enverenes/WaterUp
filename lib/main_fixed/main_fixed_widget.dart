@@ -21,6 +21,7 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:watetlo/premiumpage.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'dart:io' show Platform;
 
 class MainFixedWidget extends StatefulWidget {
   const MainFixedWidget({Key? key}) : super(key: key);
@@ -578,8 +579,10 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                 if ((adCounter % 5 == 0) &
                                                     adsOnline) {
                                                   InterstitialAd.load(
-                                                      adUnitId:
-                                                          'ca-app-pub-5585667908104814/8599455459',
+                                                      adUnitId: (Platform
+                                                              .isAndroid)
+                                                          ? 'ca-app-pub-5585667908104814/8599455459'
+                                                          : 'ca-app-pub-5585667908104814/2011890012',
                                                       request:
                                                           const AdRequest(),
                                                       adLoadCallback:
