@@ -24,7 +24,7 @@ class _TutorialWidgetState extends State<TutorialWidget> {
   Future<void> setPremium() async {
     final prefs = await SharedPreferences.getInstance();
 
-    CustomerInfo purchaserInfo = await Purchases.restorePurchases();
+    CustomerInfo purchaserInfo = await Purchases.getCustomerInfo();
 
     if (purchaserInfo.entitlements.all["premium"]!.isActive) {
       await prefs.setInt('premium', 1);

@@ -326,7 +326,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
       });
     }
 
-    CustomerInfo purchaserInfo = await Purchases.restorePurchases();
+    CustomerInfo purchaserInfo = await Purchases.getCustomerInfo();
 
     if (purchaserInfo.entitlements.all['premium']!.isActive) {
       await prefs.setInt('premium', 1);
