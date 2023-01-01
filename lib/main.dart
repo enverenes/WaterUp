@@ -10,7 +10,7 @@ import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'index.dart';
-import 'package:home_widget/home_widget.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:watetlo/history.dart';
@@ -99,7 +99,8 @@ class _MyAppState extends State<MyApp> {
       configuration =
           PurchasesConfiguration("goog_lerxVMViMarxCepdPPuKGxuLRmH");
     } else {
-      configuration = PurchasesConfiguration("public_ios_sdk_key");
+      configuration =
+          PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");
     }
     await Purchases.configure(configuration);
   }
