@@ -28,7 +28,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  await WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       name: 'waterup-3685d', options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -108,7 +108,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
+    initPlatformState();
     getInitialPage();
     userStream = watetloFirebaseUserStream()
       ..listen((user) => initialUser ?? setState(() => initialUser = user));
@@ -116,8 +116,6 @@ class _MyAppState extends State<MyApp> {
       Duration(seconds: 1),
       () => setState(() => displaySplashImage = false),
     );
-
-    initPlatformState();
   }
 
   void setLocale(String language) =>

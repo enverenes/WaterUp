@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>225286740730-ne7eu4qf98c86a2ll1pi6hhja1rkgfcn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.225286740730-ne7eu4qf98c86a2ll1pi6hhja1rkgfcn</string>
+	<key>API_KEY</key>
+	<string>AIzaSyABzb_yWKPV9cKwd8Jlj6-Pm3LRO3KNyQA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>225286740730</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>waterlo.app</string>
+	<key>PROJECT_ID</key>
+	<string>waterup-3685d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>waterup-3685d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:225286740730:ios:092ac4dfbb745cf2018743</string>
+</dict>
+</plist>

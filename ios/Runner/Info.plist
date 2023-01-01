@@ -2,13 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-<key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-5585667908104814~1957470579</string>
 <key>NSAppTransportSecurity</key>
 <dict>
     <key>NSAllowsLocalNetworking</key>
     <true/>
 </dict>
+ <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-5585667908104814~1957470579</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

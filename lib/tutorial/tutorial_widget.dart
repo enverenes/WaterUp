@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watetlo/notifications.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'dart:io' show Platform;
 
 class TutorialWidget extends StatefulWidget {
   const TutorialWidget({Key? key}) : super(key: key);
@@ -20,6 +21,20 @@ class TutorialWidget extends StatefulWidget {
 class _TutorialWidgetState extends State<TutorialWidget> {
   PageController? pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future<void> initPlatformState() async {
+    await Purchases.setDebugLogsEnabled(true);
+
+    PurchasesConfiguration configuration;
+    if (Platform.isAndroid) {
+      configuration =
+          PurchasesConfiguration("goog_lerxVMViMarxCepdPPuKGxuLRmH");
+    } else {
+      configuration =
+          PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");
+    }
+    await Purchases.configure(configuration);
+  }
 
   Future<void> setPremium() async {
     final prefs = await SharedPreferences.getInstance();
@@ -43,6 +58,7 @@ class _TutorialWidgetState extends State<TutorialWidget> {
 
   @override
   void initState() {
+    initPlatformState();
     super.initState();
     initialDay();
     setPremium();
