@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0B9A87DCAE266C65280C7D3A /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE6B5D7D865C0AB46D256096 /* Pods_Runner.framework */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
-		30D27F08296227AA0095FD14 /* Downloads in Resources */ = {isa = PBXBuildFile; fileRef = 30D27F07296227A90095FD14 /* Downloads */; };
 		30D27F0A296227B30095FD14 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30D27F09296227B30095FD14 /* GoogleService-Info.plist */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
@@ -34,7 +33,6 @@
 /* Begin PBXFileReference section */
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
-		30D27F07296227A90095FD14 /* Downloads */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Downloads; sourceTree = "<group>"; };
 		30D27F09296227B30095FD14 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		30D27F0B2962281B0095FD14 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 			children = (
 				30D27F09296227B30095FD14 /* GoogleService-Info.plist */,
 				30D27F0B2962281B0095FD14 /* GoogleService-Info.plist */,
-				30D27F07296227A90095FD14 /* Downloads */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
@@ -199,7 +196,6 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
-				30D27F08296227AA0095FD14 /* Downloads in Resources */,
 				30D27F0A296227B30095FD14 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
