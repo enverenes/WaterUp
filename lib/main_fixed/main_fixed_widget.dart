@@ -329,7 +329,9 @@ class MainFixedWidgetState extends State<MainFixedWidget>
 
     CustomerInfo purchaserInfo = await Purchases.getCustomerInfo();
 
-    if (purchaserInfo.entitlements.all['premium']!.isActive) {
+    if ((purchaserInfo.entitlements.all['premium']?.isActive != null)
+        ? purchaserInfo.entitlements.all['premium']!.isActive
+        : false) {
       await prefs.setInt('premium', 1);
     }
   }
