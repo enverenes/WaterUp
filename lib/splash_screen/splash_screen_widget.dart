@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -77,6 +77,22 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
     textController2.dispose();
     textController3.dispose();
     super.dispose();
+  }
+
+  setTypes(bool mlbool) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('isml', mlbool);
+  }
+
+  getType() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getBool('isMl') ?? true;
+  }
+
+  double converToOz(double ml) {
+    return (ml * 0.0338);
   }
 
   @override
@@ -277,7 +293,9 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
                                   autofocus: true,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                      labelText: 'Cup size (mls)',
+                                      labelText: (getType() == true)
+                                          ? 'Cup size (mls)'
+                                          : 'Cup size (oz)',
                                       labelStyle: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
