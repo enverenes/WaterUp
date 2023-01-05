@@ -131,6 +131,10 @@ class premiumState extends State<premium> {
     if (Platform.isAndroid) {
       configuration =
           PurchasesConfiguration("goog_lerxVMViMarxCepdPPuKGxuLRmH");
+    } else if (Platform.isIOS) {
+      configuration =
+          PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");
+      print('IOS DEVICE');
     } else {
       configuration =
           PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");

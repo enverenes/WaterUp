@@ -40,8 +40,10 @@ class _TutorialWidgetState extends State<TutorialWidget> {
     final prefs = await SharedPreferences.getInstance();
 
     CustomerInfo purchaserInfo = await Purchases.getCustomerInfo();
+    bool premactive =
+        purchaserInfo.entitlements.all["premium"]?.isActive ?? false;
 
-    if (purchaserInfo.entitlements.all["premium"]!.isActive) {
+    if (premactive) {
       await prefs.setInt('premium', 1);
     } else {
       await prefs.setInt('premium', 0);
