@@ -98,6 +98,10 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        shadowColor: Colors.transparent,
+      ),
       key: scaffoldKey,
       backgroundColor: Colors.white,
       body: GestureDetector(
