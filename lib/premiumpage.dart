@@ -133,18 +133,19 @@ class premiumState extends State<premium> {
           PurchasesConfiguration("goog_lerxVMViMarxCepdPPuKGxuLRmH");
     } else if (Platform.isIOS) {
       configuration =
-          PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");
+          await PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");
       print('IOS DEVICE');
     } else {
       configuration =
           PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");
     }
     await Purchases.configure(configuration);
+    print(configuration.store);
   }
 
   @override
   void initState() {
-    initPlatformState();
+    //initPlatformState();
     super.initState();
   }
 

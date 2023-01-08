@@ -1190,7 +1190,6 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                                                   activeColor: Color(0xFF003366),
                                                                                   value: _currentSliderValue,
                                                                                   max: 1500,
-                                                                                  divisions: 150,
                                                                                   label: _currentSliderValue.round().toString(),
                                                                                   onChanged: (double value) {
                                                                                     state() {}
