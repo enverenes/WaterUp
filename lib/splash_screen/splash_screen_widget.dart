@@ -95,12 +95,50 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
     return (ml * 0.0338);
   }
 
+  String _selectedLanguage = 'English';
+
+ void _selectLanguage(String? language) {
+  setState(() {
+    _selectedLanguage = language ?? _selectedLanguage;
+  });
+}
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         shadowColor: Colors.transparent,
+        scrolledUnderElevation: 0.0,
+        elevation: 0.0,
+        surfaceTintColor: Colors.transparent,
+        leadingWidth: 0,
+        centerTitle: false,
+        actions: [
+           Container(
+             padding: EdgeInsets.only(right: 25,),
+             alignment: AlignmentDirectional(0, 0),
+            color: FlutterFlowTheme.of(context).primaryBackground ,
+             child:
+             DropdownButtonHideUnderline(
+ child :DropdownButton<String>(
+             
+              elevation: 0,
+          value: _selectedLanguage,
+          onChanged: _selectLanguage,
+          items: <String>['English','Turkish','Spanish', 'French']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Image.asset(value == 'English' ? 'assets/images/united-kingdom.png' : value == 'Spanish' ? 'assets/images/spain.png' : value == 'French' ? 'assets/images/france.png': value == 'Turkish' ? 'assets/images/turkey.png' : 'assets/images/united-kingdom.png', width: 34,),
+              );
+          }).toList(),
+        ),)
+           ),
+      
+         
+        ],
       ),
       key: scaffoldKey,
       backgroundColor: Colors.white,
