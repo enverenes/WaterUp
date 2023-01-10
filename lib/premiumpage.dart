@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
-import 'package:pay/pay.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_animations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../flutter_flow/flutter_flow_util.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,11 +25,7 @@ class premiumState extends State<premium> {
               decoration: BoxDecoration(
                   color: Color(0xFF57636C), shape: BoxShape.circle),
               child: Center(
-                child: Icon(
-                  Icons.ad_units,
-                  color: Colors.white,
-                  size: 70,
-                ),
+                child: Image.asset('')
               )),
           Container(
               margin: EdgeInsets.only(top: 30),
@@ -57,11 +48,7 @@ class premiumState extends State<premium> {
               decoration: BoxDecoration(
                   color: Color(0xFF57636C), shape: BoxShape.circle),
               child: Center(
-                child: Icon(
-                  Icons.notifications_active,
-                  color: Colors.white,
-                  size: 70,
-                ),
+                child:  Image.asset('')
               )),
           Container(
               margin: EdgeInsets.only(top: 30),
@@ -84,11 +71,7 @@ class premiumState extends State<premium> {
                 decoration: BoxDecoration(
                     color: Color(0xFF57636C), shape: BoxShape.circle),
                 child: Center(
-                  child: Icon(
-                    Icons.history,
-                    color: Colors.white,
-                    size: 70,
-                  ),
+                  child:  Image.asset('')
                 )),
           ),
           Container(
@@ -109,11 +92,7 @@ class premiumState extends State<premium> {
               decoration: BoxDecoration(
                   color: Color(0xFF57636C), shape: BoxShape.circle),
               child: Center(
-                child: Icon(
-                  Icons.coffee,
-                  color: Colors.white,
-                  size: 70,
-                ),
+                child:  Image.asset('')
               )),
           Container(
               margin: EdgeInsets.only(top: 30),

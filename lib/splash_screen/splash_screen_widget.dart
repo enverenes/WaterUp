@@ -353,82 +353,7 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                     50, 0, 50, 60),
                                 child: Column(
                                   children: [
-                                    TextFormField(
-                                      controller: textController3,
-                                      autofocus: true,
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                          labelText: (isML == true)
-                                              ? 'Cup size (mls)'
-                                              : 'Cup size (oz)',
-                                          labelStyle: FlutterFlowTheme.of(
-                                                  context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Outfit',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                              ),
-                                          hintStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .subtitle2
-                                                  .override(
-                                                    fontFamily: 'Open Sans',
-                                                    color: Color(0xFF6770BB),
-                                                  ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                              width: 1,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                              width: 1,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          errorBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0x00000000),
-                                              width: 1,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          focusedErrorBorder:
-                                              OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0x00000000),
-                                              width: 1,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          counterText: ''),
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Outfit',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            fontSize: 18,
-                                            lineHeight: 1,
-                                          ),
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      keyboardType: TextInputType.number,
-                                      maxLength: 5,
-                                    ),
+                                    
                                     Align(
                                       alignment:
                                           AlignmentDirectional.centerStart,
@@ -514,9 +439,7 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                           convertToKg(
                                               int.parse(textController2.text)));
                                       setState(() => FFAppState().cup =
-                                          converToML(
-                                              double.parse(textController3.text)
-                                                  .round()));
+                                          200);
                                       setState(() => FFAppState().totalwater =
                                           functions.calculatewater(
                                               convertToKg(int.parse(
@@ -558,7 +481,7 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                       setState(() => FFAppState().weight =
                                           int.parse(textController2.text));
                                       setState(() => FFAppState().cup =
-                                          int.parse(textController3.text));
+                                          200);
                                       setState(() => FFAppState().totalwater =
                                           functions.calculatewater(
                                               int.parse(textController2.text),

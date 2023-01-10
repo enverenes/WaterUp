@@ -564,72 +564,106 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                             children: [
                                               InkWell(
                                                 onLongPress: () async {
-                                                  final prefs =
-                                                      await SharedPreferences
-                                                          .getInstance();
-                                                  int? premium1 =
-                                                      prefs.getInt('premium');
-                                                  if (premium1 == 1) {
-                                                    await showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return Padding(
+                                                  await showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .primaryBackground,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Container(
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .copyWith()
+                                                                .size
+                                                                .height *
+                                                            0.2,
+                                                        child: Padding(
                                                           padding:
                                                               MediaQuery.of(
                                                                       context)
                                                                   .viewInsets,
-                                                          child: Container(
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height *
-                                                                0.15,
-                                                            child:
-                                                                DrinkSelectWidget(),
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-                                                  } else {
-                                                    showDialog<String>(
-                                                        context: context,
-                                                        builder:
-                                                            (BuildContext
-                                                                    context) =>
-                                                                AlertDialog(
-                                                                  title: Row(
-                                                                    children: [
-                                                                      const Text(
-                                                                          'Drink Type Selection '),
-                                                                    ],
+                                                          child:
+                                                              StatefulBuilder(
+                                                            builder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    setState) {
+                                                              var sliderval =
+                                                                  _currentSliderValue
+                                                                      .toInt();
+                                                              return Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                    '$sliderval' +
+                                                                        ' ml',
+                                                                    style: TextStyle(
+                                                                        color: FlutterFlowTheme.of(context)
+                                                                            .primaryColor,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
                                                                   ),
-                                                                  content:
-                                                                      const Text(
-                                                                          'Buy Premium to unlock this feature'),
-                                                                  actions: <
-                                                                      Widget>[
-                                                                    TextButton(
-                                                                      onPressed: () => showModalBottomSheet(
-                                                                          context: context,
-                                                                          builder: (BuildContext context) {
-                                                                            return premium();
-                                                                          }),
-                                                                      child:
-                                                                          Center(
-                                                                        child: const Text(
-                                                                            'Buy Premium Now',
-                                                                            style: TextStyle(
-                                                                                fontSize: 16,
-                                                                                fontFamily: 'Roboto',
-                                                                                fontWeight: FontWeight.w500)),
+                                                                  Slider(
+                                                                    activeColor:
+                                                                        Color(
+                                                                            0xFF003366),
+                                                                    value:
+                                                                        _currentSliderValue,
+                                                                    max: 1500,
+                                                                    divisions:
+                                                                        150,
+                                                                    label: _currentSliderValue
+                                                                        .round()
+                                                                        .toString(),
+                                                                    onChanged:
+                                                                        (double
+                                                                            value) {
+                                                                      setState(
+                                                                          () {
+                                                                        _currentSliderValue =
+                                                                            value;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                  TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        FFAppState().cup =
+                                                                            _currentSliderValue.toInt();
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      style: TextButton
+                                                                          .styleFrom(
+                                                                        backgroundColor:
+                                                                            Color(0xFF003366),
+                                                                        padding:
+                                                                            const EdgeInsets.all(8.0),
+                                                                        textStyle:
+                                                                            const TextStyle(fontSize: 14),
                                                                       ),
-                                                                    ),
-                                                                  ],
-                                                                ));
-                                                  }
+                                                                      child:
+                                                                          Text(
+                                                                        'Save',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                      ))
+                                                                ],
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ).then((value) =>
+                                                      setState(() {}));
                                                 },
                                                 onTap: () async {
                                                   tweenvar = 40.0;
@@ -701,119 +735,131 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                 ),
                                 Positioned(
                                   bottom: 10,
-                                  child: InkWell(
-                                    //SLIDER OPENS
-                                    onLongPress: () async {
-                                      await showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primaryBackground,
-                                        context: context,
-                                        builder: (context) {
-                                          return Container(
-                                            height: MediaQuery.of(context)
-                                                    .copyWith()
-                                                    .size
-                                                    .height *
-                                                0.2,
-                                            child: Padding(
-                                              padding: MediaQuery.of(context)
-                                                  .viewInsets,
-                                              child: StatefulBuilder(
-                                                builder: (BuildContext context,
-                                                    setState) {
-                                                  var sliderval =
-                                                      _currentSliderValue
-                                                          .toInt();
-                                                  return Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        '$sliderval' + ' ml',
-                                                        style: TextStyle(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryColor,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      Slider(
-                                                        activeColor:
-                                                            Color(0xFF003366),
-                                                        value:
-                                                            _currentSliderValue,
-                                                        max: 1500,
-                                                        divisions: 150,
-                                                        label:
-                                                            _currentSliderValue
-                                                                .round()
-                                                                .toString(),
-                                                        onChanged:
-                                                            (double value) {
-                                                          setState(() {
-                                                            _currentSliderValue =
-                                                                value;
-                                                          });
-                                                        },
-                                                      ),
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            FFAppState().cup =
-                                                                _currentSliderValue
-                                                                    .toInt();
-                                                            Navigator.pop(
-                                                                context);
+                                  child: Container(
+                                    padding: EdgeInsetsDirectional.only(
+                                        start: 6, end: 6),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: InkWell(
+                                      //SLIDER OPENS
+                                      onLongPress: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
+                                          context: context,
+                                          builder: (context) {
+                                            return Container(
+                                              height: MediaQuery.of(context)
+                                                      .copyWith()
+                                                      .size
+                                                      .height *
+                                                  0.2,
+                                              child: Padding(
+                                                padding: MediaQuery.of(context)
+                                                    .viewInsets,
+                                                child: StatefulBuilder(
+                                                  builder:
+                                                      (BuildContext context,
+                                                          setState) {
+                                                    var sliderval =
+                                                        _currentSliderValue
+                                                            .toInt();
+                                                    return Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          '$sliderval' + ' ml',
+                                                          style: TextStyle(
+                                                              color: FlutterFlowTheme
+                                                                      .of(
+                                                                          context)
+                                                                  .primaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        Slider(
+                                                          activeColor:
+                                                              Color(0xFF003366),
+                                                          value:
+                                                              _currentSliderValue,
+                                                          max: 1500,
+                                                          divisions: 150,
+                                                          label:
+                                                              _currentSliderValue
+                                                                  .round()
+                                                                  .toString(),
+                                                          onChanged:
+                                                              (double value) {
+                                                            setState(() {
+                                                              _currentSliderValue =
+                                                                  value;
+                                                            });
                                                           },
-                                                          style: TextButton
-                                                              .styleFrom(
-                                                            backgroundColor:
-                                                                Color(
-                                                                    0xFF003366),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            textStyle:
-                                                                const TextStyle(
-                                                                    fontSize:
-                                                                        14),
-                                                          ),
-                                                          child: Text(
-                                                            'Save',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
+                                                        ),
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              FFAppState().cup =
+                                                                  _currentSliderValue
+                                                                      .toInt();
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            style: TextButton
+                                                                .styleFrom(
+                                                              backgroundColor:
+                                                                  Color(
+                                                                      0xFF003366),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          14),
                                                             ),
-                                                          ))
-                                                    ],
-                                                  );
-                                                },
+                                                            child: Text(
+                                                              'Save',
+                                                              style: TextStyle(
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryColor,
+                                                              ),
+                                                            ))
+                                                      ],
+                                                    );
+                                                  },
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                      ).then((value) => setState(() {}));
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          (isML ?? true)
-                                              ? FFAppState().cup.toString() +
-                                                  ' ml'
-                                              : converToOz(FFAppState().cup)
-                                                      .toString() +
-                                                  ' oz',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Outfit',
-                                                color: Colors.white,
-                                              ),
-                                        ),
-                                      ],
+                                            );
+                                          },
+                                        ).then((value) => setState(() {}));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            (isML ?? true)
+                                                ? FFAppState().cup.toString() +
+                                                    ' ml'
+                                                : converToOz(FFAppState().cup)
+                                                        .toString() +
+                                                    ' oz',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1
+                                                .override(
+                                                    fontFamily: 'Outfit',
+                                                    color: const Color(0xFF57636C),
+                                                    fontWeight:
+                                                        FontWeight.w300),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

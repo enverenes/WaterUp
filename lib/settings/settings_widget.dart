@@ -317,7 +317,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: FlutterFlowTheme.of(context).primaryBackground,
                         ),
                         child: Padding(
                           padding:
@@ -354,8 +354,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                             0, 0, 8, 0),
                                         child: Icon(
                                           Icons.switch_right,
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
+                                          color: Colors.black,
                                           size: 20,
                                         ),
                                       ),
@@ -434,7 +433,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                             8, 2, 0, 0),
                                         child: Icon(
                                           Icons.switch_left,
-                                          color: Color(0xFF57636C),
+                                          color: Colors.black,
                                           size: 24,
                                         ),
                                       ),
