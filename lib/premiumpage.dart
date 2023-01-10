@@ -154,16 +154,28 @@ class premiumState extends State<premium> {
   void makePurchase() async {
     Offerings? offerings;
 
-    offerings = await Purchases.getOfferings();
-    if (offerings.current != null) {
-      print(offerings.current!.availablePackages.first);
-    }
+    try {
+      offerings = await Purchases.getOfferings();
 
-    CustomerInfo customerInfo = await Purchases.purchasePackage(
-        offerings.current!.availablePackages.first);
-    if (customerInfo.entitlements.all['premium']!.isActive) {
-      print('NOW PREMiUM');
-      await unlockPremium();
+      if (offerings.current != null) {
+        print(offerings.current!.availablePackages.first);
+      }
+
+      CustomerInfo customerInfo = await Purchases.purchasePackage(
+          offerings.current!.availablePackages.first);
+      if (customerInfo.entitlements.all['premium']!.isActive) {
+        print('NOW PREMiUM');
+        await unlockPremium();
+      }
+    } catch (e) {
+      print(e);
+      showDialog(
+          context: context,
+          builder: ((context) {
+            return AlertDialog(
+              content: Text('This package is currently unavailable'),
+            );
+          }));
     }
   }
 

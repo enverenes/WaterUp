@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:watetlo/index.dart';
 
 import '../components/nfo3_widget.dart';
 import 'dart:io' show Platform;
@@ -35,10 +36,29 @@ class _SettingsWidgetState extends State<SettingsWidget>
     listener: BannerAdListener(),
   );
 
+  bool? isML;
+  setTypes(bool mlbool) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('isMl', mlbool);
+    setState(() {
+      isML = mlbool;
+    });
+  }
+
+  getType() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    isML = await prefs.getBool('isMl') ?? true;
+    setState(() {});
+    return isML;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
 
+    getType();
     adActionsGet();
 
     super.initState();
@@ -89,7 +109,16 @@ class _SettingsWidgetState extends State<SettingsWidget>
             size: 30,
           ),
           onPressed: () async {
-            Navigator.pop(context);
+            await Navigator.pushAndRemoveUntil(
+              context,
+              PageTransition(
+                type: PageTransitionType.fade,
+                duration: Duration(milliseconds: 300),
+                reverseDuration: Duration(milliseconds: 300),
+                child: MainFixedWidget(),
+              ),
+              (r) => false,
+            );
           },
         ),
         title: Text(
@@ -239,6 +268,172 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                             8, 2, 0, 0),
                                         child: Icon(
                                           Icons.wb_sunny_rounded,
+                                          color: Color(0xFF57636C),
+                                          size: 24,
+                                        ),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: AlignmentDirectional(0.9, 0),
+                                      child: Container(
+                                        width: 36,
+                                        height: 36,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              blurRadius: 4,
+                                              color: Color(0x430B0D0F),
+                                              offset: Offset(0, 2),
+                                            )
+                                          ],
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          shape: BoxShape.rectangle,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  if (isML ?? true)
+                    InkWell(
+                      onTap: () async {
+                        setTypes(false);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Switch to US units',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      color: Color(0xFF57636C),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                              ),
+                              Container(
+                                width: 80,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFF1F4F8),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Stack(
+                                  alignment: AlignmentDirectional(0, 0),
+                                  children: [
+                                    Align(
+                                      alignment: AlignmentDirectional(0.95, 0),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0, 0, 8, 0),
+                                        child: Icon(
+                                          Icons.switch_right,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: AlignmentDirectional(-0.85, 0),
+                                      child: Container(
+                                        width: 36,
+                                        height: 36,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              blurRadius: 4,
+                                              color: Color(0x430B0D0F),
+                                              offset: Offset(0, 2),
+                                            )
+                                          ],
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          shape: BoxShape.rectangle,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  if (!(isML ?? true))
+                    InkWell(
+                      onTap: () async {
+                        setTypes(true);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                        ),
+                        child: Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Switch EU units',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                              ),
+                              Container(
+                                width: 80,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFF1F4F8),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Stack(
+                                  alignment: AlignmentDirectional(0, 0),
+                                  children: [
+                                    Align(
+                                      alignment: AlignmentDirectional(-0.9, 0),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8, 2, 0, 0),
+                                        child: Icon(
+                                          Icons.switch_left,
                                           color: Color(0xFF57636C),
                                           size: 24,
                                         ),

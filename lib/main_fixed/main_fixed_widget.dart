@@ -67,6 +67,36 @@ class MainFixedWidgetState extends State<MainFixedWidget>
     ),
   };
 
+  bool? isML;
+  setTypes(bool mlbool) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('isMl', mlbool);
+    setState(() {
+      isML = mlbool;
+    });
+  }
+
+  getType() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    isML = await prefs.getBool('isMl') ?? true;
+    setState(() {});
+    return isML;
+  }
+
+  int converToOz(int ml) {
+    return (ml * 0.0338).round();
+  }
+
+  int converToML(int oz) {
+    return (oz * 29.57).toInt();
+  }
+
+  int convertToKg(int lbs) {
+    return (lbs * (2.2)).toInt();
+  }
+
   Widget returnCup() {
     return Image.asset(
       'assets/images/button_bardak.png',
@@ -142,6 +172,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
     //INITSTATE
     super.initState();
 
+    getType();
     WidgetsFlutterBinding.ensureInitialized();
     setToWater();
     //Notification settings
@@ -378,15 +409,30 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                       ),
                       Align(
                         alignment: AlignmentDirectional(0, -0.8),
-                        child: Text(
-                          FFAppState().dranksofar.toString() + ' ml',
-                          style: FlutterFlowTheme.of(context).title1.override(
-                                fontFamily: 'Outfit',
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
-                                fontSize: 25,
+                        child: (isML ?? true)
+                            ? Text(
+                                FFAppState().dranksofar.toString() + ' ml',
+                                style: FlutterFlowTheme.of(context)
+                                    .title1
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryColor,
+                                      fontSize: 25,
+                                    ),
+                              )
+                            : Text(
+                                converToOz(FFAppState().dranksofar).toString() +
+                                    ' oz',
+                                style: FlutterFlowTheme.of(context)
+                                    .title1
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryColor,
+                                      fontSize: 25,
+                                    ),
                               ),
-                        ),
                       ),
                     ],
                   ),
@@ -452,7 +498,10 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    FFAppState().totalwater.toString(),
+                                    (isML ?? true)
+                                        ? FFAppState().totalwater.toString()
+                                        : converToOz(FFAppState().totalwater)
+                                            .toString(),
                                     style: FlutterFlowTheme.of(context)
                                         .title1
                                         .override(
@@ -462,7 +511,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                         ),
                                   ),
                                   Text(
-                                    'ml left',
+                                    (isML ?? true) ? 'ml left' : 'oz left',
                                     style: FlutterFlowTheme.of(context)
                                         .title1
                                         .override(
@@ -751,7 +800,12 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                     child: Row(
                                       children: [
                                         Text(
-                                          FFAppState().cup.toString() + ' ml',
+                                          (isML ?? true)
+                                              ? FFAppState().cup.toString() +
+                                                  ' ml'
+                                              : converToOz(FFAppState().cup)
+                                                      .toString() +
+                                                  ' oz',
                                           style: FlutterFlowTheme.of(context)
                                               .bodyText1
                                               .override(

@@ -27,6 +27,28 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
 
   int adCounter = 0;
 
+  bool? isML;
+  setTypes(bool mlbool) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('isMl', mlbool);
+    setState(() {
+      isML = mlbool;
+    });
+  }
+
+  getType() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    isML = await prefs.getBool('isMl') ?? true;
+    setState(() {});
+    return isML;
+  }
+
+  int converToOz(int ml) {
+    return (ml * 0.0338).round();
+  }
+
   adActionsSet(int action) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setInt('adactioncount', action);
@@ -49,7 +71,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    getType();
     adActionsGet();
   }
 
@@ -97,7 +119,10 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '$sliderval' + ' ml',
+                                    (isML ?? true)
+                                        ? '$sliderval' + ' ml'
+                                        : converToOz(sliderval).toString() +
+                                            ' oz',
                                     style: TextStyle(
                                         color: FlutterFlowTheme.of(context)
                                             .primaryColor,
@@ -107,8 +132,11 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                                     activeColor: Color(0xFF003366),
                                     value: _currentSliderValue,
                                     max: 1500,
-                                    label:
-                                        _currentSliderValue.round().toString(),
+                                    label: (isML ?? true)
+                                        ? _currentSliderValue.round().toString()
+                                        : converToOz(
+                                                _currentSliderValue.round())
+                                            .toString(),
                                     onChanged: (double value) {
                                       state() {}
                                       setState(() {

@@ -16,10 +16,10 @@ class SplashScreenWidget extends StatefulWidget {
   const SplashScreenWidget({Key? key}) : super(key: key);
 
   @override
-  _SplashScreenWidgetState createState() => _SplashScreenWidgetState();
+  SplashScreenWidgetState createState() => SplashScreenWidgetState();
 }
 
-class _SplashScreenWidgetState extends State<SplashScreenWidget>
+class SplashScreenWidgetState extends State<SplashScreenWidget>
     with TickerProviderStateMixin {
   final animationsMap = {
     'buttonOnPageLoadAnimation': AnimationInfo(
@@ -55,6 +55,7 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
   @override
   void initState() {
     super.initState();
+    getType();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       setState(() => FFAppState().age = 0);
@@ -79,30 +80,39 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
     super.dispose();
   }
 
+  static bool? isML;
   setTypes(bool mlbool) async {
     final prefs = await SharedPreferences.getInstance();
 
-    await prefs.setBool('isml', mlbool);
+    await prefs.setBool('isMl', mlbool);
+    setState(() {
+      isML = mlbool;
+    });
   }
 
   getType() async {
     final prefs = await SharedPreferences.getInstance();
 
-    return prefs.getBool('isMl') ?? true;
+    isML = await prefs.getBool('isMl') ?? true;
+    setState(() {});
+    return isML;
   }
 
-  double converToOz(double ml) {
-    return (ml * 0.0338);
+  int converToML(int oz) {
+    return (oz * 29.57).round();
+  }
+
+  int convertToKg(int lbs) {
+    return (lbs / (2.2)).round();
   }
 
   String _selectedLanguage = 'English';
 
- void _selectLanguage(String? language) {
-  setState(() {
-    _selectedLanguage = language ?? _selectedLanguage;
-  });
-}
- 
+  void _selectLanguage(String? language) {
+    setState(() {
+      _selectedLanguage = language ?? _selectedLanguage;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,28 +126,37 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
         leadingWidth: 0,
         centerTitle: false,
         actions: [
-           Container(
-             padding: EdgeInsets.only(right: 25,),
-             alignment: AlignmentDirectional(0, 0),
-            color: FlutterFlowTheme.of(context).primaryBackground ,
-             child:
-             DropdownButtonHideUnderline(
- child :DropdownButton<String>(
-             
-              elevation: 0,
-          value: _selectedLanguage,
-          onChanged: _selectLanguage,
-          items: <String>['English','Turkish','Spanish', 'French']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Image.asset(value == 'English' ? 'assets/images/united-kingdom.png' : value == 'Spanish' ? 'assets/images/spain.png' : value == 'French' ? 'assets/images/france.png': value == 'Turkish' ? 'assets/images/turkey.png' : 'assets/images/united-kingdom.png', width: 34,),
-              );
-          }).toList(),
-        ),)
-           ),
-      
-         
+          Container(
+              padding: EdgeInsets.only(
+                right: 25,
+              ),
+              alignment: AlignmentDirectional(0, 0),
+              color: FlutterFlowTheme.of(context).primaryBackground,
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  elevation: 0,
+                  value: _selectedLanguage,
+                  onChanged: _selectLanguage,
+                  items: <String>['English', 'Turkish', 'Spanish', 'French']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Image.asset(
+                        value == 'English'
+                            ? 'assets/images/united-kingdom.png'
+                            : value == 'Spanish'
+                                ? 'assets/images/spain.png'
+                                : value == 'French'
+                                    ? 'assets/images/france.png'
+                                    : value == 'Turkish'
+                                        ? 'assets/images/turkey.png'
+                                        : 'assets/images/united-kingdom.png',
+                        width: 34,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              )),
         ],
       ),
       key: scaffoldKey,
@@ -262,7 +281,9 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
                                   autofocus: true,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                      labelText: 'Weight (kgs)',
+                                      labelText: (isML ?? true)
+                                          ? 'Weight (kgs)'
+                                          : 'Weight (lbs)',
                                       labelStyle: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
@@ -330,71 +351,130 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
                               child: Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     50, 0, 50, 60),
-                                child: TextFormField(
-                                  controller: textController3,
-                                  autofocus: true,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                      labelText: (getType() == true)
-                                          ? 'Cup size (mls)'
-                                          : 'Cup size (oz)',
-                                      labelStyle: FlutterFlowTheme.of(context)
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      controller: textController3,
+                                      autofocus: true,
+                                      obscureText: false,
+                                      decoration: InputDecoration(
+                                          labelText: (isML == true)
+                                              ? 'Cup size (mls)'
+                                              : 'Cup size (oz)',
+                                          labelStyle: FlutterFlowTheme.of(
+                                                  context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Outfit',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                          hintStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .subtitle2
+                                                  .override(
+                                                    fontFamily: 'Open Sans',
+                                                    color: Color(0xFF6770BB),
+                                                  ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Color(0x00000000),
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Color(0x00000000),
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          counterText: ''),
+                                      style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
                                             fontFamily: 'Outfit',
                                             color: FlutterFlowTheme.of(context)
                                                 .primaryText,
+                                            fontSize: 18,
+                                            lineHeight: 1,
                                           ),
-                                      hintStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Color(0xFF6770BB),
-                                          ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                          width: 1,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      keyboardType: TextInputType.number,
+                                      maxLength: 5,
+                                    ),
+                                    Align(
+                                      alignment:
+                                          AlignmentDirectional.centerStart,
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          padding: MaterialStatePropertyAll(
+                                              EdgeInsets.all(0)),
+                                          elevation:
+                                              MaterialStatePropertyAll(0.0),
+                                          shadowColor: null,
+                                          fixedSize: MaterialStatePropertyAll(
+                                              Size(150, 30)),
+                                          backgroundColor:
+                                              MaterialStatePropertyAll(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryBackground),
                                         ),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                          width: 1,
+                                        onPressed: () {
+                                          if (isML ?? true) {
+                                            setTypes(false);
+                                          } else {
+                                            setTypes(true);
+                                          }
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.autorenew,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                            Text(
+                                              ' Switch Units',
+                                              style: TextStyle(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryText),
+                                            )
+                                          ],
                                         ),
-                                        borderRadius: BorderRadius.circular(8),
                                       ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Color(0x00000000),
-                                          width: 1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Color(0x00000000),
-                                          width: 1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      counterText: ''),
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Outfit',
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        fontSize: 18,
-                                        lineHeight: 1,
-                                      ),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  keyboardType: TextInputType.number,
-                                  maxLength: 5,
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
@@ -427,45 +507,92 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
                                       }
                                     }
                                   } else {
-                                    setState(() => FFAppState().age =
-                                        int.parse(textController1.text));
-                                    setState(() => FFAppState().weight =
-                                        int.parse(textController2.text));
-                                    setState(() => FFAppState().cup =
-                                        int.parse(textController3.text));
-                                    setState(() => FFAppState().totalwater =
-                                        functions.calculatewater(
-                                            int.parse(textController2.text),
-                                            int.parse(textController1.text)));
-                                    functions.saveWaterToDrink(
-                                        functions.calculatewater(
-                                            int.parse(textController2.text),
-                                            int.parse(textController1.text)));
-                                    setState(() => FFAppState().progressbar =
-                                        functions.progressbar1(
-                                            FFAppState().totalwater,
-                                            FFAppState().cup));
-                                    setState(() =>
-                                        FFAppState().initialtotalwater =
-                                            FFAppState().totalwater);
-                                    setState(() =>
-                                        FFAppState().progressbarinc = 0.0);
-                                    setState(() => FFAppState().time = null);
-                                    setState(
-                                        () => FFAppState().drinktype = 1.0);
-                                    setState(
-                                        () => FFAppState().drinkname = 'Water');
-                                    await Navigator.pushAndRemoveUntil(
-                                      context,
-                                      PageTransition(
-                                        type: PageTransitionType.fade,
-                                        duration: Duration(milliseconds: 300),
-                                        reverseDuration:
-                                            Duration(milliseconds: 300),
-                                        child: TutorialWidget(),
-                                      ),
-                                      (r) => false,
-                                    );
+                                    if (!(isML ?? true)) {
+                                      setState(() => FFAppState().age =
+                                          int.parse(textController1.text));
+                                      setState(() => FFAppState().weight =
+                                          convertToKg(
+                                              int.parse(textController2.text)));
+                                      setState(() => FFAppState().cup =
+                                          converToML(
+                                              double.parse(textController3.text)
+                                                  .round()));
+                                      setState(() => FFAppState().totalwater =
+                                          functions.calculatewater(
+                                              convertToKg(int.parse(
+                                                  textController2.text)),
+                                              int.parse(textController1.text)));
+                                      functions.saveWaterToDrink(
+                                          functions.calculatewater(
+                                              convertToKg(double.parse(
+                                                      textController2.text)
+                                                  .round()),
+                                              int.parse(textController1.text)));
+                                      setState(() => FFAppState().progressbar =
+                                          functions.progressbar1(
+                                              FFAppState().totalwater,
+                                              FFAppState().cup));
+                                      setState(() =>
+                                          FFAppState().initialtotalwater =
+                                              FFAppState().totalwater);
+
+                                      setState(() => FFAppState().time = null);
+                                      setState(
+                                          () => FFAppState().drinktype = 1.0);
+                                      setState(() =>
+                                          FFAppState().drinkname = 'Water');
+                                      await Navigator.pushAndRemoveUntil(
+                                        context,
+                                        PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration: Duration(milliseconds: 300),
+                                          reverseDuration:
+                                              Duration(milliseconds: 300),
+                                          child: TutorialWidget(),
+                                        ),
+                                        (r) => false,
+                                      );
+                                    } else {
+                                      setState(() => FFAppState().age =
+                                          int.parse(textController1.text));
+                                      setState(() => FFAppState().weight =
+                                          int.parse(textController2.text));
+                                      setState(() => FFAppState().cup =
+                                          int.parse(textController3.text));
+                                      setState(() => FFAppState().totalwater =
+                                          functions.calculatewater(
+                                              int.parse(textController2.text),
+                                              int.parse(textController1.text)));
+                                      functions.saveWaterToDrink(
+                                          functions.calculatewater(
+                                              int.parse(textController2.text),
+                                              int.parse(textController1.text)));
+                                      setState(() => FFAppState().progressbar =
+                                          functions.progressbar1(
+                                              FFAppState().totalwater,
+                                              FFAppState().cup));
+                                      setState(() =>
+                                          FFAppState().initialtotalwater =
+                                              FFAppState().totalwater);
+                                      setState(() =>
+                                          FFAppState().progressbarinc = 0.0);
+                                      setState(() => FFAppState().time = null);
+                                      setState(
+                                          () => FFAppState().drinktype = 1.0);
+                                      setState(() =>
+                                          FFAppState().drinkname = 'Water');
+                                      await Navigator.pushAndRemoveUntil(
+                                        context,
+                                        PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration: Duration(milliseconds: 300),
+                                          reverseDuration:
+                                              Duration(milliseconds: 300),
+                                          child: TutorialWidget(),
+                                        ),
+                                        (r) => false,
+                                      );
+                                    }
                                   }
                                 },
                                 text: 'Confirm',

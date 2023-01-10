@@ -76,6 +76,15 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return lastItem;
   }
 
+  bool? isml;
+
+  get_isml() async {
+    final prefs = await SharedPreferences.getInstance();
+    isml = await prefs.getBool('isMl');
+
+    setState(() {});
+  }
+
   addWaterToHist(int wateramount, String drinktype) {
     saveWater = [
       wateramount,
@@ -176,7 +185,12 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   'assets/images/bardak_light.png',
                   width: 50,
                 ),
-                Text(w[index][0].toString() + ' ml'),
+                Text((isml ?? true)
+                    ? w[index][0].toString() + ' ml'
+                    : MainFixedWidgetState()
+                            .converToOz(w[index][0])
+                            .toString() +
+                        ' oz'),
                 Text(w[index][2].toString())
               ],
             ),
@@ -191,7 +205,12 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   'assets/images/coffeelogo_flutter.png',
                   width: 50,
                 ),
-                Text(w[index][0].toString() + ' ml'),
+                Text((isml ?? true)
+                    ? w[index][0].toString() + ' ml'
+                    : MainFixedWidgetState()
+                            .converToOz(w[index][0])
+                            .toString() +
+                        ' oz'),
                 Text(w[index][2].toString())
               ],
             ),
@@ -206,7 +225,12 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   'assets/images/oj_flutter.png',
                   width: 50,
                 ),
-                Text(w[index][0].toString() + ' ml'),
+                Text((isml ?? true)
+                    ? w[index][0].toString() + ' ml'
+                    : MainFixedWidgetState()
+                            .converToOz(w[index][0])
+                            .toString() +
+                        ' oz'),
                 Text(w[index][2].toString())
               ],
             ),
@@ -221,7 +245,12 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   'assets/images/glassmilk.png',
                   width: 50,
                 ),
-                Text(w[index][0].toString() + ' ml'),
+                Text((isml ?? true)
+                    ? w[index][0].toString() + ' ml'
+                    : MainFixedWidgetState()
+                            .converToOz(w[index][0])
+                            .toString() +
+                        ' oz'),
                 Text(w[index][2].toString())
               ],
             ),
@@ -266,7 +295,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     // TODO: implement initState
-
+    get_isml();
     setTody(selectedDay1 ?? DateTime.now());
     SetSpecificDay(tody.toString() + 'Z');
     FetchDayToList(tody.toString() + 'Z');

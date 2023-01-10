@@ -5,6 +5,7 @@ import '../main_fixed/main_fixed_widget.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SliderWidget extends StatefulWidget {
   const SliderWidget({Key? key}) : super(key: key);
@@ -21,6 +22,28 @@ class _SliderWidgetState extends State<SliderWidget> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
+  bool? isML;
+  setTypes(bool mlbool) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('isMl', mlbool);
+    setState(() {
+      isML = mlbool;
+    });
+  }
+
+  getType() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    isML = await prefs.getBool('isMl') ?? true;
+    setState(() {});
+    return isML;
+  }
+
+  int converToOz(int ml) {
+    return (ml * 0.0338).round();
   }
 
   @override
@@ -65,7 +88,9 @@ class _SliderWidgetState extends State<SliderWidget> {
                 alignment: AlignmentDirectional(0, 0),
                 child: Text(
                   formatNumber(
-                    sliderValue,
+                    (isML ?? true)
+                        ? sliderValue
+                        : converToOz(sliderValue!.round()),
                     formatType: FormatType.custom,
                     format: '',
                     locale: '',
