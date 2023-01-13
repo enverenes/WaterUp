@@ -166,7 +166,8 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                     .bodyText1
                                     .override(
                                       fontFamily: 'Outfit',
-                                      color: Color(0xFF57636C),
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryColor,
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -246,7 +247,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                     .override(
                                       fontFamily: 'Outfit',
                                       color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
+                                          .primaryColor,
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -332,8 +333,9 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                     .bodyText1
                                     .override(
                                       fontFamily: 'Outfit',
-                                      color: Color(0xFF57636C),
-                                      fontSize: 16,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryColor,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                     ),
                               ),
@@ -354,7 +356,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                             0, 0, 8, 0),
                                         child: Icon(
                                           Icons.switch_right,
-                                          color: Colors.black,
+                                          color: Color(0xFF57636C),
                                           size: 20,
                                         ),
                                       ),
@@ -412,7 +414,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                       fontFamily: 'Outfit',
                                       color: FlutterFlowTheme.of(context)
                                           .primaryColor,
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                     ),
                               ),
@@ -433,7 +435,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                             8, 2, 0, 0),
                                         child: Icon(
                                           Icons.switch_left,
-                                          color: Colors.black,
+                                          color: Color(0xFF57636C),
                                           size: 24,
                                         ),
                                       ),
@@ -828,18 +830,11 @@ class _SettingsWidgetState extends State<SettingsWidget>
                             return AlertDialog(
                               title: Center(child: Text('Visit our website')),
                               actionsAlignment: MainAxisAlignment.start,
-                              actions: [
-                                IconButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    icon: Icon(Icons.arrow_back_rounded))
-                              ],
                               content: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  ElevatedButton(
+                                  TextButton(
                                       onPressed: () {
                                         launchURL(
                                             'https://www.weinteractive.net/privacy-policy');
@@ -848,7 +843,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                   SizedBox(
                                     width: 15,
                                   ),
-                                  ElevatedButton(
+                                  TextButton(
                                       onPressed: () {
                                         launchURL(
                                             'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/');

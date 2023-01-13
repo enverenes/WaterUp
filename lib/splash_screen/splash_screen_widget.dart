@@ -126,7 +126,7 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
         leadingWidth: 0,
         centerTitle: false,
         actions: [
-          Container(
+          /* Container(       //LANGUAGE SELECTION
               padding: EdgeInsets.only(
                 right: 25,
               ),
@@ -156,7 +156,7 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                     );
                   }).toList(),
                 ),
-              )),
+              )),   */
         ],
       ),
       key: scaffoldKey,
@@ -353,7 +353,6 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                     50, 0, 50, 60),
                                 child: Column(
                                   children: [
-                                    
                                     Align(
                                       alignment:
                                           AlignmentDirectional.centerStart,
@@ -438,8 +437,7 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                       setState(() => FFAppState().weight =
                                           convertToKg(
                                               int.parse(textController2.text)));
-                                      setState(() => FFAppState().cup =
-                                          200);
+                                      setState(() => FFAppState().cup = 200);
                                       setState(() => FFAppState().totalwater =
                                           functions.calculatewater(
                                               convertToKg(int.parse(
@@ -480,8 +478,7 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                           int.parse(textController1.text));
                                       setState(() => FFAppState().weight =
                                           int.parse(textController2.text));
-                                      setState(() => FFAppState().cup =
-                                          200);
+                                      setState(() => FFAppState().cup = 200);
                                       setState(() => FFAppState().totalwater =
                                           functions.calculatewater(
                                               int.parse(textController2.text),

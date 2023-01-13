@@ -108,12 +108,11 @@ class MainFixedWidgetState extends State<MainFixedWidget>
   Widget Adam() {
     if (Theme.of(context).brightness == Brightness.light) {
       return Container(
-        width: (MediaQuery.of(context).size.height * 0.35) - 2,
-        height:
-            MediaQuery.of(context).size.height * (0.35 * 2.043478260869565) - 2,
+        width: (MediaQuery.of(context).size.height * 0.35),
+        height: MediaQuery.of(context).size.height * (0.35 * 2.043478260869565),
         child: Image.asset(
           'assets/images/adamuzun.png',
-          fit: BoxFit.cover,
+          fit: BoxFit.fitWidth,
         ),
       );
     } else {
@@ -265,7 +264,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
 
   String currentdrinktype = FFAppState().drinkname[0];
 
-  double tweenvar = 30.0;
+  double tweenvar = 32.0;
 
   drinkWater(int cup, BuildContext context, bool onetime, String type) {
     if (!onetime) {
@@ -546,10 +545,10 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                 TweenAnimationBuilder(
                                   duration: Duration(milliseconds: 100),
                                   tween:
-                                      Tween<double>(begin: 30, end: tweenvar),
+                                      Tween<double>(begin: 32, end: tweenvar),
                                   onEnd: () {
                                     setState(() {
-                                      tweenvar = 30.0;
+                                      tweenvar = 32.0;
                                     });
                                   },
                                   builder: (context, double value, child) =>
@@ -666,7 +665,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                       setState(() {}));
                                                 },
                                                 onTap: () async {
-                                                  tweenvar = 40.0;
+                                                  tweenvar = 42.0;
                                                   adCounter++;
                                                   adActionsSet(adCounter);
                                                   if ((adCounter % 5 == 0) &
@@ -734,7 +733,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                           )),
                                 ),
                                 Positioned(
-                                  bottom: 10,
+                                  bottom: 15,
                                   child: Container(
                                     padding: EdgeInsetsDirectional.only(
                                         start: 6, end: 6),
@@ -759,8 +758,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                       .height *
                                                   0.2,
                                               child: Padding(
-                                                padding: MediaQuery.of(context)
-                                                    .viewInsets,
+                                                padding: EdgeInsets.all(0),
                                                 child: StatefulBuilder(
                                                   builder:
                                                       (BuildContext context,
@@ -854,7 +852,8 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                 .bodyText1
                                                 .override(
                                                     fontFamily: 'Outfit',
-                                                    color: const Color(0xFF57636C),
+                                                    color:
+                                                        const Color(0xFF57636C),
                                                     fontWeight:
                                                         FontWeight.w300),
                                           ),

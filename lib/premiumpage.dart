@@ -1,9 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../flutter_flow/flutter_flow_theme.dart';
 
 class premium extends StatefulWidget {
   premium({Key? key}) : super(key: key);
@@ -20,15 +23,20 @@ class premiumState extends State<premium> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                  color: Color(0xFF57636C), shape: BoxShape.circle),
-              child: Center(
-                child: Image.asset('')
+              width: 250,
+              height: 250,
+              child: Image.asset(
+                'assets/images/1_premium.png',
               )),
           Container(
-              margin: EdgeInsets.only(top: 30),
+              padding: EdgeInsets.only(right: 15, left: 15, top: 5, bottom: 5),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  blurRadius: 5,
+                  color: Color(0x33000000),
+                  offset: Offset(0, 2),
+                )
+              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               child: Text(
                 'Remove all ads',
                 style: TextStyle(
@@ -43,15 +51,22 @@ class premiumState extends State<premium> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                  color: Color(0xFF57636C), shape: BoxShape.circle),
-              child: Center(
-                child:  Image.asset('')
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(),
+              child: Image.asset(
+                'assets/images/2_premium.png',
+                fit: BoxFit.contain,
               )),
           Container(
-              margin: EdgeInsets.only(top: 30),
+              padding: EdgeInsets.only(right: 15, left: 15, top: 5, bottom: 5),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  blurRadius: 5,
+                  color: Color(0x33000000),
+                  offset: Offset(0, 2),
+                )
+              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
               child: Text(
                 'Get daily reminders',
                 style: TextStyle(fontSize: 20, color: Colors.black),
@@ -66,41 +81,28 @@ class premiumState extends State<premium> {
         children: [
           Center(
             child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                    color: Color(0xFF57636C), shape: BoxShape.circle),
-                child: Center(
-                  child:  Image.asset('')
-                )),
+                width: 250,
+                height: 250,
+                decoration: BoxDecoration(),
+                child:
+                    Center(child: Image.asset('assets/images/3_premium.png'))),
           ),
           Container(
-              margin: EdgeInsets.only(top: 30),
-              child: Text('Acces to History',
-                  style: TextStyle(fontSize: 20, color: Colors.black)))
+            padding: EdgeInsets.only(right: 15, left: 15, top: 5, bottom: 5),
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                blurRadius: 5,
+                color: Color(0x33000000),
+                offset: Offset(0, 2),
+              )
+            ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+            child: Text('Access to History',
+                style: TextStyle(
+                    fontFamily: 'Outfit', fontSize: 20, color: Colors.black)),
+          )
         ],
       ),
     ),
-    Container(
-      height: 300,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                  color: Color(0xFF57636C), shape: BoxShape.circle),
-              child: Center(
-                child:  Image.asset('')
-              )),
-          Container(
-              margin: EdgeInsets.only(top: 30),
-              child: Text('Select Different Drinks',
-                  style: TextStyle(fontSize: 20, color: Colors.black)))
-        ],
-      ),
-    )
   ];
 
   Future<void> initPlatformState() async {
@@ -168,13 +170,9 @@ class premiumState extends State<premium> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      height: 700,
+      height: 900,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 10,
-          ),
           CarouselSlider.builder(
               itemCount: slidingColumns.length,
               itemBuilder: ((context, index, realIndex) {
@@ -182,40 +180,39 @@ class premiumState extends State<premium> {
                 return buildColumn(slidingColumn, index);
               }),
               options: CarouselOptions(
-                height: 250,
+                height: 350,
                 autoPlay: true,
                 enlargeCenterPage: true,
                 onPageChanged: (index, reason) =>
                     setState(() => activeIndex = index),
               )),
+          Center(child: buildIndicator()),
           SizedBox(
             height: 10,
           ),
-          buildIndicator(),
-          SizedBox(
-            height: 60,
-          ),
-          ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStatePropertyAll<Color>(Color(0xFF003366)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Color(0xFF003366))))),
-              onPressed: () {
-                makePurchase();
-              },
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Text('Premium One Year Package',
-                        style: TextStyle(fontSize: 20)),
-                    Text('Only 0.99 USD/mo'),
-                  ],
-                ),
-              ))
+          Container(
+            child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll<Color>(Color(0xFF003366)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ))),
+                onPressed: () {
+                  makePurchase();
+                },
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Text('Premium One Year Package',
+                          style: TextStyle(fontSize: 20)),
+                      Text('Only 0.99 USD/mo'),
+                    ],
+                  ),
+                )),
+          )
         ],
       ),
     );
@@ -228,7 +225,7 @@ class premiumState extends State<premium> {
 
   Widget buildColumn(Widget column, int index) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 12),
+      margin: EdgeInsets.symmetric(horizontal: 2),
       color: Colors.white,
       child: column,
     );

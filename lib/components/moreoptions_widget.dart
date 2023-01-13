@@ -188,9 +188,9 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                   size: 30,
                 ),
                 onPressed: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  int? premium1 = prefs.getInt('premium');
-                  if (premium1 == 1) {
+                  //final prefs = await SharedPreferences.getInstance();
+                  // int? premium1 = prefs.getInt('premium');
+                  if (true) {
                     await showModalBottomSheet(
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
@@ -205,34 +205,6 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                         );
                       },
                     );
-                  } else {
-                    showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              title: Row(
-                                children: [
-                                  const Text('Drink Type Selection '),
-                                ],
-                              ),
-                              content: const Text(
-                                  'Buy Premium to unlock this feature'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => showModalBottomSheet(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return premium();
-                                      }),
-                                  child: Center(
-                                    child: const Text('Buy Premium Now',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontFamily: 'Roboto',
-                                            fontWeight: FontWeight.w500)),
-                                  ),
-                                ),
-                              ],
-                            ));
                   }
                 },
               ),
