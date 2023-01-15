@@ -206,8 +206,7 @@ class premiumState extends State<premium> {
                     children: [
                       Text('Premium One Year Package',
                           style: TextStyle(fontSize: 20)),
-                      Text('Access all premium features for ' +
-                          (package?.storeProduct.priceString ?? 'null')),
+                      Text('Access all premium features for ' + '4.99\$'),
                     ],
                   ),
                 )),

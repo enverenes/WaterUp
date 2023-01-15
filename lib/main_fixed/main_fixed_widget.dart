@@ -107,20 +107,14 @@ class MainFixedWidgetState extends State<MainFixedWidget>
 
   Widget Adam() {
     if (Theme.of(context).brightness == Brightness.light) {
-      return Container(
-        width: (MediaQuery.of(context).size.height * 0.35),
-        height: MediaQuery.of(context).size.height * (0.35 * 2.043478260869565),
-        child: Image.asset(
-          'assets/images/adamuzun.png',
-          fit: BoxFit.fitWidth,
-        ),
+      return Image.asset(
+        'assets/images/adamuzun.png',
+        fit: BoxFit.fill,
       );
     } else {
-      return Container(
-        child: Image.asset(
-          'assets/images/adamuzun_gece.png',
-          fit: BoxFit.fill,
-        ),
+      return Image.asset(
+        'assets/images/adamuzun_gece.png',
+        fit: BoxFit.fill,
       );
     }
   }
@@ -128,19 +122,16 @@ class MainFixedWidgetState extends State<MainFixedWidget>
   Widget backgroundAdam() {
     if (Theme.of(context).brightness == Brightness.light) {
       return Container(
-          color: Color.fromARGB(255, 227, 227, 227),
-          width: (MediaQuery.of(context).size.height * 0.35) - 2,
-          height:
-              MediaQuery.of(context).size.height * (0.35 * 2.043478260869565) -
-                  2);
+        color: Color.fromARGB(255, 227, 227, 227),
+      );
     } else {
       return Container(
-          alignment: AlignmentDirectional.bottomCenter,
-          color: Colors.white,
-          width: double.infinity,
-          height:
-              MediaQuery.of(context).size.height * (0.35 * 2.043478260869565) -
-                  2);
+        width: MediaQuery.of(context).size.height * 0.35 - (4),
+        height:
+            MediaQuery.of(context).size.height * (0.35 * 2.043478260869565) -
+                (4),
+        color: Colors.white,
+      );
     }
   }
 
@@ -442,13 +433,12 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                         width: MediaQuery.of(context).size.height * 0.35,
                         height: MediaQuery.of(context).size.height *
                             (0.35 * 2.043478260869565),
-                        decoration: BoxDecoration(),
                         child: Stack(
                           fit: StackFit.expand,
                           clipBehavior: Clip.antiAlias,
+                          alignment: AlignmentDirectional.bottomCenter,
                           children: [
                             Align(
-                              alignment: AlignmentDirectional(0, 1),
                               child: backgroundAdam(),
                             ),
                             TweenAnimationBuilder(
@@ -473,10 +463,9 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                       ),
                                       Container(
                                         width: (MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.35) -
-                                            2,
+                                                .size
+                                                .height *
+                                            0.35),
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 (0.35 * 2.043478260869565),
@@ -488,9 +477,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                 );
                               },
                             ),
-                            Align(
-                                alignment: AlignmentDirectional(0, 1),
-                                child: Adam()),
+                            Align(child: Adam()),
                             Align(
                               alignment: AlignmentDirectional.bottomCenter,
                               child: Column(
