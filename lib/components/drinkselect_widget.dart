@@ -229,7 +229,9 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                                         .viewInsets,
                                                                     child:
                                                                         Container(
-                                                                      color: FlutterFlowTheme.of(context).primaryBackground,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryBackground,
                                                                       height: MediaQuery.of(context)
                                                                               .copyWith()
                                                                               .size
@@ -249,7 +251,7 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                                               mainAxisAlignment: MainAxisAlignment.center,
                                                                               children: [
                                                                                 Text(
-                                                                                  'Cup Size: ' + '$sliderval' + ' ml',
+                                                                                  'Coffee Size: ' + '$sliderval' + ' ml',
                                                                                   style: TextStyle(color: FlutterFlowTheme.of(context).primaryColor, fontWeight: FontWeight.bold),
                                                                                 ),
                                                                                 Slider(
@@ -268,11 +270,7 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                                                 TextButton(
                                                                                     onPressed: () async {
                                                                                       send_coffeval = _currentSliderValue.toInt();
-                                                                                         await main.MainFixedWidgetState().drinkWaterFetch(
-                                                      send_coffeval,
-                                                      context,
-                                                      true,
-                                                      'C');
+                                                                                      await main.MainFixedWidgetState().drinkWaterFetch(send_coffeval, context, true, 'C');
                                                                                       setState(() {
                                                                                         FFAppState().drinktype = 1.0;
                                                                                         FFAppState().drinkname = 'Water';
@@ -323,7 +321,9 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                                     .override(
                                                                       fontFamily:
                                                                           'Outfit',
-                                                                      color: FlutterFlowTheme.of(context).primaryBackground,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryBackground,
                                                                       fontSize:
                                                                           14,
                                                                     ),
@@ -417,7 +417,9 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                       .subtitle2
                                                       .override(
                                                         fontFamily: 'Outfit',
-                                                        color: FlutterFlowTheme.of(context).primaryBackground,
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .primaryBackground,
                                                       ),
                                                   borderSide: BorderSide(
                                                     color: Colors.transparent,
@@ -488,7 +490,8 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                 return Padding(
                                   padding: MediaQuery.of(context).viewInsets,
                                   child: Container(
-                                    color: FlutterFlowTheme.of(context).primaryBackground,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
                                     height: MediaQuery.of(context).size.height *
                                         0.15,
                                     child: Container(
@@ -651,7 +654,8 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                 return Padding(
                                   padding: MediaQuery.of(context).viewInsets,
                                   child: Container(
-                                    color: FlutterFlowTheme.of(context).primaryBackground,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
                                     height: MediaQuery.of(context).size.height *
                                         0.15,
                                     child: Container(

@@ -132,6 +132,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                                     activeColor: Color(0xFF003366),
                                     value: _currentSliderValue,
                                     max: 1500,
+                                    divisions: 150,
                                     label: (isML ?? true)
                                         ? _currentSliderValue.round().toString()
                                         : converToOz(

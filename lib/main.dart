@@ -100,7 +100,8 @@ class _MyAppState extends State<MyApp> {
           PurchasesConfiguration("goog_lerxVMViMarxCepdPPuKGxuLRmH");
     } else {
       configuration =
-          PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");
+          PurchasesConfiguration("appl_GSXZCxTbaIRrStwvuRoXjhIFRlj");
+      print(configuration.appUserID);
     }
     await Purchases.configure(configuration);
   }

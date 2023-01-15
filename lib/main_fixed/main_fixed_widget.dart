@@ -598,8 +598,12 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                                         .center,
                                                                 children: [
                                                                   Text(
-                                                                    '$sliderval' +
-                                                                        ' ml',
+                                                                    (isML ??
+                                                                            true)
+                                                                        ? '$sliderval' +
+                                                                            ' ml'
+                                                                        : converToOz(sliderval).toString() +
+                                                                            ' oz',
                                                                     style: TextStyle(
                                                                         color: FlutterFlowTheme.of(context)
                                                                             .primaryColor,
@@ -615,9 +619,13 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                                     max: 1500,
                                                                     divisions:
                                                                         150,
-                                                                    label: _currentSliderValue
-                                                                        .round()
-                                                                        .toString(),
+                                                                    label: (isML ??
+                                                                            true)
+                                                                        ? _currentSliderValue
+                                                                            .round()
+                                                                            .toString()
+                                                                        : converToOz(_currentSliderValue.round())
+                                                                            .toString(),
                                                                     onChanged:
                                                                         (double
                                                                             value) {

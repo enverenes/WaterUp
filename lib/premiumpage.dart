@@ -124,6 +124,13 @@ class premiumState extends State<premium> {
     print(configuration.store);
   }
 
+  Package? package;
+  getProductInfo() async {
+    Offerings offers = await Purchases.getOfferings();
+
+    package = offers.current!.availablePackages[1];
+  }
+
   @override
   void initState() {
     //initPlatformState();
@@ -133,20 +140,11 @@ class premiumState extends State<premium> {
   int activeIndex = 0;
 
   void makePurchase() async {
-    Offerings? offerings;
-
     try {
-      offerings = await Purchases.getOfferings();
-
-      if (offerings.current != null) {
-        print(offerings.current!.availablePackages.first);
-      }
-
-      CustomerInfo customerInfo = await Purchases.purchasePackage(
-          offerings.current!.availablePackages.first);
-      if (customerInfo.entitlements.all['premium']!.isActive) {
-        print('NOW PREMiUM');
-        await unlockPremium();
+      await Purchases.purchaseProduct('premium_1200_1y');
+      CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+      if (!customerInfo.activeSubscriptions.isEmpty) {
+        unlockPremium();
       }
     } catch (e) {
       print(e);
@@ -208,7 +206,8 @@ class premiumState extends State<premium> {
                     children: [
                       Text('Premium One Year Package',
                           style: TextStyle(fontSize: 20)),
-                      Text('Only 0.99 USD/mo'),
+                      Text('Access all premium features for ' +
+                          (package?.storeProduct.priceString ?? 'null')),
                     ],
                   ),
                 )),

@@ -8,7 +8,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../tutorial/tutorial_widget.dart';
 import 'package:flutter/material.dart';
-
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:watetlo/premiumpage.dart' as premium;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -889,6 +889,90 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               child: Text(
                                 'Privacy Policy & Terms of Use',
                                 overflow: TextOverflow.ellipsis,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText2
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryColor,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Align(
+                                alignment: AlignmentDirectional(1, 0),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  size: 18,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20, 12, 20, 0),
+                  child: InkWell(
+                    onTap: () async {
+                      try {
+                        CustomerInfo restoredInfo =
+                            await Purchases.restorePurchases();
+
+                        if (restoredInfo
+                            .entitlements.all['premium']!.isActive) {
+                          premium.premiumState().unlockPremium();
+                        }
+                      } catch (e) {
+                        showDialog(
+                            context: context,
+                            builder: ((context) {
+                              return AlertDialog(
+                                content: Text('Unable to restore purchases'),
+                              );
+                            }));
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 5,
+                            color: Color(0x33000000),
+                            offset: Offset(0, 2),
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(12),
+                        shape: BoxShape.rectangle,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0, 0.35),
+                              child: FaIcon(
+                                FontAwesomeIcons.undoAlt,
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                size: 24,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              child: Text(
+                                'Restore Purchases',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText2
                                     .override(
