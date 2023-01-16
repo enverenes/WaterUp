@@ -114,26 +114,20 @@ class premiumState extends State<premium> {
           PurchasesConfiguration("goog_lerxVMViMarxCepdPPuKGxuLRmH");
     } else if (Platform.isIOS) {
       configuration =
-          await PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");
+          await PurchasesConfiguration("appl_GSXZCxTbaIRrStwvuRoXjhIFRlj");
       print('IOS DEVICE');
     } else {
       configuration =
-          PurchasesConfiguration("appl_lpfudKmsGMForwQndSQZrMijbcC");
+          PurchasesConfiguration("appl_GSXZCxTbaIRrStwvuRoXjhIFRlj");
     }
     await Purchases.configure(configuration);
     print(configuration.store);
   }
 
-  Package? package;
-  getProductInfo() async {
-    Offerings offers = await Purchases.getOfferings();
-
-    package = offers.current!.availablePackages[1];
-  }
-
   @override
   void initState() {
-    //initPlatformState();
+    initPlatformState();
+
     super.initState();
   }
 
@@ -142,19 +136,12 @@ class premiumState extends State<premium> {
   void makePurchase() async {
     try {
       await Purchases.purchaseProduct('premium_1200_1y');
-      CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-      if (!customerInfo.activeSubscriptions.isEmpty) {
-        unlockPremium();
-      }
     } catch (e) {
       print(e);
-      showDialog(
-          context: context,
-          builder: ((context) {
-            return AlertDialog(
-              content: Text('This package is currently unavailable'),
-            );
-          }));
+    }
+    CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+    if (!customerInfo.activeSubscriptions.isEmpty) {
+      unlockPremium();
     }
   }
 

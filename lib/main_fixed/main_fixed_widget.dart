@@ -211,8 +211,10 @@ class MainFixedWidgetState extends State<MainFixedWidget>
     if ((-inc) <
         -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565))) {
       pos = -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565));
+    } else if (FFAppState().dranksofar == 0) {
+      pos = 0.0;
     } else {
-      pos = -(inc);
+      pos = -(inc) - 50;
     }
   }
 
@@ -230,7 +232,8 @@ class MainFixedWidgetState extends State<MainFixedWidget>
       pos -= inc;
     } else if (pos - inc <
         -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565))) {
-      pos = -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565));
+      pos = -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565)) -
+          50;
     }
   }
 
@@ -246,6 +249,10 @@ class MainFixedWidgetState extends State<MainFixedWidget>
       if (pos < 0) {
         pos += inc;
       } else {
+        pos = 0;
+      }
+
+      if (FFAppState().dranksofar == 0) {
         pos = 0;
       }
     });
@@ -454,23 +461,29 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Container(
+                                        padding: EdgeInsets.all(0),
                                         width: 300,
                                         height: ((MediaQuery.of(context)
                                                     .size
                                                     .height *
                                                 0.8) -
-                                            25),
+                                            20),
                                       ),
                                       Container(
-                                        width: (MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.35),
+                                        padding: EdgeInsets.all(0),
+                                        width:
+                                            MediaQuery.of(context).size.height *
+                                                    0.35 -
+                                                (4),
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                (0.35 * 2.043478260869565),
+                                                    (0.35 * 2.043478260869565) +
+                                                50,
                                         child: RiveAnimation.asset(
-                                            'assets/rive_animations/wave.riv'),
+                                          'assets/rive_animations/wave.riv',
+                                          fit: BoxFit.fill,
+                                          alignment: Alignment.topCenter,
+                                        ),
                                       ),
                                     ],
                                   ),
