@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watetlo/premiumpage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dart:io' show Platform;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MoreoptionsWidget extends StatefulWidget {
   const MoreoptionsWidget({Key? key}) : super(key: key);
@@ -158,7 +159,8 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                                             const TextStyle(fontSize: 14),
                                       ),
                                       child: Text(
-                                        'Save',
+                                        AppLocalizations.of(context)!
+                                            .drink_slider_button,
                                         style: TextStyle(
                                           color: Colors.white,
                                         ),

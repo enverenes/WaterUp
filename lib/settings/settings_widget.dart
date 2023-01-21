@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:watetlo/index.dart';
-
 import '../components/nfo3_widget.dart';
 import 'dart:io' show Platform;
 import '../flutter_flow/flutter_flow_icon_button.dart';
@@ -17,6 +16,7 @@ import 'package:watetlo/notifications.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:watetlo/language_page.dart';
 
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({Key? key}) : super(key: key);
@@ -922,11 +922,16 @@ class _SettingsWidgetState extends State<SettingsWidget>
                           children: [
                             Align(
                               alignment: AlignmentDirectional(0, 0.35),
-                              child: FaIcon(
-                                FontAwesomeIcons.bookmark,
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
-                                size: 24,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 4),
+                                child: Center(
+                                  child: FaIcon(
+                                    FontAwesomeIcons.bookmark,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
+                                    size: 24,
+                                  ),
+                                ),
                               ),
                             ),
                             Padding(
@@ -934,6 +939,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                   EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Container(
                                 width: 200,
+                                padding: EdgeInsets.only(left: 2),
                                 child: Text(
                                   AppLocalizations.of(context)!.privacy,
                                   overflow: TextOverflow.ellipsis,
@@ -970,25 +976,15 @@ class _SettingsWidgetState extends State<SettingsWidget>
                   padding: EdgeInsetsDirectional.fromSTEB(20, 12, 20, 0),
                   child: InkWell(
                     onTap: () async {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: ((context) {
-                            return Container(
-                              height: 200,
-                              child: CupertinoPicker(
-                                backgroundColor: Colors.white,
-                                itemExtent: 32,
-                                onSelectedItemChanged: (int index) {
-                                  setState(() {
-                                    _selectLanguage(_languages[index]);
-                                  });
-                                },
-                                children: _languages.map((language) {
-                                  return Text(language);
-                                }).toList(),
-                              ),
-                            );
-                          }));
+                      await Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 300),
+                          reverseDuration: Duration(milliseconds: 300),
+                          child: LanguagePage(),
+                        ),
+                      );
                     },
                     child: Container(
                       width: double.infinity,

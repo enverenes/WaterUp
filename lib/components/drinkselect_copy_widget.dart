@@ -50,7 +50,8 @@ class _DrinkselectCopyWidgetState extends State<DrinkselectCopyWidget> {
                             ChipData('Tall'),
                             ChipData('Grande'),
                             ChipData('Venti'),
-                            ChipData('Custom')
+                            ChipData(
+                                AppLocalizations.of(context)!.coffee_custom)
                           ],
                           onChanged: (val) async {
                             setState(() => choiceChipsValue = val?.first);
@@ -146,7 +147,7 @@ class _DrinkselectCopyWidgetState extends State<DrinkselectCopyWidget> {
                     FFAppState().drinkname = 'Water';
                   });
                 },
-                text: 'OK',
+                text: AppLocalizations.of(context)!.ok_button,
                 options: FFButtonOptions(
                   width: 70,
                   height: 30,

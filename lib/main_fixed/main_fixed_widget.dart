@@ -682,7 +682,8 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                                       ),
                                                                       child:
                                                                           Text(
-                                                                        'Save',
+                                                                        AppLocalizations.of(context)!
+                                                                            .drink_slider_button,
                                                                         style:
                                                                             TextStyle(
                                                                           color:
@@ -858,7 +859,9 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                                           14),
                                                             ),
                                                             child: Text(
-                                                              'Save',
+                                                              AppLocalizations.of(
+                                                                      context)!
+                                                                  .drink_slider_button,
                                                               style: TextStyle(
                                                                 color: FlutterFlowTheme.of(
                                                                         context)
@@ -1036,7 +1039,10 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                       onPressed: () =>
                                                           Navigator.pop(
                                                               alertDialogContext),
-                                                      child: Text('OK',
+                                                      child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .ok_button,
                                                           style: TextStyle(
                                                               fontSize: 14,
                                                               fontFamily:
@@ -1249,7 +1255,9 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                             ChipData('Tall'),
                                                             ChipData('Grande'),
                                                             ChipData('Venti'),
-                                                            ChipData('Custom')
+                                                            ChipData(AppLocalizations
+                                                                    .of(context)!
+                                                                .coffee_custom)
                                                           ],
                                                           onChanged:
                                                               (val) async {
@@ -1470,7 +1478,9 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                     ),
                                                   );
                                                 },
-                                                text: 'OK',
+                                                text: AppLocalizations.of(
+                                                        context)!
+                                                    .ok_button,
                                                 options: FFButtonOptions(
                                                   width: 70,
                                                   height: 30,

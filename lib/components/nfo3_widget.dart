@@ -5,6 +5,8 @@ import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Nfo3Widget extends StatefulWidget {
   const Nfo3Widget({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
   @override
   void initState() {
     super.initState();
+    getType();
     textController1 = TextEditingController(text: FFAppState().age.toString());
     textController2 =
         TextEditingController(text: FFAppState().weight.toString());
@@ -30,6 +33,43 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
     textController1?.dispose();
     textController2?.dispose();
     super.dispose();
+  }
+
+  static bool? isML;
+  setTypes(bool mlbool) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('isMl', mlbool);
+    setState(() {
+      isML = mlbool;
+    });
+  }
+
+  getType() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    isML = await prefs.getBool('isMl') ?? true;
+    setState(() {});
+
+    if (isML ?? true) {
+      textController2!.text = FFAppState().weight.toString();
+    } else {
+      textController2!.text = convertToLbs(FFAppState().weight).toString();
+    }
+
+    return isML;
+  }
+
+  int converToML(int oz) {
+    return (oz * 29.57).round();
+  }
+
+  int convertToKg(int lbs) {
+    return (lbs / (2.2)).round();
+  }
+
+  int convertToLbs(int kgs) {
+    return (kgs * (2.2)).round();
   }
 
   @override
@@ -62,15 +102,11 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
                           Expanded(
                             child: TextFormField(
                               controller: textController1,
-                              onChanged: (_) => EasyDebounce.debounce(
-                                'textController1',
-                                Duration(milliseconds: 2000),
-                                () => setState(() {}),
-                              ),
                               autofocus: true,
                               obscureText: false,
                               decoration: InputDecoration(
-                                labelText: 'Age',
+                                labelText:
+                                    AppLocalizations.of(context)!.age_inbox,
                                 labelStyle: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -157,15 +193,16 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
                               alignment: AlignmentDirectional(0, -0.15),
                               child: TextFormField(
                                 controller: textController2,
-                                onChanged: (_) => EasyDebounce.debounce(
-                                  'textController2',
-                                  Duration(milliseconds: 2000),
-                                  () => setState(() {}),
-                                ),
                                 autofocus: true,
                                 obscureText: false,
                                 decoration: InputDecoration(
-                                  labelText: 'Weight',
+                                  labelText: (isML ?? true)
+                                      ? AppLocalizations.of(context)!
+                                              .weight_inbox +
+                                          ' kgs'
+                                      : AppLocalizations.of(context)!
+                                              .weight_inbox +
+                                          ' lbs',
                                   labelStyle: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
@@ -240,21 +277,39 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
                 alignment: AlignmentDirectional(0, 0),
                 child: FFButtonWidget(
                   onPressed: () async {
-                    setState(() =>
-                        FFAppState().age = int.parse(textController1!.text));
-                    setState(() =>
-                        FFAppState().weight = int.parse(textController2!.text));
-                    setState(() => FFAppState().totalwater =
-                        functions.calculatewater(
-                            int.parse(textController2!.text),
-                            int.parse(textController1!.text)));
-                    setState(() => FFAppState().progressbar =
-                        functions.progressbar1(
-                            FFAppState().totalwater, FFAppState().cup));
-                    setState(() => FFAppState().initialtotalwater =
-                        FFAppState().totalwater);
-                    setState(() => FFAppState().progressbarinc = 0.0);
-                    setState(() => FFAppState().dranksofar = 0);
+                    if (isML ?? true) {
+                      setState(() =>
+                          FFAppState().age = int.parse(textController1!.text));
+                      setState(() => FFAppState().weight =
+                          int.parse(textController2!.text));
+                      setState(() => FFAppState().totalwater =
+                          functions.calculatewater(
+                              int.parse(textController2!.text),
+                              int.parse(textController1!.text)));
+                      setState(() => FFAppState().progressbar =
+                          functions.progressbar1(
+                              FFAppState().totalwater, FFAppState().cup));
+                      setState(() => FFAppState().initialtotalwater =
+                          FFAppState().totalwater);
+                      setState(() => FFAppState().progressbarinc = 0.0);
+                      setState(() => FFAppState().dranksofar = 0);
+                    } else {
+                      setState(() => FFAppState().age =
+                          convertToKg(int.parse(textController1!.text)));
+                      setState(() => FFAppState().weight =
+                          int.parse(textController2!.text));
+                      setState(() => FFAppState().totalwater =
+                          functions.calculatewater(
+                              int.parse(textController2!.text),
+                              convertToKg(int.parse(textController1!.text))));
+                      setState(() => FFAppState().progressbar =
+                          functions.progressbar1(
+                              FFAppState().totalwater, FFAppState().cup));
+                      setState(() => FFAppState().initialtotalwater =
+                          FFAppState().totalwater);
+                      setState(() => FFAppState().progressbarinc = 0.0);
+                      setState(() => FFAppState().dranksofar = 0);
+                    }
                     Navigator.pop(context);
                   },
                   text: 'Save',

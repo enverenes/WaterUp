@@ -1,8 +1,4 @@
 {
-  "helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  },
 "age_inbox" :"Age",
 "weight_inbox" : "Weight ",
 "switch_units_button": "Switch Units",

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watetlo/index.dart';
@@ -17,6 +19,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:watetlo/language_page.dart';
 
 class SplashScreenWidget extends StatefulWidget {
   const SplashScreenWidget({Key? key}) : super(key: key);
@@ -61,7 +64,7 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
   @override
   void initState() {
     super.initState();
-
+    getLanguage();
     getType();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -113,32 +116,34 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
     return (lbs / (2.2)).round();
   }
 
-  String _selectedLanguage = 'English';
-
-  void _selectLanguage(String? language) {
-    setState(() {
-      _selectedLanguage = language ?? _selectedLanguage;
-    });
-
-    if (_selectedLanguage == 'Spanish') {
-      setAppLanguage(context, 'es');
-      setLanguage('es');
-    } else if (_selectedLanguage == 'English') {
-      setAppLanguage(context, 'en');
-      setLanguage('en');
-    } else if (_selectedLanguage == 'Turkish') {
-      setAppLanguage(context, 'tr');
-      setLanguage('tr');
-    } else if (_selectedLanguage == 'French') {
-      setAppLanguage(context, 'fr');
-      setLanguage('fr');
-    }
-  }
+  String? _selectedLanguage;
 
   setLanguage(String language_string) async {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setString('language', language_string);
+  }
+
+  getLanguage() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    _selectedLanguage = await prefs.getString('language');
+    setState(() {});
+  }
+
+  Widget getFlag() {
+    getLanguage();
+    if (_selectedLanguage == 'en') {
+      return Image.asset('assets/images/united-kingdom.png');
+    } else if (_selectedLanguage == 'es') {
+      return Image.asset('assets/images/spain.png');
+    } else if (_selectedLanguage == 'tr') {
+      return Image.asset('assets/images/turkey.png');
+    } else if (_selectedLanguage == 'fr') {
+      return Image.asset('assets/images/france.png');
+    } else {
+      return Image.asset('assets/images/united-kingdom.png');
+    }
   }
 
   @override
@@ -156,35 +161,23 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
           Container(
               //LANGUAGE SELECTION
               padding: EdgeInsets.only(
-                right: 25,
+                right: 15,
               ),
               alignment: AlignmentDirectional(0, 0),
               color: FlutterFlowTheme.of(context).primaryBackground,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  elevation: 0,
-                  value: _selectedLanguage,
-                  onChanged: _selectLanguage,
-                  items: <String>['English', 'Turkish', 'Spanish', 'French']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Image.asset(
-                        value == 'English'
-                            ? 'assets/images/united-kingdom.png'
-                            : value == 'Spanish'
-                                ? 'assets/images/spain.png'
-                                : value == 'French'
-                                    ? 'assets/images/france.png'
-                                    : value == 'Turkish'
-                                        ? 'assets/images/turkey.png'
-                                        : 'assets/images/united-kingdom.png',
-                        width: 34,
+              child: TextButton(
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.fade,
+                        duration: Duration(milliseconds: 300),
+                        reverseDuration: Duration(milliseconds: 300),
+                        child: LanguagePage(),
                       ),
                     );
-                  }).toList(),
-                ),
-              )),
+                  },
+                  child: Container(width: 30, child: getFlag())))
         ],
       ),
       key: scaffoldKey,

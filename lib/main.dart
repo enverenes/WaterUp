@@ -161,7 +161,13 @@ class MyAppState extends State<MyApp> {
         Locale('en'),
         Locale('es'),
         Locale('tr'),
-        Locale('fr')
+        Locale('fr'),
+        Locale('de'),
+        Locale('pt'),
+        Locale('ko'),
+        Locale('ja'),
+        Locale('sv'),
+        Locale('ar')
       ],
       theme: ThemeData(
         brightness: Brightness.light,

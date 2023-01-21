@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 import 'package:carousel_slider/carousel_slider.dart';
@@ -129,9 +130,10 @@ class premiumState extends State<premium> {
                     ],
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20)),
-                child: Text(
+                child: AutoSizeText(
                   AppLocalizations.of(context)!.premium_i2,
                   style: TextStyle(fontSize: 20, color: Colors.black),
+                  overflow: TextOverflow.visible,
                 ))
           ],
         ),
