@@ -15,6 +15,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dart:io' show Platform;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -326,7 +327,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
         title: Text(
-          "Today's Recap",
+          AppLocalizations.of(context)!.history_header,
           style: FlutterFlowTheme.of(context).title1.override(
                 fontFamily: 'Outfit',
                 color: FlutterFlowTheme.of(context).primaryColor,
@@ -410,11 +411,13 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                         AlertDialog(
                                           title: Row(
                                             children: [
-                                              const Text('Previous Days '),
+                                              Text(AppLocalizations.of(context)!
+                                                  .history_error1),
                                             ],
                                           ),
-                                          content: const Text(
-                                              'Buy Premium to unlock this feature'),
+                                          content: Text(
+                                              AppLocalizations.of(context)!
+                                                  .premium_error_context),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () =>
@@ -425,8 +428,10 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                                         return premium();
                                                       }),
                                               child: Center(
-                                                child: const Text(
-                                                    'Buy Premium Now',
+                                                child: Text(
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .premium_error_button,
                                                     style: TextStyle(
                                                         fontSize: 16,
                                                         fontFamily: 'Roboto',
@@ -467,11 +472,13 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                       AlertDialog(
                                         title: Row(
                                           children: [
-                                            const Text('Calendar '),
+                                            Text(AppLocalizations.of(context)!
+                                                .history_error2),
                                           ],
                                         ),
-                                        content: const Text(
-                                            'Buy Premium to unlock this feature'),
+                                        content: Text(
+                                            AppLocalizations.of(context)!
+                                                .premium_buy_button_context),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () =>
@@ -482,8 +489,9 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                                       return premium();
                                                     }),
                                             child: Center(
-                                              child: const Text(
-                                                  'Buy Premium Now',
+                                              child: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .premium_error_button,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontFamily: 'Roboto',
@@ -535,12 +543,13 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                         AlertDialog(
                                           title: Row(
                                             children: [
-                                              const Text(
-                                                  'This is a premium feature '),
+                                              Text(AppLocalizations.of(context)!
+                                                  .premium_error_header),
                                             ],
                                           ),
-                                          content: const Text(
-                                              'Buy Premium to unlock this feature'),
+                                          content: Text(
+                                              AppLocalizations.of(context)!
+                                                  .premium_error_context),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () =>
@@ -551,8 +560,10 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                                         return premium();
                                                       }),
                                               child: Center(
-                                                child: const Text(
-                                                    'Buy Premium Now',
+                                                child: Text(
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .premium_error_button,
                                                     style: TextStyle(
                                                         fontSize: 16,
                                                         fontFamily: 'Roboto',

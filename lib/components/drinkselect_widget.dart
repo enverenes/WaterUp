@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:watetlo/main.dart';
 import '../components/slider_widget.dart';
 import '../components/drinkselect_copy_widget.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../main_fixed/main_fixed_widget.dart' as main;
 import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../main_fixed/main_fixed_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DrinkselectWidget extends StatefulWidget {
   const DrinkselectWidget({Key? key}) : super(key: key);
@@ -97,7 +100,7 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                               fit: BoxFit.contain,
                             ),
                             Text(
-                              'Water',
+                              AppLocalizations.of(context)!.drink_select_water,
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -251,7 +254,7 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                                               mainAxisAlignment: MainAxisAlignment.center,
                                                                               children: [
                                                                                 Text(
-                                                                                  'Coffee Size: ' + '$sliderval' + ' ml',
+                                                                                  AppLocalizations.of(context)!.drink_select_coffee + ' Size: ' + '$sliderval' + ' ml',
                                                                                   style: TextStyle(color: FlutterFlowTheme.of(context).primaryColor, fontWeight: FontWeight.bold),
                                                                                 ),
                                                                                 Slider(
@@ -292,7 +295,7 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                                                       textStyle: const TextStyle(fontSize: 14),
                                                                                     ),
                                                                                     child: Text(
-                                                                                      'Drink',
+                                                                                      AppLocalizations.of(context)!.drink_button,
                                                                                       style: TextStyle(
                                                                                         color: Colors.white,
                                                                                       ),
@@ -450,7 +453,8 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                   fit: BoxFit.contain,
                                 ),
                                 Text(
-                                  'Coffee',
+                                  AppLocalizations.of(context)!
+                                      .drink_select_coffee,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
@@ -513,7 +517,9 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'Cup Size: ' +
+                                                  AppLocalizations.of(context)!
+                                                          .cup_size +
+                                                      ' ' +
                                                       '$sliderval' +
                                                       ' ml',
                                                   style: TextStyle(
@@ -558,6 +564,7 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                         FFAppState().drinkname =
                                                             'Water';
                                                       });
+
                                                       Navigator.push(
                                                         context,
                                                         PageTransition(
@@ -587,7 +594,9 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                               fontSize: 14),
                                                     ),
                                                     child: Text(
-                                                      'Drink',
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .drink_button,
                                                       style: TextStyle(
                                                         color: Colors.white,
                                                       ),
@@ -614,7 +623,8 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                   fit: BoxFit.contain,
                                 ),
                                 Text(
-                                  'Juice',
+                                  AppLocalizations.of(context)!
+                                      .drink_select_juice,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
@@ -677,7 +687,9 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'Cup Size: ' +
+                                                  AppLocalizations.of(context)!
+                                                          .cup_size +
+                                                      ' ' +
                                                       '$sliderval' +
                                                       ' ml',
                                                   style: TextStyle(
@@ -752,7 +764,9 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                                               fontSize: 14),
                                                     ),
                                                     child: Text(
-                                                      'Drink',
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .drink_button,
                                                       style: TextStyle(
                                                         color: Colors.white,
                                                       ),
@@ -779,7 +793,8 @@ class _DrinkselectWidgetState extends State<DrinkselectWidget>
                                   fit: BoxFit.contain,
                                 ),
                                 Text(
-                                  'Milk',
+                                  AppLocalizations.of(context)!
+                                      .drink_select_milk,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(

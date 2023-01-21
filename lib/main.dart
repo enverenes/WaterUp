@@ -10,7 +10,7 @@ import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'index.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:watetlo/history.dart';
@@ -68,14 +68,21 @@ void main() async {
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<MyApp> createState() => MyAppState();
 
-  static _MyAppState of(BuildContext context) =>
-      context.findAncestorStateOfType<_MyAppState>()!;
+  static MyAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<MyAppState>()!;
 }
 
-class _MyAppState extends State<MyApp> {
-  Locale? _locale;
+class MyAppState extends State<MyApp> {
+  static Locale? locale;
+
+  void setLocale(Locale value) {
+    setState(() {
+      locale = value;
+    });
+  }
+
   ThemeMode _themeMode = FlutterFlowTheme.themeMode;
 
   late Stream<WatetloFirebaseUser> userStream;
@@ -109,6 +116,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
+    getLanguage();
     initPlatformState();
     getInitialPage();
     userStream = watetloFirebaseUserStream()
@@ -119,12 +128,17 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void setLocale(String language) =>
-      setState(() => _locale = createLocale(language));
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;
         FlutterFlowTheme.saveThemeMode(mode);
       });
+
+  getLanguage() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    locale = await Locale.fromSubtags(
+        languageCode: prefs.getString('language') ?? 'en');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,14 +151,17 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'watetlo',
       localizationsDelegates: [
-        FFLocalizationsDelegate(),
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      locale: _locale,
-      supportedLocales: const [
+      locale: locale,
+      supportedLocales: [
         Locale('en'),
+        Locale('es'),
+        Locale('tr'),
+        Locale('fr')
       ],
       theme: ThemeData(
         brightness: Brightness.light,

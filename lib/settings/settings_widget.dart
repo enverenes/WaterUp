@@ -15,6 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:watetlo/notifications.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/cupertino.dart';
 
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({Key? key}) : super(key: key);
@@ -90,6 +92,36 @@ class _SettingsWidgetState extends State<SettingsWidget>
     }
   }
 
+  String _selectedLanguage = 'English';
+
+  setLanguage(String language_string) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('language', language_string);
+  }
+
+  void _selectLanguage(String? language) {
+    setState(() {
+      _selectedLanguage = language ?? _selectedLanguage;
+    });
+
+    if (_selectedLanguage == 'Spanish') {
+      setAppLanguage(context, 'es');
+      setLanguage('es');
+    } else if (_selectedLanguage == 'English') {
+      setAppLanguage(context, 'en');
+      setLanguage('en');
+    } else if (_selectedLanguage == 'Turkish') {
+      setAppLanguage(context, 'tr');
+      setLanguage('tr');
+    } else if (_selectedLanguage == 'French') {
+      setAppLanguage(context, 'fr');
+      setLanguage('fr');
+    }
+  }
+
+  final List<String> _languages = ['English', 'Spanish', 'Turkish', 'French'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +154,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
           },
         ),
         title: Text(
-          'Settings',
+          AppLocalizations.of(context)!.settings_header,
           style: FlutterFlowTheme.of(context).title1.override(
                 fontFamily: 'Outfit',
                 color: FlutterFlowTheme.of(context).primaryColor,
@@ -134,9 +166,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: ListView(
           children: [
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
@@ -161,7 +191,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Switch to Dark Mode',
+                                AppLocalizations.of(context)!.dark_mode,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -241,7 +271,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Switch to Light Mode',
+                                AppLocalizations.of(context)!.light_mode,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -328,7 +358,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Switch to US units',
+                                AppLocalizations.of(context)!.units,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -407,7 +437,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Switch EU units',
+                                AppLocalizations.of(context)!.units2,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -528,7 +558,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               child: FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: AutoSizeText(
-                                  'Update Weight/Age',
+                                  AppLocalizations.of(context)!.update_info,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText2
                                       .override(
@@ -597,12 +627,13 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 builder: (BuildContext context) => AlertDialog(
                                       title: Row(
                                         children: [
-                                          const Text(
-                                              'This is a premium feature '),
+                                          Text(AppLocalizations.of(context)!
+                                              .premium_error_header),
                                         ],
                                       ),
-                                      content: const Text(
-                                          'Buy Premium to unlock this feature'),
+                                      content: Text(
+                                          AppLocalizations.of(context)!
+                                              .premium_error_context),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () => showModalBottomSheet(
@@ -611,7 +642,9 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                                 return premium.premium();
                                               }),
                                           child: Center(
-                                            child: const Text('Buy Premium Now',
+                                            child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .premium_error_button,
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     fontFamily: 'Roboto',
@@ -642,7 +675,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                                 child: Text(
-                                  'Notification Settings',
+                                  AppLocalizations.of(context)!.notifications,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText2
                                       .override(
@@ -719,7 +752,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
-                                'How to use',
+                                AppLocalizations.of(context)!.how_to,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText2
                                     .override(
@@ -791,7 +824,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
-                                'Premium',
+                                AppLocalizations.of(context)!.premium,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText2
                                     .override(
@@ -828,27 +861,40 @@ class _SettingsWidgetState extends State<SettingsWidget>
                           context: context,
                           builder: ((context) {
                             return AlertDialog(
-                              title: Center(child: Text('Visit our website')),
+                              title: Center(
+                                  child: Text(AppLocalizations.of(context)!
+                                      .privacy_popup_header)),
                               actionsAlignment: MainAxisAlignment.start,
                               content: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  TextButton(
-                                      onPressed: () {
-                                        launchURL(
-                                            'https://www.weinteractive.net/privacy-policy');
-                                      },
-                                      child: Text('Privacy Policy')),
+                                  Container(
+                                    child: TextButton(
+                                        onPressed: () {
+                                          launchURL(
+                                              'https://www.weinteractive.net/privacy-policy');
+                                        },
+                                        child: Text(
+                                            AppLocalizations.of(context)!
+                                                .privacy_popup_b1)),
+                                  ),
                                   SizedBox(
                                     width: 15,
                                   ),
-                                  TextButton(
-                                      onPressed: () {
-                                        launchURL(
-                                            'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/');
-                                      },
-                                      child: Text('Terms of Use')),
+                                  Container(
+                                    width: 80,
+                                    child: TextButton(
+                                        onPressed: () {
+                                          launchURL(
+                                              'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/');
+                                        },
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .privacy_popup_b2,
+                                          overflow: TextOverflow.ellipsis,
+                                        )),
+                                  ),
                                 ],
                               ),
                             );
@@ -886,9 +932,98 @@ class _SettingsWidgetState extends State<SettingsWidget>
                             Padding(
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              child: Container(
+                                width: 200,
+                                child: Text(
+                                  AppLocalizations.of(context)!.privacy,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText2
+                                      .override(
+                                        fontFamily: 'Outfit',
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Align(
+                                alignment: AlignmentDirectional(1, 0),
+                                child: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  size: 18,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20, 12, 20, 0),
+                  child: InkWell(
+                    onTap: () async {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: ((context) {
+                            return Container(
+                              height: 200,
+                              child: CupertinoPicker(
+                                backgroundColor: Colors.white,
+                                itemExtent: 32,
+                                onSelectedItemChanged: (int index) {
+                                  setState(() {
+                                    _selectLanguage(_languages[index]);
+                                  });
+                                },
+                                children: _languages.map((language) {
+                                  return Text(language);
+                                }).toList(),
+                              ),
+                            );
+                          }));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 5,
+                            color: Color(0x33000000),
+                            offset: Offset(0, 2),
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(12),
+                        shape: BoxShape.rectangle,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0, 0.35),
+                              child: FaIcon(
+                                FontAwesomeIcons.language,
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                size: 24,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
-                                'Privacy Policy & Terms of Use',
-                                overflow: TextOverflow.ellipsis,
+                                AppLocalizations.of(context)!.language,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText2
                                     .override(
@@ -972,7 +1107,7 @@ class _SettingsWidgetState extends State<SettingsWidget>
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
-                                'Restore Purchases',
+                                AppLocalizations.of(context)!.restore,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText2
                                     .override(

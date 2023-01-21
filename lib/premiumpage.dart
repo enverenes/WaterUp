@@ -1,5 +1,4 @@
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,6 +6,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class premium extends StatefulWidget {
   premium({Key? key}) : super(key: key);
@@ -16,95 +16,6 @@ class premium extends StatefulWidget {
 }
 
 class premiumState extends State<premium> {
-  final slidingColumns = [
-    Container(
-      height: 300,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-              width: 250,
-              height: 250,
-              child: Image.asset(
-                'assets/images/1_premium.png',
-              )),
-          Container(
-              padding: EdgeInsets.only(right: 15, left: 15, top: 5, bottom: 5),
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  blurRadius: 5,
-                  color: Color(0x33000000),
-                  offset: Offset(0, 2),
-                )
-              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
-              child: Text(
-                'Remove all ads',
-                style: TextStyle(
-                    fontSize: 20, fontFamily: 'Outfit', color: Colors.black),
-              ))
-        ],
-      ),
-    ),
-    Container(
-      height: 300,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(),
-              child: Image.asset(
-                'assets/images/2_premium.png',
-                fit: BoxFit.contain,
-              )),
-          Container(
-              padding: EdgeInsets.only(right: 15, left: 15, top: 5, bottom: 5),
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  blurRadius: 5,
-                  color: Color(0x33000000),
-                  offset: Offset(0, 2),
-                )
-              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
-              child: Text(
-                'Get daily reminders',
-                style: TextStyle(fontSize: 20, color: Colors.black),
-              ))
-        ],
-      ),
-    ),
-    Container(
-      height: 300,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Container(
-                width: 250,
-                height: 250,
-                decoration: BoxDecoration(),
-                child:
-                    Center(child: Image.asset('assets/images/3_premium.png'))),
-          ),
-          Container(
-            padding: EdgeInsets.only(right: 15, left: 15, top: 5, bottom: 5),
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                blurRadius: 5,
-                color: Color(0x33000000),
-                offset: Offset(0, 2),
-              )
-            ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
-            child: Text('Access to History',
-                style: TextStyle(
-                    fontFamily: 'Outfit', fontSize: 20, color: Colors.black)),
-          )
-        ],
-      ),
-    ),
-  ];
-
   Future<void> initPlatformState() async {
     await Purchases.setDebugLogsEnabled(true);
 
@@ -124,10 +35,16 @@ class premiumState extends State<premium> {
     print(configuration.store);
   }
 
+  List<StoreProduct>? storeProduct;
+  fetchPrice() async {
+    storeProduct = await Purchases.getProducts(['premium_1200_1y']);
+    print(storeProduct?.first.price);
+  }
+
   @override
   void initState() {
     initPlatformState();
-
+    fetchPrice();
     super.initState();
   }
 
@@ -153,6 +70,103 @@ class premiumState extends State<premium> {
 
   @override
   Widget build(BuildContext context) {
+    final slidingColumns = [
+      Container(
+        height: 300,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+                width: 250,
+                height: 250,
+                child: Image.asset(
+                  'assets/images/1_premium.png',
+                )),
+            Container(
+                padding:
+                    EdgeInsets.only(right: 15, left: 15, top: 5, bottom: 5),
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 5,
+                        color: Color(0x33000000),
+                        offset: Offset(0, 2),
+                      )
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text(
+                  AppLocalizations.of(context)!.premium_i1,
+                  style: TextStyle(
+                      fontSize: 20, fontFamily: 'Outfit', color: Colors.black),
+                ))
+          ],
+        ),
+      ),
+      Container(
+        height: 300,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+                width: 250,
+                height: 250,
+                decoration: BoxDecoration(),
+                child: Image.asset(
+                  'assets/images/2_premium.png',
+                  fit: BoxFit.contain,
+                )),
+            Container(
+                padding:
+                    EdgeInsets.only(right: 15, left: 15, top: 5, bottom: 5),
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 5,
+                        color: Color(0x33000000),
+                        offset: Offset(0, 2),
+                      )
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text(
+                  AppLocalizations.of(context)!.premium_i2,
+                  style: TextStyle(fontSize: 20, color: Colors.black),
+                ))
+          ],
+        ),
+      ),
+      Container(
+        height: 300,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Container(
+                  width: 250,
+                  height: 250,
+                  decoration: BoxDecoration(),
+                  child: Center(
+                      child: Image.asset('assets/images/3_premium.png'))),
+            ),
+            Container(
+              padding: EdgeInsets.only(right: 15, left: 15, top: 5, bottom: 5),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  blurRadius: 5,
+                  color: Color(0x33000000),
+                  offset: Offset(0, 2),
+                )
+              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              child: Text(AppLocalizations.of(context)!.premium_i3,
+                  style: TextStyle(
+                      fontFamily: 'Outfit', fontSize: 20, color: Colors.black)),
+            )
+          ],
+        ),
+      ),
+    ];
+
     return Container(
       color: Colors.white,
       height: 900,
@@ -171,7 +185,7 @@ class premiumState extends State<premium> {
                 onPageChanged: (index, reason) =>
                     setState(() => activeIndex = index),
               )),
-          Center(child: buildIndicator()),
+          Center(child: buildIndicator(slidingColumns)),
           SizedBox(
             height: 10,
           ),
@@ -191,9 +205,16 @@ class premiumState extends State<premium> {
                   padding: EdgeInsets.all(10),
                   child: Column(
                     children: [
-                      Text('Premium One Year Package',
+                      Text(
+                          AppLocalizations.of(context)!
+                              .premium_buy_button_header,
                           style: TextStyle(fontSize: 20)),
-                      Text('Access all premium features for ' + '4.99\$'),
+                      Text(AppLocalizations.of(context)!
+                              .premium_buy_button_context +
+                          ' ' +
+                          (storeProduct?.first == null
+                              ? ''
+                              : storeProduct!.first.priceString)),
                     ],
                   ),
                 )),
@@ -203,7 +224,7 @@ class premiumState extends State<premium> {
     );
   }
 
-  Widget buildIndicator() {
+  Widget buildIndicator(slidingColumns) {
     return AnimatedSmoothIndicator(
         activeIndex: activeIndex, count: slidingColumns.length);
   }

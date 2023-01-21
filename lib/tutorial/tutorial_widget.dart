@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:watetlo/notifications.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'dart:io' show Platform;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TutorialWidget extends StatefulWidget {
   const TutorialWidget({Key? key}) : super(key: key);
@@ -39,13 +40,17 @@ class _TutorialWidgetState extends State<TutorialWidget> {
   Future<void> setPremium() async {
     final prefs = await SharedPreferences.getInstance();
 
-    CustomerInfo purchaserInfo = await Purchases.getCustomerInfo();
-    bool premactive =
-        purchaserInfo.entitlements.all["premium"]?.isActive ?? false;
+    try {
+      CustomerInfo purchaserInfo = await Purchases.getCustomerInfo();
+      bool premactive =
+          purchaserInfo.entitlements.all["premium"]?.isActive ?? false;
 
-    if (premactive) {
-      await prefs.setInt('premium', 1);
-    } else {
+      if (premactive) {
+        await prefs.setInt('premium', 1);
+      } else {
+        await prefs.setInt('premium', 0);
+      }
+    } catch (e) {
       await prefs.setInt('premium', 0);
     }
   }
@@ -199,7 +204,7 @@ class _TutorialWidgetState extends State<TutorialWidget> {
                             (r) => false,
                           );
                         },
-                        text: 'SKIP',
+                        text: AppLocalizations.of(context)!.tutorial_button,
                         options: FFButtonOptions(
                           width: 70,
                           height: 40,
@@ -221,7 +226,7 @@ class _TutorialWidgetState extends State<TutorialWidget> {
                     Align(
                       alignment: AlignmentDirectional(0, -0.8),
                       child: Text(
-                        'How to use?',
+                        AppLocalizations.of(context)!.tutorial_title,
                         style: FlutterFlowTheme.of(context).title1.override(
                               fontFamily: 'Outfit',
                               color: FlutterFlowTheme.of(context).primaryText,

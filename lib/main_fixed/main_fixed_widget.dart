@@ -22,6 +22,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:watetlo/premiumpage.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'dart:io' show Platform;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainFixedWidget extends StatefulWidget {
   const MainFixedWidget({Key? key}) : super(key: key);
@@ -161,7 +162,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
   void initState() {
     //INITSTATE
     super.initState();
-
+    getX1();
     getType();
     WidgetsFlutterBinding.ensureInitialized();
     setToWater();
@@ -195,6 +196,17 @@ class MainFixedWidgetState extends State<MainFixedWidget>
     setState(() => FFAppState().drinkname = 'Water');
   }
 
+  saveX1() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setDouble('x1', x1);
+  }
+
+  getX1() async {
+    final prefs = await SharedPreferences.getInstance();
+    x1 = await prefs.getDouble('x1') ?? 0.0;
+  }
+
+  double x1 = 0.0;
   double pos = 0.0;
   bool completed = false;
   void initialPos() async {
@@ -206,7 +218,6 @@ class MainFixedWidgetState extends State<MainFixedWidget>
     }
     var inc = percentage_filled *
         (MediaQuery.of(context).size.height * (0.35 * 2.043478260869565));
-    print(inc);
 
     if ((-inc) <
         -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565))) {
@@ -360,13 +371,15 @@ class MainFixedWidgetState extends State<MainFixedWidget>
       });
     }
 
-    CustomerInfo purchaserInfo = await Purchases.getCustomerInfo();
-    //await prefs.setInt('premium', 1); //ERASE TEST!
-    if ((purchaserInfo.entitlements.all['premium']?.isActive != null)
-        ? purchaserInfo.entitlements.all['premium']!.isActive
-        : false) {
-      await prefs.setInt('premium', 1);
-    }
+    try {
+      CustomerInfo purchaserInfo = await Purchases.getCustomerInfo();
+      //await prefs.setInt('premium', 1); //ERASE TEST!
+      if ((purchaserInfo.entitlements.all['premium']?.isActive != null)
+          ? purchaserInfo.entitlements.all['premium']!.isActive
+          : false) {
+        await prefs.setInt('premium', 1);
+      }
+    } catch (e) {}
   }
 
   @override
@@ -394,7 +407,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
                           child: Text(
-                            'Today\'s total',
+                            AppLocalizations.of(context)!.main_top_title,
                             style: FlutterFlowTheme.of(context).title1.override(
                                   fontFamily: 'Outfit',
                                   color:
@@ -449,8 +462,16 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                               child: backgroundAdam(),
                             ),
                             TweenAnimationBuilder(
-                              tween: Tween<double>(begin: pos, end: pos - 40),
+                              tween: Tween<double>(begin: x1, end: pos - 40),
                               duration: const Duration(milliseconds: 1000),
+                              onEnd: () {
+                                print(x1);
+                                print(pos);
+
+                                x1 = pos;
+
+                                saveX1();
+                              },
                               builder: (context, double value, child) {
                                 return Positioned(
                                   top: value,
@@ -510,7 +531,13 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                         ),
                                   ),
                                   Text(
-                                    (isML ?? true) ? 'ml left' : 'oz left',
+                                    (isML ?? true)
+                                        ? 'ml ' +
+                                            AppLocalizations.of(context)!
+                                                .main_middle_ind
+                                        : 'oz ' +
+                                            AppLocalizations.of(context)!
+                                                .main_middle_ind,
                                     style: FlutterFlowTheme.of(context)
                                         .title1
                                         .override(
@@ -924,7 +951,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                             print(lastBev);
 
                                             changePosUndo(
-                                                lastBev[0].toDouble() ?? 0);
+                                                (lastBev[0] ?? 0).toDouble());
 
                                             setState(() {
                                               FFAppState().dranksofar =
@@ -989,7 +1016,9 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                             .center,
                                                     children: [
                                                       Text(
-                                                        'Double tap to undo ',
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .doubletap_error,
                                                         style: TextStyle(
                                                             fontSize: 20,
                                                             fontFamily:

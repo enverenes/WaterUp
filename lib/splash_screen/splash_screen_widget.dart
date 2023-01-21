@@ -1,5 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:watetlo/index.dart';
+import 'package:watetlo/main.dart';
+import 'package:watetlo/main_fixed/main_fixed_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -11,6 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class SplashScreenWidget extends StatefulWidget {
   const SplashScreenWidget({Key? key}) : super(key: key);
@@ -55,6 +61,7 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
   @override
   void initState() {
     super.initState();
+
     getType();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -112,6 +119,26 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
     setState(() {
       _selectedLanguage = language ?? _selectedLanguage;
     });
+
+    if (_selectedLanguage == 'Spanish') {
+      setAppLanguage(context, 'es');
+      setLanguage('es');
+    } else if (_selectedLanguage == 'English') {
+      setAppLanguage(context, 'en');
+      setLanguage('en');
+    } else if (_selectedLanguage == 'Turkish') {
+      setAppLanguage(context, 'tr');
+      setLanguage('tr');
+    } else if (_selectedLanguage == 'French') {
+      setAppLanguage(context, 'fr');
+      setLanguage('fr');
+    }
+  }
+
+  setLanguage(String language_string) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('language', language_string);
   }
 
   @override
@@ -126,7 +153,8 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
         leadingWidth: 0,
         centerTitle: false,
         actions: [
-          /* Container(       //LANGUAGE SELECTION
+          Container(
+              //LANGUAGE SELECTION
               padding: EdgeInsets.only(
                 right: 25,
               ),
@@ -156,7 +184,7 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                     );
                   }).toList(),
                 ),
-              )),   */
+              )),
         ],
       ),
       key: scaffoldKey,
@@ -210,7 +238,8 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                   autofocus: true,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                      labelText: 'Age',
+                                      labelText: AppLocalizations.of(context)!
+                                          .age_inbox,
                                       labelStyle: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
@@ -282,8 +311,12 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                   obscureText: false,
                                   decoration: InputDecoration(
                                       labelText: (isML ?? true)
-                                          ? 'Weight (kgs)'
-                                          : 'Weight (lbs)',
+                                          ? AppLocalizations.of(context)!
+                                                  .weight_inbox +
+                                              '(kgs)'
+                                          : AppLocalizations.of(context)!
+                                                  .weight_inbox +
+                                              '(lbs)',
                                       labelStyle: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
@@ -388,7 +421,8 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                                       .primaryText,
                                             ),
                                             Text(
-                                              ' Switch Units',
+                                              AppLocalizations.of(context)!
+                                                  .switch_units_button,
                                               style: TextStyle(
                                                   color: FlutterFlowTheme.of(
                                                           context)
@@ -414,15 +448,21 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                           context: context,
                                           builder: (alertDialogContext) {
                                             return AlertDialog(
-                                              title: Text('Error'),
+                                              title: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .entry_error_title),
                                               content: Text(
-                                                  'All the fields are required'),
+                                                  AppLocalizations.of(context)!
+                                                      .entry_error_content),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () =>
                                                       Navigator.pop(
                                                           alertDialogContext),
-                                                  child: Text('Ok'),
+                                                  child: Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .ok_button),
                                                 ),
                                               ],
                                             );
@@ -515,7 +555,8 @@ class SplashScreenWidgetState extends State<SplashScreenWidget>
                                     }
                                   }
                                 },
-                                text: 'Confirm',
+                                text: AppLocalizations.of(context)!
+                                    .confirm_button,
                                 options: FFButtonOptions(
                                   width: 200,
                                   height: 50,

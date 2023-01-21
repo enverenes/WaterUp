@@ -1,4 +1,3 @@
-
 import '../components/slider_widget.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -6,7 +5,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../main_fixed/main_fixed_widget.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DrinkselectCopyWidget extends StatefulWidget {
   const DrinkselectCopyWidget({Key? key}) : super(key: key);
@@ -17,8 +16,6 @@ class DrinkselectCopyWidget extends StatefulWidget {
 
 class _DrinkselectCopyWidgetState extends State<DrinkselectCopyWidget> {
   String? choiceChipsValue;
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +100,8 @@ class _DrinkselectCopyWidgetState extends State<DrinkselectCopyWidget> {
                             elevation: 4,
                           ),
                           unselectedChipStyle: ChipStyle(
-                            backgroundColor:
-                                 FlutterFlowTheme.of(context).primaryBackgroundCoffee,
+                            backgroundColor: FlutterFlowTheme.of(context)
+                                .primaryBackgroundCoffee,
                             textStyle:
                                 FlutterFlowTheme.of(context).bodyText2.override(
                                       fontFamily: 'Outfit',
@@ -133,7 +130,7 @@ class _DrinkselectCopyWidgetState extends State<DrinkselectCopyWidget> {
               alignment: AlignmentDirectional(0, 0),
               child: FFButtonWidget(
                 onPressed: () async {
-                await  MainFixedWidgetState()
+                  await MainFixedWidgetState()
                       .drinkWater(FFAppState().cup, context, true, 'C');
                   await Navigator.push(
                     context,
