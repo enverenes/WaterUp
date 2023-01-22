@@ -72,6 +72,13 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
     return (kgs * (2.2)).round();
   }
 
+  setWaterToDrink(int waterleft) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setInt('watertodrink', waterleft);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -101,10 +108,12 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
                         children: [
                           Expanded(
                             child: TextFormField(
+                              maxLength: 2,
                               controller: textController1,
                               autofocus: true,
                               obscureText: false,
                               decoration: InputDecoration(
+                                counterText: '',
                                 labelText:
                                     AppLocalizations.of(context)!.age_inbox,
                                 labelStyle: FlutterFlowTheme.of(context)
@@ -192,10 +201,12 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
                             child: Align(
                               alignment: AlignmentDirectional(0, -0.15),
                               child: TextFormField(
+                                maxLength: 3,
                                 controller: textController2,
                                 autofocus: true,
                                 obscureText: false,
                                 decoration: InputDecoration(
+                                  counterText: '',
                                   labelText: (isML ?? true)
                                       ? AppLocalizations.of(context)!
                                               .weight_inbox +
@@ -284,32 +295,44 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
                           int.parse(textController2!.text));
                       setState(() => FFAppState().totalwater =
                           functions.calculatewater(
+                                  int.parse(textController2!.text),
+                                  int.parse(textController1!.text)) -
+                              FFAppState().dranksofar);
+                      setState(() => FFAppState().initialtotalwater =
+                          functions.calculatewater(
                               int.parse(textController2!.text),
                               int.parse(textController1!.text)));
-                      setState(() => FFAppState().progressbar =
-                          functions.progressbar1(
-                              FFAppState().totalwater, FFAppState().cup));
-                      setState(() => FFAppState().initialtotalwater =
-                          FFAppState().totalwater);
-                      setState(() => FFAppState().progressbarinc = 0.0);
-                      setState(() => FFAppState().dranksofar = 0);
+                      setWaterToDrink(functions.calculatewater(
+                          int.parse(textController2!.text),
+                          (int.parse(textController1!.text))));
                     } else {
-                      setState(() => FFAppState().age =
-                          convertToKg(int.parse(textController1!.text)));
+                      setState(() =>
+                          FFAppState().age = int.parse(textController1!.text));
                       setState(() => FFAppState().weight =
-                          int.parse(textController2!.text));
+                          convertToKg(int.parse(textController2!.text)));
                       setState(() => FFAppState().totalwater =
+                          functions.calculatewater(
+                                  convertToKg(int.parse(textController2!.text)),
+                                  int.parse(textController1!.text)) -
+                              FFAppState().dranksofar);
+
+                      setState(() => FFAppState().initialtotalwater =
                           functions.calculatewater(
                               int.parse(textController2!.text),
                               convertToKg(int.parse(textController1!.text))));
-                      setState(() => FFAppState().progressbar =
-                          functions.progressbar1(
-                              FFAppState().totalwater, FFAppState().cup));
-                      setState(() => FFAppState().initialtotalwater =
-                          FFAppState().totalwater);
-                      setState(() => FFAppState().progressbarinc = 0.0);
-                      setState(() => FFAppState().dranksofar = 0);
+                      setWaterToDrink(functions.calculatewater(
+                          int.parse(textController2!.text),
+                          convertToKg(int.parse(textController1!.text))));
                     }
+
+                    if (FFAppState().totalwater < 0) {
+                      setState(() {
+                        FFAppState().totalwater = 0;
+                      });
+                    }
+                    print(FFAppState().initialtotalwater);
+                    print(FFAppState().dranksofar);
+
                     Navigator.pop(context);
                   },
                   text: 'Save',

@@ -162,7 +162,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
   void initState() {
     //INITSTATE
     super.initState();
-    getX1();
+
     getType();
     WidgetsFlutterBinding.ensureInitialized();
     setToWater();
@@ -196,36 +196,24 @@ class MainFixedWidgetState extends State<MainFixedWidget>
     setState(() => FFAppState().drinkname = 'Water');
   }
 
-  saveX1() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setDouble('x1', x1);
-  }
-
-  getX1() async {
-    final prefs = await SharedPreferences.getInstance();
-    x1 = await prefs.getDouble('x1') ?? 0.0;
-  }
-
-  double x1 = 0.0;
   double pos = 0.0;
   bool completed = false;
   void initialPos() async {
     final prefs = await SharedPreferences.getInstance();
     int totalwater = prefs.getInt('watertodrink') ?? 0;
     double percentage_filled = (FFAppState().dranksofar / totalwater);
+
     if (percentage_filled > 1) {
       percentage_filled = 1.0;
     }
     var inc = percentage_filled *
         (MediaQuery.of(context).size.height * (0.35 * 2.043478260869565));
 
-    if ((-inc) <
-        -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565))) {
-      pos = -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565));
-    } else if (FFAppState().dranksofar == 0) {
-      pos = 0.0;
+    if (percentage_filled == 1.0) {
+      pos = 0;
     } else {
-      pos = -(inc) - 50;
+      pos = (1 - percentage_filled) *
+          (MediaQuery.of(context).size.height * (0.35 * 2.043478260869565));
     }
   }
 
@@ -238,13 +226,10 @@ class MainFixedWidgetState extends State<MainFixedWidget>
         MediaQuery.of(context).size.height *
         (0.35 * 2.043478260869565);
 
-    if (pos - inc >=
-        -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565))) {
+    if (pos - inc > 0) {
       pos -= inc;
-    } else if (pos - inc <
-        -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565))) {
-      pos = -(MediaQuery.of(context).size.height * (0.35 * 2.043478260869565)) -
-          50;
+    } else {
+      pos = 0;
     }
   }
 
@@ -257,14 +242,11 @@ class MainFixedWidgetState extends State<MainFixedWidget>
       var inc = (cupsize / totalwater) *
           ((MediaQuery.of(context).size.height * (0.35 * 2.043478260869565)));
 
-      if (pos < 0) {
+      if (pos + inc <=
+          (MediaQuery.of(context).size.height * (0.35 * 2.043478260869565))) {
         pos += inc;
       } else {
-        pos = 0;
-      }
-
-      if (FFAppState().dranksofar == 0) {
-        pos = 0;
+        pos = (MediaQuery.of(context).size.height * (0.35 * 2.043478260869565));
       }
     });
   }
@@ -292,9 +274,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
     HapticFeedback.lightImpact();
     if (functions.everydayreset(FFAppState().time) == 1) {
       if (FFAppState().totalwater <= 0) {
-        setState(() {
-          //pos = -510;
-        });
+        setState(() {});
         completed = true;
         Navigator.push(
           context,
@@ -462,51 +442,32 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                               child: backgroundAdam(),
                             ),
                             TweenAnimationBuilder(
-                              tween: Tween<double>(begin: x1, end: pos - 40),
+                              tween: Tween<double>(
+                                  begin: (MediaQuery.of(context).size.height *
+                                      (0.35 * 2.043478260869565)),
+                                  end: pos),
                               duration: const Duration(milliseconds: 1000),
                               onEnd: () {
-                                print(x1);
                                 print(pos);
-
-                                x1 = pos;
-
-                                saveX1();
                               },
                               builder: (context, double value, child) {
                                 return Positioned(
                                   top: value,
                                   right: 0.0,
                                   left: 0.0,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(0),
-                                        width: 300,
-                                        height: ((MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.8) -
-                                            20),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.all(0),
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                    0.35 -
-                                                (4),
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                    (0.35 * 2.043478260869565) +
-                                                50,
-                                        child: RiveAnimation.asset(
-                                          'assets/rive_animations/wave.riv',
-                                          fit: BoxFit.fill,
-                                          alignment: Alignment.topCenter,
-                                        ),
-                                      ),
-                                    ],
+                                  child: Container(
+                                    padding: EdgeInsets.all(0),
+                                    width: MediaQuery.of(context).size.height *
+                                            0.35 -
+                                        (4),
+                                    height: MediaQuery.of(context).size.height *
+                                            (0.35 * 2.043478260869565) +
+                                        50,
+                                    child: RiveAnimation.asset(
+                                      'assets/rive_animations/wave.riv',
+                                      fit: BoxFit.fill,
+                                      alignment: Alignment.topCenter,
+                                    ),
                                   ),
                                 );
                               },
@@ -977,7 +938,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                             setState(() {
                                               FFAppState().dranksofar =
                                                   functions.dranksofarundo(
-                                                      lastBev[0],
+                                                      lastBev[0] ?? 0,
                                                       FFAppState().dranksofar,
                                                       lastBev[1]);
 

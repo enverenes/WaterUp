@@ -24,6 +24,7 @@ class _LanguagePageState extends State<LanguagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         automaticallyImplyLeading: false,
@@ -78,14 +79,16 @@ class _LanguagePageState extends State<LanguagePage> {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'English',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: FlutterFlowTheme.of(context).primaryColor),
                         ),
                       ),
                     ],
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).alternate,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,
@@ -123,14 +126,16 @@ class _LanguagePageState extends State<LanguagePage> {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'Français',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: FlutterFlowTheme.of(context).primaryColor),
                         ),
                       ),
                     ],
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).alternate,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,
@@ -167,14 +172,16 @@ class _LanguagePageState extends State<LanguagePage> {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'Türkçe',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: FlutterFlowTheme.of(context).primaryColor),
                         ),
                       ),
                     ],
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).alternate,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,
@@ -211,14 +218,16 @@ class _LanguagePageState extends State<LanguagePage> {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'Español',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: FlutterFlowTheme.of(context).primaryColor),
                         ),
                       ),
                     ],
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).alternate,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,
@@ -255,14 +264,16 @@ class _LanguagePageState extends State<LanguagePage> {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'Deutsche',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: FlutterFlowTheme.of(context).primaryColor),
                         ),
                       ),
                     ],
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).alternate,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,
@@ -299,14 +310,16 @@ class _LanguagePageState extends State<LanguagePage> {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'Português',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: FlutterFlowTheme.of(context).primaryColor),
                         ),
                       ),
                     ],
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).alternate,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,
@@ -343,14 +356,16 @@ class _LanguagePageState extends State<LanguagePage> {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           '한국인',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: FlutterFlowTheme.of(context).primaryColor),
                         ),
                       ),
                     ],
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).alternate,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,
@@ -387,14 +402,16 @@ class _LanguagePageState extends State<LanguagePage> {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           '日本',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: FlutterFlowTheme.of(context).primaryColor),
                         ),
                       ),
                     ],
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).alternate,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,
@@ -431,14 +448,16 @@ class _LanguagePageState extends State<LanguagePage> {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'Svenska',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: FlutterFlowTheme.of(context).primaryColor),
                         ),
                       ),
                     ],
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).alternate,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,
@@ -475,14 +494,16 @@ class _LanguagePageState extends State<LanguagePage> {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'عربى',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: FlutterFlowTheme.of(context).primaryColor),
                         ),
                       ),
                     ],
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).alternate,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,
