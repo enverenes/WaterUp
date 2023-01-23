@@ -200,7 +200,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
   bool completed = false;
   void initialPos() async {
     final prefs = await SharedPreferences.getInstance();
-    int totalwater = prefs.getInt('watertodrink') ?? 0;
+    int totalwater = FFAppState().initialtotalwater;
     double percentage_filled = (FFAppState().dranksofar / totalwater);
 
     if (percentage_filled > 1) {
@@ -220,7 +220,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
   void changePos(double cupsize, BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
 
-    int totalwater = prefs.getInt('watertodrink') ?? 0;
+    int totalwater = FFAppState().initialtotalwater;
 
     var inc = (cupsize / totalwater) *
         MediaQuery.of(context).size.height *
@@ -236,7 +236,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
   void changePosUndo(double cupsize) async {
     final prefs = await SharedPreferences.getInstance();
 
-    int totalwater = prefs.getInt('watertodrink') ?? 0;
+    int totalwater = FFAppState().initialtotalwater;
 
     setState(() {
       var inc = (cupsize / totalwater) *

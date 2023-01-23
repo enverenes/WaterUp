@@ -35,7 +35,7 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
     super.dispose();
   }
 
-  static bool? isML;
+  bool? isML;
   setTypes(bool mlbool) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -288,41 +288,36 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
                 alignment: AlignmentDirectional(0, 0),
                 child: FFButtonWidget(
                   onPressed: () async {
-                    if (isML ?? true) {
+                    print(isML);
+                    if (isML!) {
                       setState(() =>
                           FFAppState().age = int.parse(textController1!.text));
                       setState(() => FFAppState().weight =
                           int.parse(textController2!.text));
-                      setState(() => FFAppState().totalwater =
-                          functions.calculatewater(
-                                  int.parse(textController2!.text),
-                                  int.parse(textController1!.text)) -
-                              FFAppState().dranksofar);
+
                       setState(() => FFAppState().initialtotalwater =
                           functions.calculatewater(
                               int.parse(textController2!.text),
                               int.parse(textController1!.text)));
-                      setWaterToDrink(functions.calculatewater(
-                          int.parse(textController2!.text),
-                          (int.parse(textController1!.text))));
+
+                      setState(() => FFAppState().totalwater =
+                          FFAppState().initialtotalwater -
+                              FFAppState().dranksofar);
                     } else {
                       setState(() =>
                           FFAppState().age = int.parse(textController1!.text));
                       setState(() => FFAppState().weight =
                           convertToKg(int.parse(textController2!.text)));
-                      setState(() => FFAppState().totalwater =
-                          functions.calculatewater(
-                                  convertToKg(int.parse(textController2!.text)),
-                                  int.parse(textController1!.text)) -
-                              FFAppState().dranksofar);
 
                       setState(() => FFAppState().initialtotalwater =
-                          functions.calculatewater(
-                              int.parse(textController2!.text),
-                              convertToKg(int.parse(textController1!.text))));
-                      setWaterToDrink(functions.calculatewater(
-                          int.parse(textController2!.text),
-                          convertToKg(int.parse(textController1!.text))));
+                              functions.calculatewater(
+                            convertToKg(int.parse(textController2!.text)),
+                            int.parse(textController1!.text),
+                          ));
+
+                      setState(() => FFAppState().totalwater =
+                          FFAppState().initialtotalwater -
+                              FFAppState().dranksofar);
                     }
 
                     if (FFAppState().totalwater < 0) {
@@ -330,8 +325,6 @@ class _Nfo3WidgetState extends State<Nfo3Widget> {
                         FFAppState().totalwater = 0;
                       });
                     }
-                    print(FFAppState().initialtotalwater);
-                    print(FFAppState().dranksofar);
 
                     Navigator.pop(context);
                   },
