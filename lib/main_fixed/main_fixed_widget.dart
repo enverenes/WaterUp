@@ -665,7 +665,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                                   tweenvar = 42.0;
                                                   adCounter++;
                                                   adActionsSet(adCounter);
-                                                  if ((adCounter % 5 == 0) &
+                                                  if ((adCounter % 7 == 0) &
                                                       adsOnline) {
                                                     InterstitialAd.load(
                                                         adUnitId: (Platform
@@ -874,7 +874,7 @@ class MainFixedWidgetState extends State<MainFixedWidget>
                                           adCounter++;
                                           adActionsSet(adCounter);
 
-                                          if ((adCounter % 5 == 0) &
+                                          if ((adCounter % 7 == 0) &
                                               adsOnline) {
                                             InterstitialAd.load(
                                                 adUnitId:

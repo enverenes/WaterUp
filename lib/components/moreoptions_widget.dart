@@ -235,7 +235,7 @@ class _MoreoptionsWidgetState extends State<MoreoptionsWidget> {
                   adCounter++;
                   adActionsSet(adCounter);
 
-                  if ((adCounter % 5 == 0) & adsonline) {
+                  if ((adCounter % 7 == 0) & adsonline) {
                     InterstitialAd.load(
                         adUnitId: (Platform.isAndroid)
                             ? 'ca-app-pub-5585667908104814/3919550824'
